@@ -1,0 +1,60 @@
+%
+% File XCS229ii_final_paper.tex
+%
+
+\documentclass[11pt,a4paper]{article}
+\usepackage[hyperref]{acl2020}
+\usepackage{times}
+\usepackage{latexsym}
+\usepackage{graphicx}
+\renewcommand{\UrlFont}{\ttfamily\small}
+
+% This is not strictly necessary, and may be commented out,
+% but it will improve the layout of the manuscript,
+% and will typically save some space.
+\usepackage{microtype}
+
+\aclfinalcopy % Uncomment this line for the final submission
+%\def\aclpaperid{***} %  Enter the acl Paper ID here
+
+%\setlength\titlebox{5cm}
+% You can expand the titlebox if you need extra space
+% to show all the authors. Please do not make the titlebox
+% smaller than 5cm (the original size); we will check this
+% in the camera-ready version and ask you to change it back.
+
+\newcommand\BibTeX{B\textsc{ib}\TeX}
+
+\title{Project Title}
+
+\author{
+  Jaro Habr \\
+  \texttt{jaro.habr@gmail.com} \\
+  \AND
+  Other author \\
+  \texttt{email@gmail.com} \\
+  \And
+  Other author \\
+  \texttt{emai@email.com} \\
+}
+
+\date{}
+
+\begin{document}
+\maketitle
+
+\input{sections/1-abstract}
+\input{sections/2-introduction}
+\input{sections/3-methods}
+\input{sections/4-results}
+\input{sections/5-discussion}
+\input{sections/6-acknowledgments}
+
+\bibliography{references}
+\bibliographystyle{acl_natbib}
+
+\appendix
+\clearpage
+\input{sections/7-appendix}
+
+\end{document}
