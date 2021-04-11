@@ -10,3 +10,6 @@ paper/XCS229ii_final_paper.pdf
 __pycache__
 .ipynb_checkpoints
 .idea
+*.fdb_latexmk
+paper/XCS229ii_final_paper.pdf
+*.gz
