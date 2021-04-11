@@ -13,3 +13,4 @@ __pycache__
 *.fdb_latexmk
 paper/XCS229ii_final_paper.pdf
 *.gz
+*.aux
