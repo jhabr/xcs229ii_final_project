@@ -1,5 +1,16 @@
-\begin{thebibliography}{1}
+\begin{thebibliography}{4}
 \expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
+
+\bibitem[{ISIC(2018)}]{isic-2018-segmentation}
+ISIC. 2018.
+\newblock \href {https://challenge2018.isic-archive.com/task1/} {Task 1: Lesion
+  boundary segmentation}.
+
+\bibitem[{Society(2021)}]{acs-2021-melanoma}
+American~Cancer Society. 2021.
+\newblock \href
+  {https://www.cancer.org/cancer/melanoma-skin-cancer/about/key-statistics.html}
+  {Key statistics for melanoma skin cancer}.
 
 \bibitem[{Vaswani et~al.(2017)Vaswani, Shazeer, Parmar, Uszkoreit, Jones,
   Gomez, Kaiser, and Polosukhin}]{vaswani-2017-attention}
@@ -7,5 +18,9 @@ Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones,
   Aidan~N. Gomez, Lukasz Kaiser, and Illia Polosukhin. 2017.
 \newblock \href {http://arxiv.org/abs/1706.03762} {Attention is all you need}.
 \newblock \emph{CoRR}, abs/1706.03762.
+
+\bibitem[{Wikipedia(2021)}]{wiki-2021-melanoma}
+Wikipedia. 2021.
+\newblock \href {https://en.wikipedia.org/wiki/Melanoma} {Melanoma}.
 
 \end{thebibliography}
