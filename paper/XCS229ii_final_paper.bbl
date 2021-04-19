@@ -6,18 +6,18 @@ ISIC. 2018.
 \newblock \href {https://challenge2018.isic-archive.com/task1/} {Task 1: Lesion
   boundary segmentation}.
 
+\bibitem[{Ronneberger et~al.(2015)Ronneberger, Fischer, and
+  Brox}]{ronneberger-2015-unet}
+Olaf Ronneberger, Philipp Fischer, and Thomas Brox. 2015.
+\newblock \href {http://arxiv.org/abs/1505.04597} {U-net: Convolutional
+  networks for biomedical image segmentation}.
+\newblock \emph{CoRR}, abs/1505.04597.
+
 \bibitem[{Society(2021)}]{acs-2021-melanoma}
 American~Cancer Society. 2021.
 \newblock \href
   {https://www.cancer.org/cancer/melanoma-skin-cancer/about/key-statistics.html}
   {Key statistics for melanoma skin cancer}.
-
-\bibitem[{Vaswani et~al.(2017)Vaswani, Shazeer, Parmar, Uszkoreit, Jones,
-  Gomez, Kaiser, and Polosukhin}]{vaswani-2017-attention}
-Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones,
-  Aidan~N. Gomez, Lukasz Kaiser, and Illia Polosukhin. 2017.
-\newblock \href {http://arxiv.org/abs/1706.03762} {Attention is all you need}.
-\newblock \emph{CoRR}, abs/1706.03762.
 
 \bibitem[{Wikipedia(2021)}]{wiki-2021-melanoma}
 Wikipedia. 2021.
