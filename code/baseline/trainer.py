@@ -57,7 +57,7 @@ class Trainer:
     def __get_valid_data_loader(self) -> DataLoader:
         return  DataLoader(self.__get_validation_dataset(), batch_size=1, shuffle=False)
 
-    def __get_model(self) -> sm.Unet:
+    def get_model(self) -> sm.Unet:
         model = sm.Unet(Trainer.BACKBONE, encoder_weights='imagenet', activation='sigmoid')
         model.compile(
             tf.keras.optimizers.Adam(3e-5),
@@ -83,7 +83,7 @@ class Trainer:
         train_data_loader = self.__get_train_data_loader()
         valid_data_loader = self.__get_valid_data_loader()
 
-        return self.__get_model().fit(
+        return self.get_model().fit(
             train_data_loader,
             steps_per_epoch=len(train_data_loader),
             epochs=Trainer.EPOCHS,
@@ -97,7 +97,7 @@ class Trainer:
         training_data = self.__get_training_data()
         validation_data = self.__get_validation_data()
 
-        return self.__get_model().fit(
+        return self.get_model().fit(
             x=training_data[0],
             y=training_data[1],
             batch_size=Trainer.BATCH_SIZE,

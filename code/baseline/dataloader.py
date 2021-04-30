@@ -55,7 +55,7 @@ class SimpleDataLoader:
         self.images = []
         self.masks = []
         
-    def __get_images(self) -> list:
+    def get_images(self) -> list:
         for image_path in sorted(glob.glob(os.path.join(self.images_path, "*.jpg"))):
             image = cv2.imread(image_path, cv2.IMREAD_COLOR)
             image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
@@ -65,7 +65,10 @@ class SimpleDataLoader:
 
         return self.images
 
-    def __get_masks(self) -> list:
+    def get_masks(self) -> object:
+        if self.mask_path is None:
+            return None
+
         for mask_path in sorted(glob.glob(os.path.join(self.mask_path, "*.png"))):
             mask = cv2.imread(mask_path, cv2.IMREAD_GRAYSCALE)
             mask = np.expand_dims(mask, axis=2)
@@ -74,4 +77,4 @@ class SimpleDataLoader:
         return self.images
 
     def get_images_masks(self) -> tuple:
-        return self.__get_images(), self.__get_masks()
+        return self.get_images(), self.get_masks()

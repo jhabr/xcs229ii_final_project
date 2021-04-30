@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 
 class Visualisation:
 
-    def plot(self, **images):
+    def show(self, **images):
         """PLot images in one row."""
         n = len(images)
         plt.figure(figsize=(16, 5))
