@@ -33,16 +33,10 @@ class Trainer:
         )
 
     def __get_train_data_loader(self) -> DataLoader:
-        data_loader = DataLoader(self.__get_training_dataset(), batch_size=Trainer.BATCH_SIZE, shuffle=True)
-        assert data_loader[0][0].shape == (Trainer.BATCH_SIZE, 1022, 767, 3)
-        assert data_loader[0][1].shape == (Trainer.BATCH_SIZE, 1022, 767, 1)
-        return data_loader
+        return DataLoader(self.__get_training_dataset(), batch_size=Trainer.BATCH_SIZE, shuffle=True)
 
     def __get_valid_data_loader(self) -> DataLoader:
-        data_loader = DataLoader(self.__get_validation_dataset(), batch_size=1, shuffle=False)
-        assert data_loader[0][0].shape == (Trainer.BATCH_SIZE, 1022, 767, 3)
-        assert data_loader[0][1].shape == (Trainer.BATCH_SIZE, 1022, 767, 1)
-        return data_loader
+        return  DataLoader(self.__get_validation_dataset(), batch_size=1, shuffle=False)
 
     def __get_model(self) -> sm.Unet:
         model = sm.Unet(Trainer.BACKBONE, encoder_weights='imagenet', activation='sigmoid')

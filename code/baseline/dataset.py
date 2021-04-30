@@ -31,7 +31,7 @@ class Dataset:
         self.augmentation = augmentation
         self.preprocessing = preprocessing
 
-    def __getitem__(self, i):
+    def __getitem__(self, i) -> tuple:
         image = cv2.imread(self.images[i], cv2.IMREAD_COLOR)
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         mask = cv2.imread(self.masks[i], cv2.IMREAD_GRAYSCALE)
@@ -54,6 +54,6 @@ class Dataset:
 
         return image, mask
 
-    def __len__(self):
+    def __len__(self) -> int:
         assert len(self.image_ids) == len(self.mask_ids)
         return len(self.image_ids)

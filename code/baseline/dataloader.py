@@ -19,7 +19,7 @@ class DataLoader(tf.keras.utils.Sequence):
 
         self.on_epoch_end()
 
-    def __getitem__(self, i):
+    def __getitem__(self, i) -> np.ndarray:
         # collect batch data
         start = i * self.batch_size
         stop = (i + 1) * self.batch_size
@@ -32,7 +32,7 @@ class DataLoader(tf.keras.utils.Sequence):
 
         return batch
 
-    def __len__(self):
+    def __len__(self) -> int:
         """Denotes the number of batches per epoch"""
         return len(self.indexes) // self.batch_size
 
