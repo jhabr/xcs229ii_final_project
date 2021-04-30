@@ -89,7 +89,8 @@ class Trainer:
             epochs=Trainer.EPOCHS,
             callbacks=self.__get_callbacks(),
             validation_data=valid_data_loader,
-            validation_steps=len(valid_data_loader)
+            validation_steps=len(valid_data_loader),
+            verbose=2
         )
 
     def train_from_simple_dataloader(self):
@@ -104,5 +105,6 @@ class Trainer:
             epochs=Trainer.EPOCHS,
             validation_data=validation_data,
             validation_steps=len(validation_data[0] // Trainer.BATCH_SIZE),
-            callbacks=self.__get_callbacks()
+            callbacks=self.__get_callbacks(),
+            verbose=2
         )
