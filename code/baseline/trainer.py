@@ -11,7 +11,7 @@ from constants import PROJECT_DIR, TRAIN_DIR, VALIDATION_DIR
 
 class Trainer:
     BACKBONE = 'resnet34'
-    BATCH_SIZE = 16
+    BATCH_SIZE = 1
     EPOCHS = 1
 
     def __init__(self):
@@ -55,14 +55,14 @@ class Trainer:
         return DataLoader(self.__get_training_dataset(), batch_size=Trainer.BATCH_SIZE, shuffle=True)
 
     def __get_valid_data_loader(self) -> DataLoader:
-        return  DataLoader(self.__get_validation_dataset(), batch_size=1, shuffle=False)
+        return DataLoader(self.__get_validation_dataset(), batch_size=1, shuffle=False)
 
     def get_model(self) -> sm.Unet:
         model = sm.Unet(Trainer.BACKBONE, encoder_weights='imagenet', activation='sigmoid')
         model.compile(
             tf.keras.optimizers.Adam(3e-5),
             loss=sm.losses.bce_jaccard_loss,
-            metrics=[sm.metrics.iou_score, sm.metrics.FScore]
+            metrics=[sm.metrics.iou_score]
         )
 
         return model
@@ -103,7 +103,7 @@ class Trainer:
             batch_size=Trainer.BATCH_SIZE,
             steps_per_epoch=len(training_data['images']) // Trainer.BATCH_SIZE,
             epochs=Trainer.EPOCHS,
-            validation_data=validation_data,
+            validation_data=(validation_data["images"], validation_data["masks"]),
             validation_steps=len(validation_data['images']) // Trainer.BATCH_SIZE,
             callbacks=self.__get_callbacks(),
             verbose=2

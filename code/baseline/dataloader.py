@@ -48,6 +48,8 @@ class DataLoader(tf.keras.utils.Sequence):
 
 class SimpleDataLoader:
 
+    IMAGE_SIZE = (768, 1024)
+
     def __init__(self, images_path, mask_path=None, preprocessing=None, size=None):
         self.images_path = images_path
         self.mask_path = mask_path
@@ -65,12 +67,13 @@ class SimpleDataLoader:
 
         for image_path in image_paths:
             image = cv2.imread(image_path, cv2.IMREAD_COLOR)
-            image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+            image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB) / 255
+            image = cv2.resize(image, SimpleDataLoader.IMAGE_SIZE)
             if self.preprocessing:
                 image = self.preprocessing(image=image)['image']
             images.append(image)
 
-        self.images = np.array(images, dtype=np.uint8)
+        self.images = np.array(images, dtype=np.float32)
 
         return self.images
 
@@ -85,11 +88,12 @@ class SimpleDataLoader:
         masks = []
 
         for mask_path in mask_paths:
-            mask = cv2.imread(mask_path, cv2.IMREAD_GRAYSCALE)
+            mask = cv2.imread(mask_path, cv2.IMREAD_GRAYSCALE) / 255
+            mask = cv2.resize(mask, SimpleDataLoader.IMAGE_SIZE)
             mask = np.expand_dims(mask, axis=2)
             masks.append(mask)
 
-        self.masks = np.array(masks, dtype=np.uint8)
+        self.masks = np.array(masks, dtype=np.float32)
 
         return self.masks
 
