@@ -48,15 +48,20 @@ class DataLoader(tf.keras.utils.Sequence):
 
 class SimpleDataLoader:
 
-    def __init__(self, images_path, mask_path=None, preprocessing=None):
+    def __init__(self, images_path, mask_path=None, preprocessing=None, size=None):
         self.images_path = images_path
         self.mask_path = mask_path
         self.preprocessing = preprocessing
         self.images = []
         self.masks = []
+        self.size = size
         
     def get_images(self) -> list:
-        for image_path in sorted(glob.glob(os.path.join(self.images_path, "*.jpg"))):
+        image_paths = sorted(glob.glob(os.path.join(self.images_path, "*.jpg")))
+        if self.size is not None:
+            image_paths = image_paths[:self.size]
+            
+        for image_path in image_paths:
             image = cv2.imread(image_path, cv2.IMREAD_COLOR)
             image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
             if self.preprocessing:
@@ -69,12 +74,16 @@ class SimpleDataLoader:
         if self.mask_path is None:
             return None
 
-        for mask_path in sorted(glob.glob(os.path.join(self.mask_path, "*.png"))):
+        mask_paths = sorted(glob.glob(os.path.join(self.mask_path, "*.png")))
+        if self.size is not None:
+            mask_paths = mask_paths[:self.size]
+
+        for mask_path in mask_paths:
             mask = cv2.imread(mask_path, cv2.IMREAD_GRAYSCALE)
             mask = np.expand_dims(mask, axis=2)
             self.masks.append(mask)
 
-        return self.images
+        return self.masks
 
     def get_images_masks(self) -> tuple:
         return self.get_images(), self.get_masks()

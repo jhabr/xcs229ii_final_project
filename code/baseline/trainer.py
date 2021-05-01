@@ -23,13 +23,14 @@ class Trainer:
             preprocessing=DataAugmentation().get_preprocessing(sm.get_preprocessing(Trainer.BACKBONE))
         )
 
-    def __get_training_data(self) -> tuple:
+    def __get_training_data(self, dataset_size=None) -> tuple:
         x_train_dir = os.path.join(TRAIN_DIR, 'images')
         y_train_dir = os.path.join(TRAIN_DIR, 'masks')
         return SimpleDataLoader(
             images_path=x_train_dir,
             mask_path=y_train_dir,
-            preprocessing=DataAugmentation().get_preprocessing(sm.get_preprocessing(Trainer.BACKBONE))
+            preprocessing=DataAugmentation().get_preprocessing(sm.get_preprocessing(Trainer.BACKBONE)),
+            size=dataset_size
         ).get_images_masks()
 
     def __get_validation_dataset(self) -> Dataset:
@@ -41,13 +42,14 @@ class Trainer:
             # preprocessing=DataAugmentation().get_preprocessing(sm.get_preprocessing(Trainer.BACKBONE))
         )
 
-    def __get_validation_data(self) -> tuple:
+    def __get_validation_data(self, dataset_size=None) -> tuple:
         x_validation_dir = os.path.join(VALIDATION_DIR, 'images')
         y_validation_dir = os.path.join(VALIDATION_DIR, 'masks')
         return SimpleDataLoader(
             images_path=x_validation_dir,
             mask_path=y_validation_dir,
-            preprocessing=DataAugmentation().get_preprocessing(sm.get_preprocessing(Trainer.BACKBONE))
+            preprocessing=DataAugmentation().get_preprocessing(sm.get_preprocessing(Trainer.BACKBONE)),
+            size=dataset_size
         ).get_images_masks()
 
 
@@ -93,18 +95,18 @@ class Trainer:
             verbose=2
         )
 
-    def train_from_simple_dataloader(self):
-        training_data = self.__get_training_data()
-        validation_data = self.__get_validation_data()
+    def train_from_simple_dataloader(self, dataset_size=None):
+        training_data = self.__get_training_data(dataset_size=dataset_size)
+        validation_data = self.__get_validation_data(dataset_size=dataset_size)
 
         return self.get_model().fit(
             x=training_data[0],
             y=training_data[1],
             batch_size=Trainer.BATCH_SIZE,
-            steps_per_epoch=len(training_data[0] // Trainer.BATCH_SIZE),
+            steps_per_epoch=len(training_data[0]) // Trainer.BATCH_SIZE,
             epochs=Trainer.EPOCHS,
             validation_data=validation_data,
-            validation_steps=len(validation_data[0] // Trainer.BATCH_SIZE),
+            validation_steps=len(validation_data[0]) // Trainer.BATCH_SIZE,
             callbacks=self.__get_callbacks(),
             verbose=2
         )
