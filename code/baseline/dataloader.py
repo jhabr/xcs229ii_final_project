@@ -52,21 +52,25 @@ class SimpleDataLoader:
         self.images_path = images_path
         self.mask_path = mask_path
         self.preprocessing = preprocessing
-        self.images = []
-        self.masks = []
+        self.images = None
+        self.masks = None
         self.size = size
         
-    def get_images(self) -> list:
+    def get_images(self) -> np.array:
         image_paths = sorted(glob.glob(os.path.join(self.images_path, "*.jpg")))
         if self.size is not None:
             image_paths = image_paths[:self.size]
             
+        images = []
+
         for image_path in image_paths:
             image = cv2.imread(image_path, cv2.IMREAD_COLOR)
             image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
             if self.preprocessing:
                 image = self.preprocessing(image=image)['image']
-            self.images.append(image)
+            images.append(image)
+
+        self.images = np.array(images, dtype=np.uint8)
 
         return self.images
 
@@ -78,12 +82,19 @@ class SimpleDataLoader:
         if self.size is not None:
             mask_paths = mask_paths[:self.size]
 
+        masks = []
+
         for mask_path in mask_paths:
             mask = cv2.imread(mask_path, cv2.IMREAD_GRAYSCALE)
             mask = np.expand_dims(mask, axis=2)
-            self.masks.append(mask)
+            masks.append(mask)
+
+        self.masks = np.array(masks, dtype=np.uint8)
 
         return self.masks
 
-    def get_images_masks(self) -> tuple:
-        return self.get_images(), self.get_masks()
+    def get_images_masks(self) -> dict:
+        return {
+            "images": self.get_images(),
+            "masks": self.get_masks()
+        }
