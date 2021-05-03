@@ -3,7 +3,7 @@ import os
 import segmentation_models as sm
 import tensorflow as tf
 
-from baseline.data_augmentation import DataAugmentation
+from utils.data_augmentation import DataAugmentation
 from baseline.dataloader import DataLoader, SimpleDataLoader
 from baseline.dataset import Dataset
 from constants import PROJECT_DIR, TRAIN_DIR, VALIDATION_DIR

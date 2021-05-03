@@ -14,5 +14,6 @@ __pycache__
 paper/XCS229ii_final_paper.pdf
 *.gz
 *.aux
-code/data
+code/data/*
+!code/data/augmentation
 code/baseline/export
