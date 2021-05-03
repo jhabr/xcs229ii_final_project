@@ -1,9 +1,12 @@
 import glob
 import os.path
+from typing import List
 
 import cv2
 import numpy as np
 import tensorflow as tf
+
+from utils.preprocessing import ImagePreprocessor
 
 
 class DataLoader(tf.keras.utils.Sequence):
@@ -23,7 +26,7 @@ class DataLoader(tf.keras.utils.Sequence):
 
         self.on_epoch_end()
 
-    def __getitem__(self, i) -> np.ndarray:
+    def __getitem__(self, i) -> List[np.ndarray]:
         # collect batch data
         start = i * self.batch_size
         stop = (i + 1) * self.batch_size
@@ -48,15 +51,13 @@ class DataLoader(tf.keras.utils.Sequence):
 
 class SimpleDataLoader:
 
-    IMAGE_SIZE = (768, 1024)
-
-    def __init__(self, images_path, mask_path=None, preprocessing=None, size=None):
+    def __init__(self, images_path, mask_path=None, size=None):
         self.images_path = images_path
         self.mask_path = mask_path
-        self.preprocessing = preprocessing
         self.images = None
         self.masks = None
         self.size = size
+        self.image_preprocessor = ImagePreprocessor()
         
     def get_images(self) -> np.array:
         image_paths = sorted(glob.glob(os.path.join(self.images_path, "*.jpg")))
@@ -66,11 +67,7 @@ class SimpleDataLoader:
         images = []
 
         for image_path in image_paths:
-            image = cv2.imread(image_path, cv2.IMREAD_COLOR)
-            image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB) / 255
-            image = cv2.resize(image, SimpleDataLoader.IMAGE_SIZE)
-            if self.preprocessing:
-                image = self.preprocessing(image=image)['image']
+            image = self.image_preprocessor.perform_image_default(image_path)
             images.append(image)
 
         self.images = np.array(images, dtype=np.float32)
@@ -88,9 +85,7 @@ class SimpleDataLoader:
         masks = []
 
         for mask_path in mask_paths:
-            mask = cv2.imread(mask_path, cv2.IMREAD_GRAYSCALE) / 255
-            mask = cv2.resize(mask, SimpleDataLoader.IMAGE_SIZE)
-            mask = np.expand_dims(mask, axis=2)
+            mask = self.image_preprocessor.perform_mask_default(mask_path)
             masks.append(mask)
 
         self.masks = np.array(masks, dtype=np.float32)

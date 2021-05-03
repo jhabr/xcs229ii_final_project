@@ -19,7 +19,7 @@ class Trainer:
         self.y_train_dir = os.path.join(TRAIN_DIR, 'masks')
         self.x_validation_dir = os.path.join(VALIDATION_DIR, 'images')
         self.y_validation_dir = os.path.join(VALIDATION_DIR, 'masks')
-        self.preprocessing = DataAugmentation().get_preprocessing(sm.get_preprocessing(Trainer.BACKBONE))
+
 
     def __get_training_dataset(self) -> Dataset:
         return Dataset(
