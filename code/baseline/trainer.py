@@ -3,7 +3,6 @@ import os
 import segmentation_models as sm
 import tensorflow as tf
 
-from utils.data_augmentation import DataAugmentation
 from baseline.dataloader import DataLoader, SimpleDataLoader
 from baseline.dataset import Dataset
 from constants import PROJECT_DIR, TRAIN_DIR, VALIDATION_DIR
@@ -25,14 +24,15 @@ class Trainer:
         return Dataset(
             self.x_train_dir,
             self.y_train_dir,
-            preprocessing=self.preprocessing
+            #preprocessing=self.preprocessing
         )
 
     def __get_training_data(self, dataset_size=None) -> dict:
         return SimpleDataLoader(
+            backbone=Trainer.BACKBONE,
             images_path=self.x_train_dir,
             mask_path=self.y_train_dir,
-            preprocessing=self.preprocessing,
+            #preprocessing=self.preprocessing,
             size=dataset_size
         ).get_images_masks()
 
@@ -40,14 +40,15 @@ class Trainer:
         return Dataset(
             self.x_validation_dir,
             self.y_validation_dir,
-            preprocessing=self.preprocessing
+            # preprocessing=self.preprocessing
         )
 
     def __get_validation_data(self, dataset_size=None) -> dict:
         return SimpleDataLoader(
+            backbone=Trainer.BACKBONE,
             images_path=self.x_validation_dir,
             mask_path=self.y_validation_dir,
-            preprocessing=self.preprocessing,
+            # preprocessing=self.preprocessing,
             size=dataset_size
         ).get_images_masks()
 
@@ -93,16 +94,16 @@ class Trainer:
             verbose=2
         )
 
-    def train_from_simple_dataloader(self, dataset_size=None):
+    def train_from_simple_dataloader(self, dataset_size=None, batch_size=None, epochs=None):
         training_data = self.__get_training_data(dataset_size=dataset_size)
         validation_data = self.__get_validation_data(dataset_size=dataset_size)
 
         return self.get_model().fit(
             x=training_data['images'],
             y=training_data['masks'],
-            batch_size=Trainer.BATCH_SIZE,
+            batch_size=batch_size if batch_size else Trainer.BATCH_SIZE,
             steps_per_epoch=len(training_data['images']) // Trainer.BATCH_SIZE,
-            epochs=Trainer.EPOCHS,
+            epochs=epochs if epochs else Trainer.EPOCHS,
             validation_data=(validation_data["images"], validation_data["masks"]),
             validation_steps=len(validation_data['images']) // Trainer.BATCH_SIZE,
             callbacks=self.__get_callbacks(),

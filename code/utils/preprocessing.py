@@ -3,14 +3,12 @@ import albumentations as A
 import segmentation_models as sm
 import numpy as np
 
-from baseline.trainer import Trainer
-
 
 class ImagePreprocessor:
     IMAGE_SIZE = (512, 512)
 
-    def __init__(self):
-        self.preprocessing = self.__default_preprocessing(sm.get_preprocessing(Trainer.BACKBONE))
+    def __init__(self, backbone):
+        self.preprocessing = self.__default_preprocessing(sm.get_preprocessing(backbone))
 
     def perform_image_default(self, image_path):
         image = cv2.imread(image_path, cv2.IMREAD_COLOR)

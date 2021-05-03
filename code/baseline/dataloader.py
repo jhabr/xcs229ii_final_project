@@ -51,13 +51,13 @@ class DataLoader(tf.keras.utils.Sequence):
 
 class SimpleDataLoader:
 
-    def __init__(self, images_path, mask_path=None, size=None):
+    def __init__(self, backbone, images_path, mask_path=None, size=None):
         self.images_path = images_path
         self.mask_path = mask_path
         self.images = None
         self.masks = None
         self.size = size
-        self.image_preprocessor = ImagePreprocessor()
+        self.image_preprocessor = ImagePreprocessor(backbone)
         
     def get_images(self) -> np.array:
         image_paths = sorted(glob.glob(os.path.join(self.images_path, "*.jpg")))
