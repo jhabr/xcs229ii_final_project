@@ -40,7 +40,7 @@ class AdvancedHairAugmentation(ImageOnlyTransform):
 
     def __init__(self, hairs: int = 5, always_apply=False, p=0.5):
         self.hairs = hairs
-        self.hairs_folder = os.path.join(DATA_DIR, "augmentation", "hair")
+        self.hairs_folder = os.path.join(DATA_DIR, "augmentation", "hairs")
         super().__init__(always_apply, p)
 
     def apply(self, image, **params):
