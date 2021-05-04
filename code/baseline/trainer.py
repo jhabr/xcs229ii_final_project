@@ -32,7 +32,6 @@ class Trainer:
             backbone=Trainer.BACKBONE,
             images_path=self.x_train_dir,
             mask_path=self.y_train_dir,
-            #preprocessing=self.preprocessing,
             size=dataset_size
         ).get_images_masks()
 
@@ -48,7 +47,6 @@ class Trainer:
             backbone=Trainer.BACKBONE,
             images_path=self.x_validation_dir,
             mask_path=self.y_validation_dir,
-            # preprocessing=self.preprocessing,
             size=dataset_size
         ).get_images_masks()
 
