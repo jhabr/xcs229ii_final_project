@@ -47,10 +47,17 @@ class DataAugmentation:
             A.Rotate(limit=40),
             A.RandomScale(scale_limit=1.3),
             A.IAAAffine(shear=0.25),
+            A.IAAAdditiveGaussianNoise(p=0.2),
             A.OneOf([
-                A.Blur(blur_limit=3),
+                A.RandomBrightness(p=1),
+                A.RandomGamma(p=1),
                 A.ColorJitter()
-            ], p=1.0)
+            ], p=0.9),
+            A.OneOf([
+                A.IAASharpen(p=1),
+                A.Blur(blur_limit=3, p=1),
+                A.MotionBlur(blur_limit=3, p=1),
+            ], p=0.9),
         ])
 
         return transform(image=image)["image"]
