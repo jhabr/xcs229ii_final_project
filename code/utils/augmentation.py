@@ -1,10 +1,64 @@
 import os
-
+import albumentations as A
 import cv2
 from albumentations import ImageOnlyTransform
 import numpy as np
 
 from constants import DATA_DIR
+
+
+class DataAugmentation:
+    """
+    Adds augmentation to images using the following techniques:
+        - Vertical and horizontal flips
+        - Random rotation (0 - 40 degrees)
+        - Random Zoom (0.7 - 1.3)
+        - Image translation
+        - Image shearing
+        - Color jittering
+        - Adding noice (gaussion distribution)
+        - Adding artificial hairs to the images
+    """
+
+    def __init__(self, default_augmentation):
+        """
+        default_augmentation (callbale): data normalization function
+                    (can be specific for each pretrained neural network)
+        """
+        self.default_augmentation = default_augmentation
+
+    def apply_default(self, image):
+        """Construct preprocessing transform
+
+        Args:
+            image: image to be processed
+        Return:
+            transformed image with applied default augmentation
+
+        """
+        transform = A.Compose([A.Lambda(image=self.default_augmentation)])
+        return transform(image=image)["image"]
+
+    def apply_advanced(self, image):
+        """
+        Augments images with some advanced operations.
+
+        :param image: image
+        :return: augmented image
+        """
+        transform = A.Compose([
+            A.HorizontalFlip,
+            A.VerticalFlip,
+            A.Rotate(limit=40),
+            A.RandomScale(scale_limit=1.3),
+            A.IAAAffine(shear=0.25),
+            A.OneOf([
+                A.Blur(blur_limit=3),
+                A.ColorJitter()
+            ], p=1.0)
+        ])
+
+        return transform(image=image)["image"]
 
 
 class AdvancedHairAugmentation(ImageOnlyTransform):
@@ -18,7 +72,6 @@ class AdvancedHairAugmentation(ImageOnlyTransform):
 
     https://www.kaggle.com/nroman/melanoma-hairs
     https://www.kaggle.com/shogoaraki/whitehairs
-
     """
 
     def __init__(self, hairs: int = 5, always_apply=False, p=0.5):

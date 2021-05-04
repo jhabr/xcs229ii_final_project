@@ -2,10 +2,11 @@ import glob
 import os.path
 from typing import List
 
-import cv2
 import numpy as np
 import tensorflow as tf
+import segmentation_models as sm
 
+from utils.augmentation import DataAugmentation
 from utils.preprocessing import ImagePreprocessor
 
 
@@ -57,7 +58,8 @@ class SimpleDataLoader:
         self.images = None
         self.masks = None
         self.size = size
-        self.image_preprocessor = ImagePreprocessor(backbone)
+        self.image_preprocessor = ImagePreprocessor()
+        self.data_augmentation = DataAugmentation(default_augmentation=sm.get_preprocessing(backbone))
         
     def get_images(self) -> np.array:
         image_paths = sorted(glob.glob(os.path.join(self.images_path, "*.jpg")))
@@ -67,7 +69,8 @@ class SimpleDataLoader:
         images = []
 
         for image_path in image_paths:
-            image = self.image_preprocessor.perform_image_default(image_path)
+            image = self.image_preprocessor.apply_image_default(image_path)
+            image = self.data_augmentation.apply_default(image)
             images.append(image)
 
         self.images = np.array(images, dtype=np.float32)
@@ -85,7 +88,7 @@ class SimpleDataLoader:
         masks = []
 
         for mask_path in mask_paths:
-            mask = self.image_preprocessor.perform_mask_default(mask_path)
+            mask = self.image_preprocessor.apply_mask_default(mask_path)
             masks.append(mask)
 
         self.masks = np.array(masks, dtype=np.float32)

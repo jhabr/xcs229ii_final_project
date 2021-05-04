@@ -3,15 +3,15 @@ import os
 import segmentation_models as sm
 import tensorflow as tf
 
-from baseline.dataloader import DataLoader, SimpleDataLoader
-from baseline.dataset import Dataset
+from utils.dataloader import DataLoader, SimpleDataLoader
+from utils.dataset import Dataset
 from constants import PROJECT_DIR, TRAIN_DIR, VALIDATION_DIR
 
 
 class Trainer:
     BACKBONE = 'resnet34'
-    BATCH_SIZE = 1
-    EPOCHS = 1
+    BATCH_SIZE = 16
+    EPOCHS = 100
 
     def __init__(self):
         self.x_train_dir = os.path.join(TRAIN_DIR, 'images')
@@ -19,12 +19,11 @@ class Trainer:
         self.x_validation_dir = os.path.join(VALIDATION_DIR, 'images')
         self.y_validation_dir = os.path.join(VALIDATION_DIR, 'masks')
 
-
     def __get_training_dataset(self) -> Dataset:
         return Dataset(
             self.x_train_dir,
             self.y_train_dir,
-            #preprocessing=self.preprocessing
+            # preprocessing=self.preprocessing
         )
 
     def __get_training_data(self, dataset_size=None) -> dict:
@@ -61,7 +60,13 @@ class Trainer:
         model.compile(
             tf.keras.optimizers.Adam(3e-5),
             loss=sm.losses.bce_jaccard_loss,
-            metrics=[sm.metrics.iou_score]
+            metrics=[
+                sm.metrics.iou_score,
+                sm.metrics.f1_score,
+                sm.metrics.f2_score,
+                sm.metrics.recall,
+                sm.metrics.precision
+            ]
         )
 
         return model
