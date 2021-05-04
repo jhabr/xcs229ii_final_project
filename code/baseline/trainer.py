@@ -81,7 +81,14 @@ class Trainer:
                 save_best_only=True,
                 mode='min'
             ),
-            tf.keras.callbacks.ReduceLROnPlateau()
+            tf.keras.callbacks.ReduceLROnPlateau(),
+            tf.keras.callbacks.EarlyStopping(
+                monitor="val_loss",
+                min_delta=1e-5,
+                verbose=1,
+                patience=3,
+                restore_best_weights=True
+            )
         ]
 
     def train_from_dataloader(self):
