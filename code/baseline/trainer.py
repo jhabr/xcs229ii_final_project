@@ -93,8 +93,8 @@ class Trainer:
         )
 
     def train_from_simple_dataloader(self, dataset_size=None, batch_size=None, epochs=None):
-        training_data = self.__get_training_data(dataset_size=dataset_size)
-        validation_data = self.__get_validation_data(dataset_size=dataset_size)
+        training_data = self.__get_training_data(dataset_size=int(dataset_size * 0.9))
+        validation_data = self.__get_validation_data(dataset_size=int(dataset_size * 0.1))
 
         return self.get_model().fit(
             x=training_data['images'],
