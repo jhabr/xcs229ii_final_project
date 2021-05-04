@@ -12,6 +12,7 @@ class Trainer:
     BACKBONE = 'resnet34'
     BATCH_SIZE = 16
     EPOCHS = 100
+    LEARNING_RATE = 3e-5
 
     def __init__(self):
         self.x_train_dir = os.path.join(TRAIN_DIR, 'images')
@@ -58,7 +59,7 @@ class Trainer:
     def get_model(self) -> sm.Unet:
         model = sm.Unet(Trainer.BACKBONE, encoder_weights='imagenet', activation='sigmoid')
         model.compile(
-            tf.keras.optimizers.Adam(3e-5),
+            tf.keras.optimizers.Adam(Trainer.LEARNING_RATE),
             loss=sm.losses.bce_jaccard_loss,
             metrics=[
                 sm.metrics.iou_score,
