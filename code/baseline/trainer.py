@@ -26,7 +26,7 @@ class Trainer:
             # preprocessing=self.preprocessing
         )
 
-    def __get_training_data(self, dataset_size=None) -> dict:
+    def get_training_data(self, dataset_size=None) -> dict:
         return SimpleDataLoader(
             backbone=Trainer.BACKBONE,
             images_path=self.x_train_dir,
@@ -41,7 +41,7 @@ class Trainer:
             # preprocessing=self.preprocessing
         )
 
-    def __get_validation_data(self, dataset_size=None) -> dict:
+    def get_validation_data(self, dataset_size=None) -> dict:
         return SimpleDataLoader(
             backbone=Trainer.BACKBONE,
             images_path=self.x_validation_dir,
@@ -98,17 +98,18 @@ class Trainer:
         )
 
     def train_from_simple_dataloader(self, dataset_size=None, batch_size=None, epochs=None):
-        training_data = self.__get_training_data(dataset_size=int(dataset_size * 0.9))
-        validation_data = self.__get_validation_data(dataset_size=int(dataset_size * 0.1))
+        training_data = self.get_training_data(dataset_size=int(dataset_size * 0.9))
+        validation_data = self.get_validation_data(dataset_size=int(dataset_size * 0.1))
+        batch_size = batch_size if batch_size else Trainer.BATCH_SIZE
 
         return self.get_model().fit(
             x=training_data['images'],
             y=training_data['masks'],
-            batch_size=batch_size if batch_size else Trainer.BATCH_SIZE,
-            steps_per_epoch=len(training_data['images']) // Trainer.BATCH_SIZE,
+            batch_size=batch_size,
+            steps_per_epoch=len(training_data['images']) // batch_size,
             epochs=epochs if epochs else Trainer.EPOCHS,
             validation_data=(validation_data["images"], validation_data["masks"]),
-            validation_steps=len(validation_data['images']) // Trainer.BATCH_SIZE,
+            validation_steps=len(validation_data['images']) // batch_size,
             callbacks=self.__get_callbacks(),
             verbose=2
         )

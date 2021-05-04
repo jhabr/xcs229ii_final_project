@@ -20,23 +20,18 @@ class DataAugmentation:
         - Adding artificial hairs to the images
     """
 
-    def __init__(self, default_augmentation):
-        """
-        default_augmentation (callbale): data normalization function
-                    (can be specific for each pretrained neural network)
-        """
-        self.default_augmentation = default_augmentation
-
-    def apply_default(self, image):
+    def apply_default(self, image, default_augmentation):
         """Construct preprocessing transform
 
         Args:
-            image: image to be processed
+            :param image: image to be processed
+            :param default_augmentation: callable data normalization function
+                (can be specific for each pretrained neural network)
         Return:
-            transformed image with applied default augmentation
+            :returns transformed image with applied default augmentation
 
         """
-        transform = A.Compose([A.Lambda(image=self.default_augmentation)])
+        transform = A.Compose([A.Lambda(image=default_augmentation)])
         return transform(image=image)["image"]
 
     def apply_advanced(self, image):
@@ -47,8 +42,8 @@ class DataAugmentation:
         :return: augmented image
         """
         transform = A.Compose([
-            A.HorizontalFlip,
-            A.VerticalFlip,
+            A.HorizontalFlip(),
+            A.VerticalFlip(),
             A.Rotate(limit=40),
             A.RandomScale(scale_limit=1.3),
             A.IAAAffine(shear=0.25),
