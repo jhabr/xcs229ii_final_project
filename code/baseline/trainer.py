@@ -98,8 +98,8 @@ class Trainer:
         )
 
     def train_from_simple_dataloader(self, dataset_size=None, batch_size=None, epochs=None):
-        training_data = self.get_training_data(dataset_size=int(dataset_size * 0.9))
-        validation_data = self.get_validation_data(dataset_size=int(dataset_size * 0.1))
+        training_data = self.get_training_data(dataset_size=dataset_size)
+        validation_data = self.get_validation_data(dataset_size=dataset_size)
         batch_size = batch_size if batch_size else Trainer.BATCH_SIZE
 
         return self.get_model().fit(
