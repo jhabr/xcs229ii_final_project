@@ -6,12 +6,12 @@
 
 SSH Terminal:
 ```bash
-ssh -p 61999 scpdxcs@ml-lab-2c26d21d-2e78-44d8-a0be-f41571a9502f.southcentralus.cloudapp.azure.com
+$ ssh -p 61999 scpdxcs@ml-lab-2c26d21d-2e78-44d8-a0be-f41571a9502f.southcentralus.cloudapp.azure.com
 ```
 
 SCP files to instance:
 ```bash
-scp -P 61999 data.zip scpdxcs@ml-lab-2c26d21d-2e78-44d8-a0be-f41571a9502f.southcentralus.cloudapp.azure.com:/home/scpdxcs/projects/xcs229ii_final_project/code/data
+$ scp -P 61999 data.zip scpdxcs@ml-lab-2c26d21d-2e78-44d8-a0be-f41571a9502f.southcentralus.cloudapp.azure.com:/home/scpdxcs/projects/xcs229ii_final_project/code/data
 ```
 
 ### Baseline
@@ -19,24 +19,24 @@ scp -P 61999 data.zip scpdxcs@ml-lab-2c26d21d-2e78-44d8-a0be-f41571a9502f.southc
 
 Activate conda environment:
 ```bash
-conda activate py37_tensorflow
+$ conda activate py37_tensorflow
 ```
 
 Install pip packages:
 ```bash
-pip3 install segmentation_models
-pip3 install albumentations
+$ pip3 install segmentation_models
+$ pip3 install albumentations
 ```
 
 Export variables:
 ```bash
-export SM_FRAMEWORK=tf.keras
-export PYTHONPATH=/home/scpdxcs/projects/xcs229ii_final_project/code
+$ export SM_FRAMEWORK=tf.keras
+$ export PYTHONPATH=/home/scpdxcs/projects/xcs229ii_final_project/code
 ```
 
 #### Training
 
 Run baseline training:
 ```bash
-(python3 baseline/main.py 2>&1) >> logs/baseline.log &
+$ (python3 baseline/main.py 2>&1) >> logs/baseline.log &
 ```
