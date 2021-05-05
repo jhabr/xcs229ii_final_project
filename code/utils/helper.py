@@ -18,8 +18,8 @@ class Visualisation:
     def plot_curves(self, history):
         plt.figure(figsize=(30, 15))
         plt.subplot(221)
-        plt.plot(history.history['iou_score'])
-        plt.plot(history.history['val_iou_score'])
+        plt.plot(history['iou_score'])
+        plt.plot(history['val_iou_score'])
         plt.title('IoU Score')
         plt.ylabel('iou_score')
         plt.xlabel('Epoch')
@@ -27,8 +27,8 @@ class Visualisation:
 
         # Plot training & validation loss values
         plt.subplot(222)
-        plt.plot(history.history['loss'])
-        plt.plot(history.history['val_loss'])
+        plt.plot(history['loss'])
+        plt.plot(history['val_loss'])
         plt.title('Loss')
         plt.ylabel('Loss')
         plt.xlabel('Epoch')
@@ -36,16 +36,16 @@ class Visualisation:
 
         # precision & recall
         plt.subplot(223)
-        plt.plot(history.history['precision'])
-        plt.plot(history.history['val_precision'])
+        plt.plot(history['precision'])
+        plt.plot(history['val_precision'])
         plt.title('Precision')
         plt.ylabel('Precision')
         plt.xlabel('Epoch')
         plt.legend(['Train', 'Validation'], loc='upper left')
 
         plt.subplot(224)
-        plt.plot(history.history['recall'])
-        plt.plot(history.history['val_recall'])
+        plt.plot(history['recall'])
+        plt.plot(history['val_recall'])
         plt.title('Recall')
         plt.ylabel('Recall')
         plt.xlabel('Epoch')
