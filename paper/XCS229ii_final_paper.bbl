@@ -1,4 +1,4 @@
-\begin{thebibliography}{9}
+\begin{thebibliography}{10}
 \expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
 
 \bibitem[{Alom et~al.(2019)Alom, Aspiras, Taha, and Asari}]{nabla-2019-alom}
@@ -40,6 +40,11 @@ Alexey Dosovitskiy, Lucas Beyer, Alexander Kolesnikov, Dirk Weissenborn,
   Heigold, Sylvain Gelly, Jakob Uszkoreit, and Neil Houlsby. 2020.
 \newblock \href {http://arxiv.org/abs/2010.11929} {An image is worth 16x16
   words: Transformers for image recognition at scale}.
+
+\bibitem[{ISIC(2018)}]{isic-2018-segmentation}
+ISIC. 2018.
+\newblock \href {https://challenge2018.isic-archive.com/task1/} {Task 1: Lesion
+  boundary segmentation}.
 
 \bibitem[{Jha et~al.(2020)Jha, Riegler, Johansen, Halvorsen, and
   Johansen}]{double_unet-2020-jha}
