@@ -1,4 +1,4 @@
-\begin{thebibliography}{10}
+\begin{thebibliography}{12}
 \expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
 
 \bibitem[{Alom et~al.(2019)Alom, Aspiras, Taha, and Asari}]{nabla-2019-alom}
@@ -32,6 +32,17 @@ Liang{-}Chieh Chen, George Papandreou, Iasonas Kokkinos, Kevin Murphy, and
   connected crfs}.
 \newblock \emph{CoRR}, abs/1606.00915.
 
+\bibitem[{Codella et~al.(2019)Codella, Rotemberg, Tschandl, Celebi, Dusza,
+  Gutman, Helba, Kalloo, Liopyris, Marchetti, Kittler, and
+  Halpern}]{challenge-2018-codella}
+Noel C.~F. Codella, Veronica Rotemberg, Philipp Tschandl, M.~Emre Celebi,
+  Stephen~W. Dusza, David Gutman, Brian Helba, Aadi Kalloo, Konstantinos
+  Liopyris, Michael~A. Marchetti, Harald Kittler, and Allan Halpern. 2019.
+\newblock \href {http://arxiv.org/abs/1902.03368} {Skin lesion analysis toward
+  melanoma detection 2018: {A} challenge hosted by the international skin
+  imaging collaboration {(ISIC)}}.
+\newblock \emph{CoRR}, abs/1902.03368.
+
 \bibitem[{Dosovitskiy et~al.(2020)Dosovitskiy, Beyer, Kolesnikov, Weissenborn,
   Zhai, Unterthiner, Dehghani, Minderer, Heigold, Gelly, Uszkoreit, and
   Houlsby}]{transformers-2020-dosovitskiy}
@@ -58,6 +69,14 @@ Debesh Jha, Michael~A. Riegler, Dag Johansen, Pål Halvorsen, and Håvard~D.
 Davood Karimi, Serge Vasylechko, and Ali Gholipour. 2021.
 \newblock \href {http://arxiv.org/abs/2102.13645} {Convolution-free medical
   image segmentation using transformers}.
+
+\bibitem[{Koohbanani et~al.(2018)Koohbanani, Jahanifar, Tajeddin, Gooya, and
+  Rajpoot}]{skin_segmentation-2019-jahanifar}
+Navid~Alemi Koohbanani, Mostafa Jahanifar, Neda~Zamani Tajeddin, Ali Gooya, and
+  Nasir~M. Rajpoot. 2018.
+\newblock \href {http://arxiv.org/abs/1809.10243} {Leveraging transfer learning
+  for segmenting lesions and their attributes in dermoscopy images}.
+\newblock \emph{CoRR}, abs/1809.10243.
 
 \bibitem[{Ronneberger et~al.(2015)Ronneberger, Fischer, and
   Brox}]{unet-2015-ronneberger}
