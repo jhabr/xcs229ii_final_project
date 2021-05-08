@@ -52,17 +52,23 @@ class DataLoader(tf.keras.utils.Sequence):
 
 class SimpleDataLoader:
 
-    def __init__(self, backbone, images_path, mask_path=None, size=None):
+    def __init__(self, backbone, images_path, mask_path=None, resize=True, size=None):
         self.backbone = backbone
         self.images_path = images_path
         self.mask_path = mask_path
         self.images = None
         self.masks = None
+        self.resize = resize
         self.size = size
         self.image_preprocessor = ImagePreprocessor()
         self.data_augmentation = DataAugmentation()
         
-    def get_images(self) -> np.array:
+    def get_images(self) -> object:
+        """
+        Reads and returns the images as a list or np.array of np.arrays.
+
+        :return: list or np.array of images
+        """
         if self.images is not None:
             return self.images
 
@@ -73,15 +79,30 @@ class SimpleDataLoader:
         images = []
 
         for image_path in image_paths:
-            image = self.image_preprocessor.apply_image_default(image_path)
-            image = self.data_augmentation.apply_default(image, default_augmentation=sm.get_preprocessing(self.backbone))
+            image = self.image_preprocessor.apply_image_default(
+                image_path=image_path,
+                resize=self.resize
+            )
+            image = self.data_augmentation.apply_default(
+                image=image,
+                default_augmentation=sm.get_preprocessing(self.backbone)
+            )
             images.append(image)
 
-        self.images = np.array(images, dtype=np.float32)
+        # if we don't resize, we cannot stack image as the dimensions of all the images must be the same
+        if self.resize:
+            self.images = np.array(images, dtype=np.float32)
+        else:
+            self.images = images
 
         return self.images
 
     def get_masks(self) -> object:
+        """
+        Reads and returns the masks as a list or np.array of np.arrays.
+
+        :return: list or np.array of masks
+        """
         if self.masks is not None:
             return self.masks
 
@@ -95,10 +116,17 @@ class SimpleDataLoader:
         masks = []
 
         for mask_path in mask_paths:
-            mask = self.image_preprocessor.apply_mask_default(mask_path)
+            mask = self.image_preprocessor.apply_mask_default(
+                mask_path=mask_path,
+                resize=self.resize
+            )
             masks.append(mask)
 
-        self.masks = np.array(masks, dtype=np.float32)
+        # if we don't resize, we cannot stack image as the dimensions of all the images must be the same
+        if self.resize:
+            self.masks = np.array(masks, dtype=np.float32)
+        else:
+            self.masks = masks
 
         return self.masks
 
