@@ -34,33 +34,35 @@ class DataAugmentation:
         transform = A.Compose([A.Lambda(image=default_augmentation)])
         return transform(image=image)["image"]
 
-    def apply_advanced(self, image):
+    def apply_advanced(self, image, mask):
         """
         Augments images with some advanced operations.
 
         :param image: image
+        :param mask: the corresponding mask
         :return: augmented image
         """
         transform = A.Compose([
             A.HorizontalFlip(),
             A.VerticalFlip(),
-            A.Rotate(limit=40),
+            A.Rotate(limit=40, border_mode=cv2.BORDER_REFLECT_101),
             A.RandomScale(scale_limit=1.3),
             A.IAAAffine(shear=0.25),
-            A.IAAAdditiveGaussianNoise(p=0.2),
+            A.IAAAdditiveGaussianNoise(),
+            A.OpticalDistortion(),
             A.OneOf([
-                A.RandomBrightness(p=1),
-                A.RandomGamma(p=1),
+                A.RandomBrightness(),
+                A.RandomGamma(),
                 A.ColorJitter()
-            ], p=0.9),
+            ], p=1.0),
             A.OneOf([
-                A.IAASharpen(p=1),
-                A.Blur(blur_limit=3, p=1),
-                A.MotionBlur(blur_limit=3, p=1),
-            ], p=0.9),
+                A.IAASharpen(),
+                A.Blur(blur_limit=3),
+                A.MotionBlur(blur_limit=3),
+            ], p=1.0),
         ])
 
-        return transform(image=image)["image"]
+        return transform(image=image, mask=mask)
 
 
 class AdvancedHairAugmentation(ImageOnlyTransform):
