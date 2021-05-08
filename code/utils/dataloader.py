@@ -1,5 +1,6 @@
 import glob
 import os.path
+import random
 from typing import List
 
 import numpy as np
@@ -52,7 +53,8 @@ class DataLoader(tf.keras.utils.Sequence):
 
 class SimpleDataLoader:
 
-    def __init__(self, images_path, backbone=None, mask_path=None, normalize=True, resize=True, size=None):
+    def __init__(self, images_path, backbone=None, mask_path=None, normalize=True, resize=True, size=None,
+                 random_selection=False):
         self.images_path = images_path
         self.backbone = backbone
         self.mask_path = mask_path
@@ -61,22 +63,29 @@ class SimpleDataLoader:
         self.normalize = normalize
         self.resize = resize
         self.size = size
+        self.random_selection = random_selection
+        self.random_indexes = None
         self.image_preprocessor = ImagePreprocessor()
         self.data_augmentation = DataAugmentation()
-        
+
     def get_images(self) -> object:
         """
         Reads and returns the images as a list or np.array of np.arrays.
 
         :return: list or np.array of images
         """
-        if self.images is not None:
+        if self.images:
             return self.images
 
         image_paths = sorted(glob.glob(os.path.join(self.images_path, "*.jpg")))
-        if self.size is not None:
-            image_paths = image_paths[:self.size]
-            
+
+        if self.size:
+            if self.random_selection:
+                random_indexes = self.get_random_indexes(max_size=len(image_paths))
+                image_paths = [image_paths[random_index] for random_index in random_indexes]
+            else:
+                image_paths = image_paths[:self.size]
+
         images = []
 
         for image_path in image_paths:
@@ -106,15 +115,20 @@ class SimpleDataLoader:
 
         :return: list or np.array of masks
         """
-        if self.masks is not None:
+        if self.masks:
             return self.masks
 
         if self.mask_path is None:
             return None
 
         mask_paths = sorted(glob.glob(os.path.join(self.mask_path, "*.png")))
-        if self.size is not None:
-            mask_paths = mask_paths[:self.size]
+
+        if self.size:
+            if self.random_selection:
+                random_indexes = self.get_random_indexes(max_size=len(mask_paths))
+                mask_paths = [mask_paths[random_index] for random_index in random_indexes]
+            else:
+                mask_paths = mask_paths[:self.size]
 
         masks = []
 
@@ -133,6 +147,19 @@ class SimpleDataLoader:
             self.masks = masks
 
         return self.masks
+
+    def get_random_indexes(self, max_size) -> List[int]:
+        if self.random_indexes:
+            return self.random_indexes
+
+        random_indexes = set()
+
+        while len(random_indexes) < self.size:
+            random_indexes.add(random.randint(0, max_size))
+
+        self.random_indexes = list(random_indexes)
+
+        return self.random_indexes
 
     def get_images_masks(self) -> dict:
         return {
