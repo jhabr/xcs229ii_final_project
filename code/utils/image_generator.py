@@ -61,4 +61,4 @@ class ImageGenerator:
 
 
 if __name__ == '__main__':
-    ImageGenerator().generate_images(size=3)
+    ImageGenerator().generate_images(size=606)
