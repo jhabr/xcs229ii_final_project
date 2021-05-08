@@ -91,7 +91,7 @@ dataloader = DataLoader(train_dataset, batch_size=args.batch_size, shuffle=True)
 valloader = DataLoader(val_dataset, 1, shuffle=True)
 
 device = torch.device("cuda")
-
+print(device)
 if modelname == "axialunet":
     model = lib.models.axialunet(img_size = imgsize, imgchan = imgchant)
 elif modelname == "MedT":

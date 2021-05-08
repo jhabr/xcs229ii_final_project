@@ -127,6 +127,7 @@ def load_model(network, args):
 
 def resume_model(network, optimizer, args):
     print("Loading the model...")
+    print(os.path.exists(args.work_dirs))
     if not os.path.exists(args.work_dirs):
         print("No such working directory!")
         return 0

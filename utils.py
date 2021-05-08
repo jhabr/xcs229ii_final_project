@@ -143,16 +143,16 @@ class ImageToImage2D(Dataset):
 
     def __getitem__(self, idx):
         image_filename = self.images_list[idx]
-        #print(image_filename[: -3])
+      #  print(image_filename[: -3])
         # read image
-        # print(os.path.join(self.input_path, image_filename))
-        # print(os.path.join(self.output_path, image_filename[: -3] + "png"))
+      #  print(os.path.join(self.input_path, image_filename))
+      #  print(os.path.join(self.output_path, image_filename[: -4] + "_segmentation" + ".png"))
         # print(os.path.join(self.input_path, image_filename))
         image = cv2.imread(os.path.join(self.input_path, image_filename))
-        # print(image.shape)
+      #  print(image.shape)
         # read mask image
-        mask = cv2.imread(os.path.join(self.output_path, image_filename[: -3] + "png"),0)
-        
+        mask = cv2.imread(os.path.join(self.output_path, image_filename[: -4] + "_segmentation" + ".png"),0)
+      #  print(mask)
         mask[mask<=127] = 0
         mask[mask>127] = 1
         # correct dimensions if needed

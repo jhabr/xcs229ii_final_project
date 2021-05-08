@@ -140,6 +140,9 @@ class AxialAttention_dynamic(nn.Module):
         # self.print_para()
 
     def forward(self, x):
+
+       # print(x)
+      #  print(x.shape)
         if self.width:
             x = x.permute(0, 2, 1, 3)
         else:
@@ -154,6 +157,10 @@ class AxialAttention_dynamic(nn.Module):
         # Calculate position embedding
         all_embeddings = torch.index_select(self.relative, 1, self.flatten_index).view(self.group_planes * 2, self.kernel_size, self.kernel_size)
         q_embedding, k_embedding, v_embedding = torch.split(all_embeddings, [self.group_planes // 2, self.group_planes // 2, self.group_planes], dim=0)
+
+       # print(q.shape)
+       # print(q_embedding.shape)
+
         qr = torch.einsum('bgci,cij->bgij', q, q_embedding)
         kr = torch.einsum('bgci,cij->bgij', k, k_embedding).transpose(2, 3)
         qk = torch.einsum('bgci, bgcj->bgij', q, k)
