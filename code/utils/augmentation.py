@@ -46,7 +46,7 @@ class DataAugmentation:
             A.HorizontalFlip(),
             A.VerticalFlip(),
             A.Rotate(limit=40, border_mode=cv2.BORDER_REFLECT_101),
-            A.RandomScale(scale_limit=1.3),
+            # A.RandomScale(scale_limit=1.3),
             A.IAAAffine(shear=0.25),
             A.IAAAdditiveGaussianNoise(),
             A.OpticalDistortion(),

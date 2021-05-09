@@ -34,7 +34,7 @@ class ImageGenerator:
         for index in range(size):
             image = images_masks["images"][index]
             mask = images_masks["masks"][index]
-            print(f"-- Augmenting image with shape: {image.shape}")
+            print(f"-- Augmenting image {index} with shape: {image.shape}, mask with shape: {mask.shape}")
 
             advanced_augmentations = self.data_augmentation.apply_advanced(image, mask)
             augmented_image = advanced_augmentations["image"]
