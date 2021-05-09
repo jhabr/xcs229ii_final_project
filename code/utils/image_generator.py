@@ -1,5 +1,4 @@
 import os
-import random
 
 import cv2
 
@@ -29,13 +28,13 @@ class ImageGenerator:
         )
 
         images_masks = simple_data_loader.get_images_masks()
-        dataset_size = len(images_masks)
 
         print(f"Generating {size} augmented images...")
 
         for index in range(size):
             image = images_masks["images"][index]
             mask = images_masks["masks"][index]
+            print(f"-- Augmenting image with shape: {image.shape}")
 
             advanced_augmentations = self.data_augmentation.apply_advanced(image, mask)
             augmented_image = advanced_augmentations["image"]
