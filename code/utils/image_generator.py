@@ -19,8 +19,8 @@ class ImageGenerator:
         print("Reading original mages...")
 
         simple_data_loader = SimpleDataLoader(
-            images_path=os.path.join(ImageGenerator.ORIGINAL_IMAGE_DIR, "images"),
-            mask_path=os.path.join(ImageGenerator.ORIGINAL_IMAGE_DIR, "masks"),
+            images_folder_path=os.path.join(ImageGenerator.ORIGINAL_IMAGE_DIR, "images"),
+            masks_folder_path=os.path.join(ImageGenerator.ORIGINAL_IMAGE_DIR, "masks"),
             normalize=False,
             resize=False,
             random_selection=True,

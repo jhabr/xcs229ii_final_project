@@ -11,8 +11,8 @@ class DataLoaderTests(unittest.TestCase):
     def setUp(self):
         self.simple_data_loader = SimpleDataLoader(
             backbone='resnet34',
-            images_path=os.path.join(TRAIN_DIR, "images"),
-            mask_path=os.path.join(TRAIN_DIR, "masks"),
+            images_folder_path=os.path.join(TRAIN_DIR, "images"),
+            masks_folder_path=os.path.join(TRAIN_DIR, "masks"),
             resize_to=(512, 512),
             size=10
         )
@@ -50,8 +50,8 @@ class DataLoaderTests(unittest.TestCase):
 
     def test_resize_to(self):
         simple_data_loader = SimpleDataLoader(
-            images_path=os.path.join(TRAIN_DIR, "images"),
-            mask_path=os.path.join(TRAIN_DIR, "masks"),
+            images_folder_path=os.path.join(TRAIN_DIR, "images"),
+            masks_folder_path=os.path.join(TRAIN_DIR, "masks"),
             resize_to=(128, 128),
             size=10
         )
@@ -63,8 +63,8 @@ class DataLoaderTests(unittest.TestCase):
     def test_load_original_size_data(self):
         simple_data_loader = SimpleDataLoader(
             backbone='resnet34',
-            images_path=os.path.join(TRAIN_DIR, "images"),
-            mask_path=os.path.join(TRAIN_DIR, "masks"),
+            images_folder_path=os.path.join(TRAIN_DIR, "images"),
+            masks_folder_path=os.path.join(TRAIN_DIR, "masks"),
             size=10
         )
 
@@ -85,8 +85,8 @@ class DataLoaderTests(unittest.TestCase):
 
     def test_random_indexes(self):
         simple_data_loader = SimpleDataLoader(
-            images_path=os.path.join(TRAIN_DIR, "images"),
-            mask_path=os.path.join(TRAIN_DIR, "masks"),
+            images_folder_path=os.path.join(TRAIN_DIR, "images"),
+            masks_folder_path=os.path.join(TRAIN_DIR, "masks"),
             size=3,
             random_selection=True
         )

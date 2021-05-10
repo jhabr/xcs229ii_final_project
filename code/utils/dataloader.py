@@ -4,51 +4,10 @@ import random
 from typing import List
 
 import numpy as np
-import tensorflow as tf
 import segmentation_models as sm
 
 from utils.augmentation import DataAugmentation
 from utils.preprocessing import ImagePreprocessor
-
-
-class DataLoader(tf.keras.utils.Sequence):
-    """Load data from dataset and form batches
-
-    Args:
-        dataset: instance of Dataset class for image loading and preprocessing.
-        batch_size: Integer number of images in batch.
-        shuffle: Boolean, if `True` shuffle image indexes each epoch.
-    """
-
-    def __init__(self, dataset, batch_size=1, shuffle=False):
-        self.dataset = dataset
-        self.batch_size = batch_size
-        self.shuffle = shuffle
-        self.indexes = np.arange(len(dataset))
-
-        self.on_epoch_end()
-
-    def __getitem__(self, i) -> List[np.ndarray]:
-        # collect batch data
-        start = i * self.batch_size
-        stop = (i + 1) * self.batch_size
-        data = []
-        for j in range(start, stop):
-            data.append(self.dataset[j])
-
-        # transpose list of lists
-        batch = [np.stack(samples, axis=0) for samples in zip(*data)]
-
-        return batch
-
-    def __len__(self) -> int:
-        """Denotes the number of batches per epoch"""
-        return len(self.indexes) // self.batch_size
-
-    def on_epoch_end(self):
-        """Callback function to shuffle indexes each epoch"""
-        if self.shuffle:
-            self.indexes = np.random.permutation(self.indexes)
 
 
 class SimpleDataLoader:
@@ -56,11 +15,11 @@ class SimpleDataLoader:
     Simpe data loader class to read images from defined path and get a tensor back.
 
     Args:
-        :param images_path: str
+        :param images_folder_path: str
             path where images are saved
         :param backbone: str
             the backbone (feature extractor)
-        :param mask_path: str
+        :param masks_folder_path: str
             path where masks are saved
         :param normalize: bool
             whether to normalize the image vector to values between (0, 1 => float32) instead of (0, 255 => uint8)
@@ -73,11 +32,11 @@ class SimpleDataLoader:
         :param random_selection: bool
             whether to select the images (size) randomly or read them in the order of the image path
     """
-    def __init__(self, images_path, backbone=None, mask_path=None, normalize=True, resize_to=None,
+    def __init__(self, images_folder_path, backbone=None, masks_folder_path=None, normalize=True, resize_to=None,
                  size=None, random_selection=False):
-        self.images_path = images_path
+        self.images_folder_path = images_folder_path
         self.backbone = backbone
-        self.mask_path = mask_path
+        self.masks_folder_path = masks_folder_path
         self.images = None
         self.masks = None
         self.normalize = normalize
@@ -97,18 +56,18 @@ class SimpleDataLoader:
         if self.images:
             return self.images
 
-        image_paths = sorted(glob.glob(os.path.join(self.images_path, "*.jpg")))
+        images_paths = sorted(glob.glob(os.path.join(self.images_folder_path, "*.jpg")))
 
         if self.size:
             if self.random_selection:
-                random_indexes = self.get_random_indexes(max_size=len(image_paths))
-                image_paths = [image_paths[random_index] for random_index in random_indexes]
+                random_indexes = self.get_random_indexes(max_size=len(images_paths))
+                images_paths = [images_paths[random_index] for random_index in random_indexes]
             else:
-                image_paths = image_paths[:self.size]
+                images_paths = images_paths[:self.size]
 
         images = []
 
-        for image_path in image_paths:
+        for image_path in images_paths:
             image = self.image_preprocessor.apply_image_default(
                 image_path=image_path,
                 normalize=self.normalize,
@@ -138,21 +97,21 @@ class SimpleDataLoader:
         if self.masks:
             return self.masks
 
-        if self.mask_path is None:
+        if self.masks_folder_path is None:
             return None
 
-        mask_paths = sorted(glob.glob(os.path.join(self.mask_path, "*.png")))
+        masks_paths = sorted(glob.glob(os.path.join(self.masks_folder_path, "*.png")))
 
         if self.size:
             if self.random_selection:
-                random_indexes = self.get_random_indexes(max_size=len(mask_paths))
-                mask_paths = [mask_paths[random_index] for random_index in random_indexes]
+                random_indexes = self.get_random_indexes(max_size=len(masks_paths))
+                masks_paths = [masks_paths[random_index] for random_index in random_indexes]
             else:
-                mask_paths = mask_paths[:self.size]
+                masks_paths = masks_paths[:self.size]
 
         masks = []
 
-        for mask_path in mask_paths:
+        for mask_path in masks_paths:
             mask = self.image_preprocessor.apply_mask_default(
                 mask_path=mask_path,
                 normalize=self.normalize,
