@@ -3,8 +3,7 @@ import os
 import segmentation_models as sm
 import tensorflow as tf
 
-from utils.dataloader import DataLoader, SimpleDataLoader
-from utils.dataset import Dataset
+from utils.dataloader import SimpleDataLoader
 from constants import PROJECT_DIR, TRAIN_DIR, VALIDATION_DIR
 
 
@@ -20,13 +19,6 @@ class Trainer:
         self.x_validation_dir = os.path.join(VALIDATION_DIR, 'images')
         self.y_validation_dir = os.path.join(VALIDATION_DIR, 'masks')
 
-    def __get_training_dataset(self) -> Dataset:
-        return Dataset(
-            self.x_train_dir,
-            self.y_train_dir,
-            # preprocessing=self.preprocessing
-        )
-
     def get_training_data(self, dataset_size=None) -> dict:
         return SimpleDataLoader(
             backbone=Trainer.BACKBONE,
@@ -35,13 +27,6 @@ class Trainer:
             size=dataset_size
         ).get_images_masks()
 
-    def __get_validation_dataset(self) -> Dataset:
-        return Dataset(
-            self.x_validation_dir,
-            self.y_validation_dir,
-            # preprocessing=self.preprocessing
-        )
-
     def get_validation_data(self, dataset_size=None) -> dict:
         return SimpleDataLoader(
             backbone=Trainer.BACKBONE,
@@ -49,12 +34,6 @@ class Trainer:
             masks_folder_path=self.y_validation_dir,
             size=dataset_size
         ).get_images_masks()
-
-    def __get_train_data_loader(self) -> DataLoader:
-        return DataLoader(self.__get_training_dataset(), batch_size=Trainer.BATCH_SIZE, shuffle=True)
-
-    def __get_valid_data_loader(self) -> DataLoader:
-        return DataLoader(self.__get_validation_dataset(), batch_size=1, shuffle=False)
 
     def get_model(self) -> sm.Unet:
         model = sm.Unet(Trainer.BACKBONE, encoder_weights='imagenet', activation='sigmoid')
@@ -90,20 +69,6 @@ class Trainer:
                 restore_best_weights=True
             )
         ]
-
-    def train_from_dataloader(self):
-        train_data_loader = self.__get_train_data_loader()
-        valid_data_loader = self.__get_valid_data_loader()
-
-        return self.get_model().fit(
-            train_data_loader,
-            steps_per_epoch=len(train_data_loader),
-            epochs=Trainer.EPOCHS,
-            callbacks=self.__get_callbacks(),
-            validation_data=valid_data_loader,
-            validation_steps=len(valid_data_loader),
-            verbose=2
-        )
 
     def train_from_simple_dataloader(self, dataset_size=None, batch_size=None, epochs=None):
         training_data = self.get_training_data(dataset_size=dataset_size)
