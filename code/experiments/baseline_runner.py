@@ -33,5 +33,5 @@ def baseline_experiment_pretrained():
 
 if __name__ == '__main__':
     simple_baseline_test()
-    # baseline_test()
-    # baseline_test_pretrained()
+    # baseline_experiment()
+    # baseline_experiment_pretrained()
