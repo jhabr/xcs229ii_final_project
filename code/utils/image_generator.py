@@ -53,11 +53,11 @@ class ImageGenerator:
                 "masks",
                 f"augmented_mask_{index}.png"
             )
-            cv2.imwrite(augmented_image_file_path, augmented_image)
-            cv2.imwrite(augmented_mask_file_name, augmented_mask)
+            cv2.imwrite(augmented_image_file_path, cv2.cvtColor(augmented_image, cv2.COLOR_RGB2BGR))
+            cv2.imwrite(augmented_mask_file_name, cv2.cvtColor(augmented_mask, cv2.COLOR_RGB2BGR))
 
         print("Done.")
 
 
 if __name__ == '__main__':
-    ImageGenerator().generate_images(size=606)
+    ImageGenerator().generate_images(size=10)

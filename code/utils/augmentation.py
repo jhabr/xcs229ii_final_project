@@ -58,7 +58,7 @@ class DataAugmentation:
                 A.IAASharpen(),
                 A.Blur(blur_limit=3),
                 A.MotionBlur(blur_limit=3),
-            ], p=1.0),
+            ], p=1.0)
         ])
 
         return transform(image=image, mask=mask)
