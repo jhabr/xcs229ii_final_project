@@ -1,5 +1,13 @@
-\begin{thebibliography}{12}
+\begin{thebibliography}{15}
 \expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
+
+\bibitem[{Acosta et~al.(2021)Acosta, Tovar, Garcia-Zapirain, and
+  Percybrooks}]{melonama_diagnosis-2021-codella}
+Mario Fernando~Jojoa Acosta, Liesle Yail~Caballero Tovar, Maria~Begonya
+  Garcia-Zapirain, and Winston~Spencer Percybrooks. 2021.
+\newblock \href {https://doi.org/10.1186/s12880-020-00534-8} {Melanoma
+  diagnosis using deep learning techniques on dermatoscopic images}.
+\newblock \emph{BMC Medical Imaging}, 21, 6(2021).
 
 \bibitem[{Alom et~al.(2019)Alom, Aspiras, Taha, and Asari}]{nabla-2019-alom}
 Md.~Zahangir Alom, Theus~H. Aspiras, Tarek~M. Taha, and Vijayan~K. Asari. 2019.
@@ -7,6 +15,14 @@ Md.~Zahangir Alom, Theus~H. Aspiras, Tarek~M. Taha, and Vijayan~K. Asari. 2019.
   classification with {NABLA-N} and inception recurrent residual convolutional
   networks}.
 \newblock \emph{CoRR}, abs/1904.11126.
+
+\bibitem[{Bisla et~al.(2019)Bisla, Choromanska, Stein, Polsky, and
+  Berman}]{data_purification-2019-bisla}
+Devansh Bisla, Anna Choromanska, Jennifer~A. Stein, David Polsky, and
+  Russell~S. Berman. 2019.
+\newblock \href {http://arxiv.org/abs/1902.06061} {Skin lesion segmentation and
+  classification with deep learning system}.
+\newblock \emph{CoRR}, abs/1902.06061.
 
 \bibitem[{Chen et~al.(2021)Chen, Lu, Yu, Luo, Adeli, Wang, Lu, Yuille, and
   Zhou}]{transunet-2021-chen}
@@ -31,6 +47,14 @@ Liang{-}Chieh Chen, George Papandreou, Iasonas Kokkinos, Kevin Murphy, and
   segmentation with deep convolutional nets, atrous convolution, and fully
   connected crfs}.
 \newblock \emph{CoRR}, abs/1606.00915.
+
+\bibitem[{Codella et~al.(2016)Codella, Nguyen, Pankanti, Gutman, Helba,
+  Halpern, and Smith}]{ensambles-2016-codella}
+Noel C.~F. Codella, Quoc{-}Bao Nguyen, Sharath Pankanti, David Gutman, Brian
+  Helba, Allan Halpern, and John~R. Smith. 2016.
+\newblock \href {http://arxiv.org/abs/1610.04662} {Deep learning ensembles for
+  melanoma recognition in dermoscopy images}.
+\newblock \emph{CoRR}, abs/1610.04662.
 
 \bibitem[{Codella et~al.(2019)Codella, Rotemberg, Tschandl, Celebi, Dusza,
   Gutman, Helba, Kalloo, Liopyris, Marchetti, Kittler, and
