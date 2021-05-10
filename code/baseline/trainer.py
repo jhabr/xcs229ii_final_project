@@ -30,8 +30,8 @@ class Trainer:
     def get_training_data(self, dataset_size=None) -> dict:
         return SimpleDataLoader(
             backbone=Trainer.BACKBONE,
-            images_path=self.x_train_dir,
-            mask_path=self.y_train_dir,
+            images_folder_path=self.x_train_dir,
+            masks_folder_path=self.y_train_dir,
             size=dataset_size
         ).get_images_masks()
 
@@ -45,8 +45,8 @@ class Trainer:
     def get_validation_data(self, dataset_size=None) -> dict:
         return SimpleDataLoader(
             backbone=Trainer.BACKBONE,
-            images_path=self.x_validation_dir,
-            mask_path=self.y_validation_dir,
+            images_folder_path=self.x_validation_dir,
+            masks_folder_path=self.y_validation_dir,
             size=dataset_size
         ).get_images_masks()
 
