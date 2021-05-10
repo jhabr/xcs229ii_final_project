@@ -54,8 +54,9 @@ class Trainer:
 
         return model
 
-    def __get_callbacks(self) -> list:
-        model_path = os.path.join(PROJECT_DIR, "baseline", "export", "baseline.h5")
+    def __get_callbacks(self, identifier: str = "-") -> list:
+        model_name = f"{identifier}_baseline.h5"
+        model_path = os.path.join(PROJECT_DIR, "baseline", "export", model_name)
         return [
             tf.keras.callbacks.ModelCheckpoint(
                 model_path,
@@ -74,7 +75,7 @@ class Trainer:
         ]
 
     def train_from_simple_dataloader(
-            self, model: sm.Unet, learning_rate=LEARNING_RATE, dataset_size=None, batch_size=None, epochs=None,
+            self, identifier: str, model: sm.Unet, learning_rate=LEARNING_RATE, dataset_size=None, batch_size=None, epochs=None,
             image_resolution=(512, 512)
     ):
         training_data = self.get_training_data(dataset_size=dataset_size, image_resolution=image_resolution)
@@ -89,6 +90,6 @@ class Trainer:
             epochs=epochs if epochs else Trainer.EPOCHS,
             validation_data=(validation_data["images"], validation_data["masks"]),
             validation_steps=len(validation_data['images']) // batch_size,
-            callbacks=self.__get_callbacks(),
+            callbacks=self.__get_callbacks(identifier=identifier),
             verbose=2
         )

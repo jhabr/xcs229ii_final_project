@@ -13,13 +13,13 @@ class Experiment:
         self.identifier = identifier
 
     def run(self, model: sm.Unet, dataset_size=None, batch_size=None, epochs=None, image_resolution=None):
-        print(f"{datetime.now()}: Starting experiment {self.identifier} training...")
+        print(f"{datetime.now()}: Starting << experiment {self.identifier} >> training...")
         history = self._configure_training(
             model=model, dataset_size=dataset_size, batch_size=batch_size, epochs=epochs,
             image_resolution=image_resolution
         )
 
-        history_path = os.path.join(BASELINE_DIR, "export", "train_history.pkl")
+        history_path = os.path.join(BASELINE_DIR, "export", f"experiment_{self.identifier}_train_history.pkl")
         print(f"Exporting history to {history_path}...")
         pickle.dump(history.history, open(history_path, "wb"))
         print("Done.")
@@ -39,6 +39,7 @@ class BaselineExperiment(Experiment):
             self, model: sm.Unet, dataset_size=None, batch_size=None, epochs=None, image_resolution=None
     ):
         return Trainer().train_from_simple_dataloader(
+            identifier=self.identifier,
             dataset_size=dataset_size,
             batch_size=batch_size,
             epochs=epochs,
