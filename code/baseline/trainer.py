@@ -19,26 +19,29 @@ class Trainer:
         self.x_validation_dir = os.path.join(VALIDATION_DIR, 'images')
         self.y_validation_dir = os.path.join(VALIDATION_DIR, 'masks')
 
-    def get_training_data(self, dataset_size=None) -> dict:
+    def get_training_data(self, dataset_size=None, image_resolution=None) -> dict:
         return SimpleDataLoader(
             backbone=Trainer.BACKBONE,
             images_folder_path=self.x_train_dir,
             masks_folder_path=self.y_train_dir,
+            resize_to=image_resolution,
             size=dataset_size
         ).get_images_masks()
 
-    def get_validation_data(self, dataset_size=None) -> dict:
+    def get_validation_data(self, dataset_size=None, image_resolution=None) -> dict:
         return SimpleDataLoader(
             backbone=Trainer.BACKBONE,
             images_folder_path=self.x_validation_dir,
             masks_folder_path=self.y_validation_dir,
+            resize_to=image_resolution,
             size=dataset_size
         ).get_images_masks()
 
-    def get_model(self) -> sm.Unet:
-        model = sm.Unet(Trainer.BACKBONE, encoder_weights='imagenet', activation='sigmoid')
+    def compile_model(self, model: sm.Unet, learning_rate=LEARNING_RATE) -> sm.Unet:
+        if model is None:
+            raise AttributeError("Model must not be None.")
         model.compile(
-            tf.keras.optimizers.Adam(Trainer.LEARNING_RATE),
+            tf.keras.optimizers.Adam(learning_rate=learning_rate),
             loss=sm.losses.bce_jaccard_loss,
             metrics=[
                 sm.metrics.iou_score,
@@ -70,12 +73,15 @@ class Trainer:
             )
         ]
 
-    def train_from_simple_dataloader(self, dataset_size=None, batch_size=None, epochs=None):
-        training_data = self.get_training_data(dataset_size=dataset_size)
-        validation_data = self.get_validation_data(dataset_size=dataset_size)
+    def train_from_simple_dataloader(
+            self, model: sm.Unet, learning_rate=LEARNING_RATE, dataset_size=None, batch_size=None, epochs=None,
+            image_resolution=(512, 512)
+    ):
+        training_data = self.get_training_data(dataset_size=dataset_size, image_resolution=image_resolution)
+        validation_data = self.get_validation_data(dataset_size=dataset_size, image_resolution=image_resolution)
         batch_size = batch_size if batch_size else Trainer.BATCH_SIZE
 
-        return self.get_model().fit(
+        return self.compile_model(model=model, learning_rate=learning_rate).fit(
             x=training_data['images'],
             y=training_data['masks'],
             batch_size=batch_size,
