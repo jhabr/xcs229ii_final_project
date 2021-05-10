@@ -13,11 +13,12 @@ class Trainer:
     EPOCHS = 100
     LEARNING_RATE = 3e-5
 
-    def __init__(self):
+    def __init__(self, model: sm.Unet):
         self.x_train_dir = os.path.join(TRAIN_DIR, 'images')
         self.y_train_dir = os.path.join(TRAIN_DIR, 'masks')
         self.x_validation_dir = os.path.join(VALIDATION_DIR, 'images')
         self.y_validation_dir = os.path.join(VALIDATION_DIR, 'masks')
+        self.model = model
 
     def get_training_data(self, dataset_size=None, image_resolution=None) -> dict:
         return SimpleDataLoader(
@@ -37,10 +38,10 @@ class Trainer:
             size=dataset_size
         ).get_images_masks()
 
-    def compile_model(self, model: sm.Unet, learning_rate=LEARNING_RATE) -> sm.Unet:
-        if model is None:
+    def compile_model(self, learning_rate=LEARNING_RATE) -> sm.Unet:
+        if self.model is None:
             raise AttributeError("Model must not be None.")
-        model.compile(
+        self.model.compile(
             tf.keras.optimizers.Adam(learning_rate=learning_rate),
             loss=sm.losses.bce_jaccard_loss,
             metrics=[
@@ -52,10 +53,10 @@ class Trainer:
             ]
         )
 
-        return model
+        return self.model
 
     def __get_callbacks(self, identifier: str = "-") -> list:
-        model_name = f"{identifier}_baseline.h5"
+        model_name = f"experiment_{identifier}_baseline.h5"
         model_path = os.path.join(PROJECT_DIR, "baseline", "export", model_name)
         return [
             tf.keras.callbacks.ModelCheckpoint(
@@ -75,14 +76,14 @@ class Trainer:
         ]
 
     def train_from_simple_dataloader(
-            self, identifier: str, model: sm.Unet, learning_rate=LEARNING_RATE, dataset_size=None, batch_size=None, epochs=None,
+            self, identifier: str, learning_rate=LEARNING_RATE, dataset_size=None, batch_size=None, epochs=None,
             image_resolution=(512, 512)
     ):
         training_data = self.get_training_data(dataset_size=dataset_size, image_resolution=image_resolution)
         validation_data = self.get_validation_data(dataset_size=dataset_size, image_resolution=image_resolution)
         batch_size = batch_size if batch_size else Trainer.BATCH_SIZE
 
-        return self.compile_model(model=model, learning_rate=learning_rate).fit(
+        return self.compile_model(learning_rate=learning_rate).fit(
             x=training_data['images'],
             y=training_data['masks'],
             batch_size=batch_size,

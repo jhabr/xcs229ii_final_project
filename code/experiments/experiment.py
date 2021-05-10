@@ -38,7 +38,7 @@ class BaselineExperiment(Experiment):
     def _configure_training(
             self, model: sm.Unet, dataset_size=None, batch_size=None, epochs=None, image_resolution=None
     ):
-        return Trainer().train_from_simple_dataloader(
+        return Trainer(model=model).train_from_simple_dataloader(
             identifier=self.identifier,
             dataset_size=dataset_size,
             batch_size=batch_size,
