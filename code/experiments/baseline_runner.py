@@ -3,8 +3,8 @@ import segmentation_models as sm
 
 
 def simple_baseline_test():
-    model = sm.Unet(encoder_weights='imagenet', activation='sigmoid')
-    BaselineExperiment(identifier="00").run(
+    model = sm.Unet(activation='sigmoid')
+    BaselineExperiment(identifier="baseline_00").run(
         dataset_size=1,
         batch_size=1,
         image_resolution=(512, 512),
@@ -15,7 +15,7 @@ def simple_baseline_test():
 
 def baseline_experiment():
     model = sm.Unet(activation='sigmoid')
-    BaselineExperiment(identifier="01").run(
+    BaselineExperiment(identifier="baseline_01").run(
         batch_size=16,
         image_resolution=(512, 512),
         model=model
@@ -24,7 +24,7 @@ def baseline_experiment():
 
 def baseline_experiment_pretrained():
     model = sm.Unet(encoder_weights='imagenet', activation='sigmoid')
-    BaselineExperiment(identifier="02").run(
+    BaselineExperiment(identifier="baseline_02").run(
         batch_size=16,
         image_resolution=(512, 512),
         model=model

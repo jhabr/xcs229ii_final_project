@@ -3,26 +3,26 @@ import os
 import segmentation_models as sm
 import tensorflow as tf
 
+from constants import TRAIN_DIR, VALIDATION_DIR, EXPORT_DIR
 from utils.dataloader import SimpleDataLoader
-from constants import PROJECT_DIR, TRAIN_DIR, VALIDATION_DIR
 
 
 class Trainer:
-    BACKBONE = 'resnet34'
     BATCH_SIZE = 16
     EPOCHS = 100
     LEARNING_RATE = 3e-5
 
-    def __init__(self, model: sm.Unet):
+    def __init__(self, model: sm.Unet, backbone=None):
         self.x_train_dir = os.path.join(TRAIN_DIR, 'images')
         self.y_train_dir = os.path.join(TRAIN_DIR, 'masks')
         self.x_validation_dir = os.path.join(VALIDATION_DIR, 'images')
         self.y_validation_dir = os.path.join(VALIDATION_DIR, 'masks')
         self.model = model
+        self.backbone = backbone
 
     def get_training_data(self, dataset_size=None, image_resolution=None) -> dict:
         return SimpleDataLoader(
-            backbone=Trainer.BACKBONE,
+            backbone=self.backbone,
             images_folder_path=self.x_train_dir,
             masks_folder_path=self.y_train_dir,
             resize_to=image_resolution,
@@ -31,7 +31,7 @@ class Trainer:
 
     def get_validation_data(self, dataset_size=None, image_resolution=None) -> dict:
         return SimpleDataLoader(
-            backbone=Trainer.BACKBONE,
+            backbone=self.backbone,
             images_folder_path=self.x_validation_dir,
             masks_folder_path=self.y_validation_dir,
             resize_to=image_resolution,
@@ -56,8 +56,8 @@ class Trainer:
         return self.model
 
     def __get_callbacks(self, identifier: str = "-") -> list:
-        model_name = f"experiment_{identifier}_baseline.h5"
-        model_path = os.path.join(PROJECT_DIR, "baseline", "export", model_name)
+        model_name = f"{identifier}_baseline.h5"
+        model_path = os.path.join(EXPORT_DIR, model_name)
         return [
             tf.keras.callbacks.ModelCheckpoint(
                 model_path,
