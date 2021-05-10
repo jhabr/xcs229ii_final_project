@@ -3,42 +3,46 @@ import os
 import segmentation_models as sm
 import tensorflow as tf
 
+from constants import TRAIN_DIR, VALIDATION_DIR, EXPORT_DIR
 from utils.dataloader import SimpleDataLoader
-from constants import PROJECT_DIR, TRAIN_DIR, VALIDATION_DIR
 
 
 class Trainer:
-    BACKBONE = 'resnet34'
     BATCH_SIZE = 16
     EPOCHS = 100
     LEARNING_RATE = 3e-5
 
-    def __init__(self):
+    def __init__(self, model: sm.Unet, backbone=None):
         self.x_train_dir = os.path.join(TRAIN_DIR, 'images')
         self.y_train_dir = os.path.join(TRAIN_DIR, 'masks')
         self.x_validation_dir = os.path.join(VALIDATION_DIR, 'images')
         self.y_validation_dir = os.path.join(VALIDATION_DIR, 'masks')
+        self.model = model
+        self.backbone = backbone
 
-    def get_training_data(self, dataset_size=None) -> dict:
+    def get_training_data(self, dataset_size=None, image_resolution=None) -> dict:
         return SimpleDataLoader(
-            backbone=Trainer.BACKBONE,
+            backbone=self.backbone,
             images_folder_path=self.x_train_dir,
             masks_folder_path=self.y_train_dir,
+            resize_to=image_resolution,
             size=dataset_size
         ).get_images_masks()
 
-    def get_validation_data(self, dataset_size=None) -> dict:
+    def get_validation_data(self, dataset_size=None, image_resolution=None) -> dict:
         return SimpleDataLoader(
-            backbone=Trainer.BACKBONE,
+            backbone=self.backbone,
             images_folder_path=self.x_validation_dir,
             masks_folder_path=self.y_validation_dir,
+            resize_to=image_resolution,
             size=dataset_size
         ).get_images_masks()
 
-    def get_model(self) -> sm.Unet:
-        model = sm.Unet(Trainer.BACKBONE, encoder_weights='imagenet', activation='sigmoid')
-        model.compile(
-            tf.keras.optimizers.Adam(Trainer.LEARNING_RATE),
+    def compile_model(self, learning_rate=LEARNING_RATE) -> sm.Unet:
+        if self.model is None:
+            raise AttributeError("Model must not be None.")
+        self.model.compile(
+            tf.keras.optimizers.Adam(learning_rate=learning_rate),
             loss=sm.losses.bce_jaccard_loss,
             metrics=[
                 sm.metrics.iou_score,
@@ -49,10 +53,11 @@ class Trainer:
             ]
         )
 
-        return model
+        return self.model
 
-    def __get_callbacks(self) -> list:
-        model_path = os.path.join(PROJECT_DIR, "baseline", "export", "baseline.h5")
+    def __get_callbacks(self, identifier: str = "-") -> list:
+        model_name = f"{identifier}_baseline.h5"
+        model_path = os.path.join(EXPORT_DIR, model_name)
         return [
             tf.keras.callbacks.ModelCheckpoint(
                 model_path,
@@ -70,12 +75,15 @@ class Trainer:
             )
         ]
 
-    def train_from_simple_dataloader(self, dataset_size=None, batch_size=None, epochs=None):
-        training_data = self.get_training_data(dataset_size=dataset_size)
-        validation_data = self.get_validation_data(dataset_size=dataset_size)
+    def train_from_simple_dataloader(
+            self, identifier: str, learning_rate=LEARNING_RATE, dataset_size=None, batch_size=None, epochs=None,
+            image_resolution=(512, 512)
+    ):
+        training_data = self.get_training_data(dataset_size=dataset_size, image_resolution=image_resolution)
+        validation_data = self.get_validation_data(dataset_size=dataset_size, image_resolution=image_resolution)
         batch_size = batch_size if batch_size else Trainer.BATCH_SIZE
 
-        return self.get_model().fit(
+        return self.compile_model(learning_rate=learning_rate).fit(
             x=training_data['images'],
             y=training_data['masks'],
             batch_size=batch_size,
@@ -83,6 +91,6 @@ class Trainer:
             epochs=epochs if epochs else Trainer.EPOCHS,
             validation_data=(validation_data["images"], validation_data["masks"]),
             validation_steps=len(validation_data['images']) // batch_size,
-            callbacks=self.__get_callbacks(),
+            callbacks=self.__get_callbacks(identifier=identifier),
             verbose=2
         )
