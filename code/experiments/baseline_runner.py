@@ -13,7 +13,7 @@ def simple_baseline_test():
     )
 
 
-def baseline_test():
+def baseline_experiment():
     model = sm.Unet(activation='sigmoid')
     BaselineExperiment(identifier="01").run(
         batch_size=16,
@@ -22,7 +22,7 @@ def baseline_test():
     )
 
 
-def baseline_test_pretrained():
+def baseline_experiment_pretrained():
     model = sm.Unet(encoder_weights='imagenet', activation='sigmoid')
     BaselineExperiment(identifier="02").run(
         batch_size=16,
