@@ -52,16 +52,36 @@ class DataLoader(tf.keras.utils.Sequence):
 
 
 class SimpleDataLoader:
+    """
+    Simpe data loader class to read images from defined path and get a tensor back.
 
-    def __init__(self, images_path, backbone=None, mask_path=None, normalize=True, resize=True, size=None,
-                 random_selection=False):
+    Args:
+        :param images_path: str
+            path where images are saved
+        :param backbone: str
+            the backbone (feature extractor)
+        :param mask_path: str
+            path where masks are saved
+        :param normalize: bool
+            whether to normalize the image vector to values between (0, 1 => float32) instead of (0, 255 => uint8)
+        :param resize: bool
+            whether to resize the image to 512x512 size
+        :param resize_to: tuple
+            the dimension to resize the images to
+        :param size: int
+            size of the dataset to be created (no of images and masks to pull from the full dataset)
+        :param random_selection: bool
+            whether to select the images (size) randomly or read them in the order of the image path
+    """
+    def __init__(self, images_path, backbone=None, mask_path=None, normalize=True, resize_to=None,
+                 size=None, random_selection=False):
         self.images_path = images_path
         self.backbone = backbone
         self.mask_path = mask_path
         self.images = None
         self.masks = None
         self.normalize = normalize
-        self.resize = resize
+        self.resize_to = resize_to
         self.size = size
         self.random_selection = random_selection
         self.random_indexes = None
@@ -92,7 +112,7 @@ class SimpleDataLoader:
             image = self.image_preprocessor.apply_image_default(
                 image_path=image_path,
                 normalize=self.normalize,
-                resize=self.resize
+                resize_to=self.resize_to
             )
             if self.backbone:
                 image = self.data_augmentation.apply_default(
@@ -102,7 +122,7 @@ class SimpleDataLoader:
             images.append(image)
 
         # if we don't resize, we cannot stack image as the dimensions of all the images must be the same
-        if self.resize:
+        if self.resize_to:
             self.images = np.array(images, dtype=np.float32)
         else:
             self.images = images
@@ -136,12 +156,12 @@ class SimpleDataLoader:
             mask = self.image_preprocessor.apply_mask_default(
                 mask_path=mask_path,
                 normalize=self.normalize,
-                resize=self.resize
+                resize_to=self.resize_to
             )
             masks.append(mask)
 
         # if we don't resize, we cannot stack image as the dimensions of all the images must be the same
-        if self.resize:
+        if self.resize_to:
             self.masks = np.array(masks, dtype=np.float32)
         else:
             self.masks = masks
