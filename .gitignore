@@ -17,4 +17,4 @@ paper/XCS229ii_final_paper.pdf
 code/data/*
 !code/data/augmentation
 code/experiments/export/**/*.*
-!code/experiments/export/**/*.gitkeep
+!code/experiments/export/**/*.keep
