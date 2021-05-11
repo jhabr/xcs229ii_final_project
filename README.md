@@ -38,5 +38,5 @@ $ export PYTHONPATH=/home/scpdxcs/projects/xcs229ii_final_project/code
 
 Run baseline training:
 ```bash
-$ (python3 baseline/main.py 2>&1) >> logs/baseline.log &
+$ bash scripts/run_baseline_experiments.sh
 ```
