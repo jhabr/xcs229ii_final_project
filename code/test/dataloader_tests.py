@@ -4,6 +4,7 @@ import unittest
 from constants import TRAIN_DIR
 from utils.dataloader import SimpleDataLoader
 from utils.helper import Visualisation
+import numpy as np
 
 
 class DataLoaderTests(unittest.TestCase):
@@ -59,6 +60,8 @@ class DataLoaderTests(unittest.TestCase):
         data = simple_data_loader.get_images_masks()
         self.assertEqual(data["images"][0].shape, (128, 128, 3))
         self.assertEqual(data["masks"][0].shape, (128, 128, 1))
+        # make sure that mask has only two colors
+        self.assertEqual(len(np.unique(data["masks"][0])), 2)
 
     def test_load_original_size_data(self):
         simple_data_loader = SimpleDataLoader(
