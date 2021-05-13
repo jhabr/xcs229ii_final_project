@@ -21,14 +21,26 @@ class SegmentationMetricsTests(unittest.TestCase):
     def tearDown(self):
         self.simple_data_loader = None
 
-    def test_segmentation_metrics(self):
+    def test_calculate_segmentation_metrics(self):
+        data = self.simple_data_loader.get_images_masks()
+        image = data["images"][0]
+        mask = data["masks"][0]
+        metrics = Metrics().calculate(
+            model=self.model,
+            image=image,
+            mask=mask
+        )
+        self.assertEqual(metrics.n_images, 1)
+        self.assertEqual(metrics.jaccard, 0.0)
+
+    def test_calculate_batch_segmentation_metrics(self):
         data = self.simple_data_loader.get_images_masks()
         images = data["images"]
         masks = data["masks"]
         self.assertEqual(len(images), 3)
         self.assertEqual(len(masks), 3)
 
-        metrics = Metrics().calculate(
+        metrics = Metrics().calculate_batch(
             model=self.model,
             images=images,
             masks=masks

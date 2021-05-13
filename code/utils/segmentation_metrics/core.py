@@ -13,9 +13,15 @@ METRICS = ('n_true_labels',
            'n_pred_labels',
            'n_true_positives',
            'n_false_positives',
+           'n_true_negative',
            'n_false_negatives',
-           'IoU',
-           'Jaccard',
+           'iou',
+           'jaccard',
+           'dice',
+           'f1_score',
+           'sensitivity',
+           'specificity',
+           'accuracy',
            'pixel_identity',
            'localization_error')
 
@@ -90,7 +96,7 @@ class MetricResults(object):
                      'n_true_positives',
                      'n_false_positives',
                      'n_false_negatives',
-                     'per_object_IoU',
+                     'per_object_iou',
                      'per_object_localization_error',
                      'per_image_pixel_identity')
 
@@ -131,7 +137,7 @@ class MetricResults(object):
 
     @property
     def iou(self):
-        return np.mean(self.per_object_IoU)
+        return np.mean(self.per_object_iou)
 
     @property
     def jaccard(self):
@@ -140,6 +146,40 @@ class MetricResults(object):
         fn = self.n_false_negatives
         fp = self.n_false_positives
         return tp / (tp + fn + fp)
+
+    @property
+    def dice(self):
+        tp = self.n_true_positives
+        fn = self.n_false_negatives
+        fp = self.n_false_positives
+        return (2 * tp) / (2 * tp + fn + fp)
+
+    @property
+    def f1_score(self):
+        tp = self.n_true_positives
+        fn = self.n_false_negatives
+        fp = self.n_false_positives
+        return tp / (2 * tp + fn + fp)
+
+    @property
+    def sensitivity(self):
+        tp = self.n_true_positives
+        fn = self.n_false_negatives
+        return tp / (tp + fn)
+
+    @property
+    def specificity(self):
+        tn = self.n_true_negatives
+        fp = self.n_false_positives
+        return tn / (tn + fp)
+
+    @property
+    def accuracy(self):
+        tp = self.n_true_positives
+        tn = self.n_true_negatives
+        fp = self.n_false_positives
+        fn = self.n_false_negatives
+        return (tp + tn) / (tp + fp + tn + fn)
 
     @property
     def pixel_identity(self):
@@ -212,7 +252,7 @@ class SegmentationMetrics:
         self._strict = kwargs.get('strict', False)
         self._iou_threshold = kwargs.get('iou_threshold', 0.5)
 
-        assert (self.iou_threshold >= 0. and self.iou_threshold <= 1.)
+        assert (0. <= self.iou_threshold <= 1.)
         assert (isinstance(self.strict, bool))
 
         # find the matches
@@ -220,7 +260,7 @@ class SegmentationMetrics:
 
         # if we're in strict mode, prune the matches
         if self.strict:
-            iou = self.per_object_IoU
+            iou = self.per_object_iou
             tp = [self.true_positives[i] for i, ov in enumerate(iou) if ov > self.iou_threshold]
             fp = list(set(self.true_positives).difference(tp))
 
@@ -261,11 +301,17 @@ class SegmentationMetrics:
         return self._matches['true_matches']
 
     @property
+    def true_negatives(self):
+        """ only one match between reference and predicted """
+        return self._matches['true_matches']
+
+    @property
     def false_negatives(self):
         """ no match in predicted for reference object """
         return self._matches['in_ref_only']
 
     @property
+    #TODO: fix
     def false_positives(self):
         """ combination of non unique matches and unmatched objects """
         return self._matches['in_pred_only']
@@ -273,6 +319,10 @@ class SegmentationMetrics:
     @property
     def n_true_positives(self):
         return len(self.true_positives)
+
+    @property
+    def n_true_negatives(self):
+        return len(self.true_negatives)
 
     @property
     def n_false_negatives(self):
@@ -283,7 +333,7 @@ class SegmentationMetrics:
         return len(self.false_positives)
 
     @property
-    def per_object_IoU(self):
+    def per_object_iou(self):
         """ Intersection over Union (IoU) metric """
         iou = []
         for m in self.true_positives:
