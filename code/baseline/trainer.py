@@ -56,7 +56,7 @@ class Trainer:
         return self.model
 
     def __get_callbacks(self, identifier: str = "-") -> list:
-        model_name = f"{identifier}_baseline.h5"
+        model_name = f"{identifier}_weights_only.h5"
         model_path = os.path.join(EXPORT_DIR, model_name)
         return [
             tf.keras.callbacks.ModelCheckpoint(
