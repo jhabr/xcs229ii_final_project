@@ -22,6 +22,22 @@ class SegmentationMetricsTests(unittest.TestCase):
     def tearDown(self):
         self.simple_data_loader = None
 
+    def test_true_positives(self):
+        """TP: pixels correctly segmented as foreground"""
+        pass
+
+    def test_true_negatives(self):
+        """TN: pixels correctly detected as background"""
+        pass
+
+    def test_false_positives(self):
+        """FP: pixels falsely segmented as foreground"""
+        pass
+
+    def test_false_negatives(self):
+        """FN: pixels falsely detected as background"""
+        pass
+
     def test_calculate_segmentation_metrics(self):
         data = self.simple_data_loader.get_images_masks()
         image = data["images"][0]
