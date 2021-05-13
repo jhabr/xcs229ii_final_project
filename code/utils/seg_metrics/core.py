@@ -17,7 +17,7 @@ class BinarySegmentationMetric:
             "n_true_negatives": self.true_negatives,
             "n_false_positives": self.false_positives,
             "n_false_negatives": self.false_negatives,
-            "iou": self.iou,
+            "iou": self.iou(mask, predicted_mask),
             "jaccard_index": self.jaccard,
             "dice": self.dice,
             "f1_score": self.f1_score,
