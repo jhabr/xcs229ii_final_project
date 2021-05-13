@@ -34,11 +34,11 @@ class SegmentationMetricsTests(unittest.TestCase):
 
     def __create_predicted_mask(self):
         predicted_mask = np.array(
-            [[1., 1., 1., 1., 1.],
-             [1., 0., 0., 0., 0.],
-             [0., 0., 0., 0., 0.],
-             [0., 0., 0., 0., 0.],
-             [1., 1., 1., 0., 0.]]
+            [[1., 1., 1., 1., 1.],  # 5 true positives
+             [1., 0., 0., 0., 0.],  # 1 true positive, 4 false negatives
+             [0., 0., 0., 0., 0.],  # 5 true negatives
+             [0., 0., 0., 0., 0.],  # 5 true negatives
+             [1., 1., 1., 0., 0.]]  # 3 false positives, 2 true negatives
         )
         predicted_mask = np.expand_dims(predicted_mask, axis=2)
         return predicted_mask

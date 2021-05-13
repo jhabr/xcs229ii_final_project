@@ -301,6 +301,7 @@ class SegmentationMetrics:
         return self._matches['true_matches']
 
     @property
+    # TODO: fix
     def true_negatives(self):
         """ only one match between reference and predicted """
         return self._matches['true_matches']
@@ -311,7 +312,6 @@ class SegmentationMetrics:
         return self._matches['in_ref_only']
 
     @property
-    #TODO: fix
     def false_positives(self):
         """ combination of non unique matches and unmatched objects """
         return self._matches['in_pred_only']
