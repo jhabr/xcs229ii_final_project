@@ -32,14 +32,16 @@ class Experiment:
         print(f"{datetime.now()}: Done training.")
 
     def _configure_training(
-            self, model: sm.Unet, backbone: str = None, dataset_size=None, batch_size=None, epochs=None, image_resolution=None
+            self, model: sm.Unet, backbone: str = None, dataset_size=None, batch_size=None, epochs=None,
+            image_resolution=None
     ):
         raise NotImplementedError
 
 
 class BaselineExperiment(Experiment):
     def _configure_training(
-            self, model: sm.Unet, backbone: str = None, dataset_size=None, batch_size=None, epochs=None, image_resolution=None
+            self, model: sm.Unet, backbone: str = None, dataset_size=None, batch_size=None, epochs=None,
+            image_resolution=None
     ):
         return Trainer(model=model, backbone=backbone).train_from_simple_dataloader(
             identifier=self.identifier,
