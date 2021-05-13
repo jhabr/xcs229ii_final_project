@@ -18,25 +18,54 @@ class SegmentationMetricsTests(unittest.TestCase):
             size=3
         )
         self.model = sm.Unet(activation='sigmoid')
+        self.mask = self.__create_mask()
+        self.predicted_mask = self.__create_predicted_mask()
+
+    def __create_mask(self):
+        true_mask = np.array(
+            [[1., 1., 1., 1., 1.],
+             [1., 1., 1., 1., 1.],
+             [0., 0., 0., 0., 0.],
+             [0., 0., 0., 0., 0.],
+             [0., 0., 0., 0., 0.]]
+        )
+        true_mask = np.expand_dims(true_mask, axis=2)
+        return true_mask
+
+    def __create_predicted_mask(self):
+        predicted_mask = np.array(
+            [[1., 1., 1., 1., 1.],
+             [1., 0., 0., 0., 0.],
+             [0., 0., 0., 0., 0.],
+             [0., 0., 0., 0., 0.],
+             [1., 1., 1., 0., 0.]]
+        )
+        predicted_mask = np.expand_dims(predicted_mask, axis=2)
+        return predicted_mask
 
     def tearDown(self):
         self.simple_data_loader = None
+        self.model = None
 
     def test_true_positives(self):
         """TP: pixels correctly segmented as foreground"""
-        pass
+        results = Metrics().calculate(self.mask, self.predicted_mask)
+        self.assertEqual(results.n_true_positives, 6)
 
     def test_true_negatives(self):
         """TN: pixels correctly detected as background"""
-        pass
+        results = Metrics().calculate(self.mask, self.predicted_mask)
+        self.assertEqual(results.n_true_negatives, 15)
 
     def test_false_positives(self):
         """FP: pixels falsely segmented as foreground"""
-        pass
+        results = Metrics().calculate(self.mask, self.predicted_mask)
+        self.assertEqual(results.n_false_positives, 3)
 
     def test_false_negatives(self):
         """FN: pixels falsely detected as background"""
-        pass
+        results = Metrics().calculate(self.mask, self.predicted_mask)
+        self.assertEqual(results.n_false_negatives, 4)
 
     def test_calculate_segmentation_metrics(self):
         data = self.simple_data_loader.get_images_masks()
