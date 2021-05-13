@@ -65,12 +65,18 @@ class Trainer:
                 save_best_only=True,
                 mode='min'
             ),
-            tf.keras.callbacks.ReduceLROnPlateau(),
+            tf.keras.callbacks.ReduceLROnPlateau(
+                monitor='val_loss',
+                factor=0.1,
+                patience=4,
+                verbose=1,
+                epsilon=1e-5
+            ),
             tf.keras.callbacks.EarlyStopping(
                 monitor="val_loss",
                 min_delta=1e-5,
                 verbose=1,
-                patience=3,
+                patience=8,
                 restore_best_weights=True
             )
         ]
