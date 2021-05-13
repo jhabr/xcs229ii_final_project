@@ -7,6 +7,8 @@ from utils.metrics import Metrics
 import segmentation_models as sm
 import numpy as np
 
+from utils.seg_metrics.core import BinarySegmentationMetric
+
 
 class SegmentationMetricsTests(unittest.TestCase):
 
@@ -20,17 +22,18 @@ class SegmentationMetricsTests(unittest.TestCase):
         self.model = sm.Unet(activation='sigmoid')
         self.mask = self.__create_mask()
         self.predicted_mask = self.__create_predicted_mask()
+        self.binary_segmentation_metric = BinarySegmentationMetric()
 
     def __create_mask(self):
-        true_mask = np.array(
+        mask = np.array(
             [[1., 1., 1., 1., 1.],
              [1., 1., 1., 1., 1.],
              [0., 0., 0., 0., 0.],
              [0., 0., 0., 0., 0.],
              [0., 0., 0., 0., 0.]]
         )
-        true_mask = np.expand_dims(true_mask, axis=2)
-        return true_mask
+        mask = np.expand_dims(mask, axis=2)
+        return mask
 
     def __create_predicted_mask(self):
         predicted_mask = np.array(
@@ -46,26 +49,37 @@ class SegmentationMetricsTests(unittest.TestCase):
     def tearDown(self):
         self.simple_data_loader = None
         self.model = None
+        self.mask = None
+        self.predicted_mask = None
+        self.binary_segmentation_metric = None
 
     def test_true_positives(self):
         """TP: pixels correctly segmented as foreground"""
-        results = Metrics().calculate(self.mask, self.predicted_mask)
-        self.assertEqual(results.n_true_positives, 6)
+        # results = Metrics().calculate(self.mask, self.predicted_mask)
+        # self.assertEqual(results.n_true_positives, 6)
+        results = self.binary_segmentation_metric.calculate(self.mask, self.predicted_mask)
+        self.assertEqual(results["n_true_positives"], 6)
 
     def test_true_negatives(self):
         """TN: pixels correctly detected as background"""
-        results = Metrics().calculate(self.mask, self.predicted_mask)
-        self.assertEqual(results.n_true_negatives, 15)
+        # results = Metrics().calculate(self.mask, self.predicted_mask)
+        # self.assertEqual(results.n_true_negatives, 12)
+        results = self.binary_segmentation_metric.calculate(self.mask, self.predicted_mask)
+        self.assertEqual(results["n_true_negatives"], 12)
 
     def test_false_positives(self):
         """FP: pixels falsely segmented as foreground"""
-        results = Metrics().calculate(self.mask, self.predicted_mask)
-        self.assertEqual(results.n_false_positives, 3)
+        # results = Metrics().calculate(self.mask, self.predicted_mask)
+        # self.assertEqual(results.n_false_positives, 3)
+        results = self.binary_segmentation_metric.calculate(self.mask, self.predicted_mask)
+        self.assertEqual(results["n_false_positives"], 3)
 
     def test_false_negatives(self):
         """FN: pixels falsely detected as background"""
-        results = Metrics().calculate(self.mask, self.predicted_mask)
-        self.assertEqual(results.n_false_negatives, 4)
+        # results = Metrics().calculate(self.mask, self.predicted_mask)
+        # self.assertEqual(results.n_false_negatives, 4)
+        results = self.binary_segmentation_metric.calculate(self.mask, self.predicted_mask)
+        self.assertEqual(results["n_false_negatives"], 4)
 
     def test_calculate_segmentation_metrics(self):
         data = self.simple_data_loader.get_images_masks()
