@@ -1,27 +1,23 @@
 import utils.segmentation_metrics as sm
-import numpy as np
-
-import utils.segmentation_metrics as sm
 
 
 class Metrics:
 
-    def calculate(self, model, image, mask, strict=True, iou_threshold=0.65):
-        assert model is not None and image is not None and mask is not None
+    def calculate(self, mask, predicted_mask, strict=True, iou_threshold=0.65):
+        assert mask is not None and predicted_mask is not None
 
-        image = np.expand_dims(image, axis=0)
-        predicted_mask = model.predict(image).round().squeeze(axis=0)
         results = sm.calculate(mask, predicted_mask, strict=strict, iou_threshold=iou_threshold).results
         return results
 
-    def calculate_batch(self, model, images, masks, strict=True, iou_threshold=0.65):
-        assert model is not None and images is not None and masks is not None
+    def calculate_batch(self, masks, predicted_masks, strict=True, iou_threshold=0.65):
+        assert masks is not None and predicted_masks is not None
 
         metrics = []
 
-        for index, image in enumerate(images):
+        for index, image in enumerate(masks):
             mask = masks[index]
-            results = self.calculate(model, image, mask, strict=strict, iou_threshold=iou_threshold)
+            predicted_mask = predicted_masks[index]
+            results = self.calculate(mask, predicted_mask, strict=strict, iou_threshold=iou_threshold)
             metrics.append(results)
 
         return sm.MetricResults.merge(metrics)
