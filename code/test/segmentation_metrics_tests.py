@@ -53,6 +53,20 @@ class SegmentationMetricsTests(unittest.TestCase):
         self.predicted_mask = None
         self.binary_segmentation_metric = None
 
+    def test_segmentation_metrics(self):
+        results = self.binary_segmentation_metric.calculate(self.mask, self.predicted_mask)
+        self.assertEqual(results["n_true_positives"], 6)
+        self.assertEqual(results["n_true_negatives"], 12)
+        self.assertEqual(results["n_false_positives"], 3)
+        self.assertEqual(results["n_false_negatives"], 4)
+        self.assertEqual(results["iou"], 0.46153846153846156)
+        self.assertEqual(results["jaccard"], 0.46153846153846156)
+        self.assertEqual(results["dice"], 0.631578947368421)
+        self.assertEqual(results["f1_score"], 0.3157894736842105)
+        self.assertEqual(results["sensitivity"], 0.6)
+        self.assertEqual(results["specificity"], 0.8)
+        self.assertEqual(results["accuracy"], 0.72)
+
     def test_true_positives(self):
         """TP: pixels correctly segmented as foreground"""
         # results = Metrics().calculate(self.mask, self.predicted_mask)

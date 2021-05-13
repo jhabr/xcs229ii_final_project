@@ -17,8 +17,8 @@ class BinarySegmentationMetric:
             "n_true_negatives": self.true_negatives,
             "n_false_positives": self.false_positives,
             "n_false_negatives": self.false_negatives,
-            "iou": self.iou(mask, predicted_mask),
-            "jaccard_index": self.jaccard,
+            "iou": self.per_object_iou(mask, predicted_mask),
+            "jaccard": self.jaccard,
             "dice": self.dice,
             "f1_score": self.f1_score,
             "sensitivity": self.sensitivity,
@@ -27,6 +27,36 @@ class BinarySegmentationMetric:
         }
 
         return results
+
+    def calculate_batch(self, masks, predicted_masks) -> dict:
+        assert masks.shape == predicted_masks.shape
+        assert len(masks.shape) == 4
+
+        iou = []
+        for i in range(len(masks)):
+            mask = masks[i]
+            predicted_mask = predicted_masks[i]
+            results = self.calculate(mask, predicted_mask)
+            iou.append(results["iou"])
+
+        results = {
+            "n_images": len(masks),
+            "n_true_positives": self.true_positives,
+            "n_true_negatives": self.true_negatives,
+            "n_false_positives": self.false_positives,
+            "n_false_negatives": self.false_negatives,
+            "iou": np.mean(iou),
+            "jaccard": self.jaccard,
+            "dice": self.dice,
+            "f1_score": self.f1_score,
+            "sensitivity": self.sensitivity,
+            "specificity": self.specificity,
+            "accuracy": self.accuracy
+        }
+
+        return results
+
+
 
     def __calc_simple_metrics(self, mask, predicted_mask):
         assert mask.shape == predicted_mask.shape
@@ -75,7 +105,7 @@ class BinarySegmentationMetric:
     def fn(self):
         return self.false_negatives
 
-    def iou(self, mask, predicted_mask):
+    def per_object_iou(self, mask, predicted_mask):
         intersection = np.logical_and(mask, predicted_mask)
         union = np.logical_or(mask, predicted_mask)
         iou_score = np.sum(intersection) / np.sum(union)
