@@ -7,7 +7,7 @@ from utils.metrics import Metrics
 import segmentation_models as sm
 import numpy as np
 
-from utils.seg_metrics.core import BinarySegmentationMetric
+from utils.segmentation_metrics.core import BinarySegmentationMetric
 
 
 class SegmentationMetricsTests(unittest.TestCase):
@@ -83,7 +83,7 @@ class SegmentationMetricsTests(unittest.TestCase):
         self.assertEqual(results["n_false_positives"], 3)
         self.assertEqual(results["n_false_negatives"], 4)
         self.assertEqual(results["iou"], 0.46153846153846156)
-        self.assertEqual(results["jaccard"], 0.46153846153846156)
+        self.assertEqual(results["jaccard_index"], 0.46153846153846156)
         self.assertEqual(results["dice"], 0.631578947368421)
         self.assertEqual(results["f1_score"], 0.3157894736842105)
         self.assertEqual(results["sensitivity"], 0.6)
@@ -98,7 +98,7 @@ class SegmentationMetricsTests(unittest.TestCase):
         self.assertEqual(results["n_false_positives"], 0)
         self.assertEqual(results["n_false_negatives"], 0)
         self.assertEqual(results["iou"], 1.0)
-        self.assertEqual(results["jaccard"], 1.0)
+        self.assertEqual(results["jaccard_index"], 1.0)
         self.assertEqual(results["dice"], 1.0)
         self.assertEqual(results["f1_score"], 0.5)
         self.assertEqual(results["sensitivity"], 1.0)
@@ -115,40 +115,12 @@ class SegmentationMetricsTests(unittest.TestCase):
         self.assertEqual(results["n_false_positives"], 3)
         self.assertEqual(results["n_false_negatives"], 4)
         self.assertEqual(results["iou"], 0.7307692307692308)
-        self.assertEqual(results["jaccard"], 0.6818181818181818)
+        self.assertEqual(results["jaccard_index"], 0.6818181818181818)
         self.assertEqual(results["dice"], 0.8108108108108109)
         self.assertEqual(results["f1_score"], 0.40540540540540543)
         self.assertEqual(results["sensitivity"], 0.7894736842105263)
         self.assertEqual(results["specificity"], 0.9032258064516129)
         self.assertEqual(results["accuracy"], 0.86)
-
-    def test_true_positives(self):
-        """TP: pixels correctly segmented as foreground"""
-        # results = Metrics().calculate(self.mask, self.predicted_mask)
-        # self.assertEqual(results.n_true_positives, 6)
-        results = self.binary_segmentation_metric.calculate(self.mask, self.predicted_mask)
-        self.assertEqual(results["n_true_positives"], 6)
-
-    def test_true_negatives(self):
-        """TN: pixels correctly detected as background"""
-        # results = Metrics().calculate(self.mask, self.predicted_mask)
-        # self.assertEqual(results.n_true_negatives, 12)
-        results = self.binary_segmentation_metric.calculate(self.mask, self.predicted_mask)
-        self.assertEqual(results["n_true_negatives"], 12)
-
-    def test_false_positives(self):
-        """FP: pixels falsely segmented as foreground"""
-        # results = Metrics().calculate(self.mask, self.predicted_mask)
-        # self.assertEqual(results.n_false_positives, 3)
-        results = self.binary_segmentation_metric.calculate(self.mask, self.predicted_mask)
-        self.assertEqual(results["n_false_positives"], 3)
-
-    def test_false_negatives(self):
-        """FN: pixels falsely detected as background"""
-        # results = Metrics().calculate(self.mask, self.predicted_mask)
-        # self.assertEqual(results.n_false_negatives, 4)
-        results = self.binary_segmentation_metric.calculate(self.mask, self.predicted_mask)
-        self.assertEqual(results["n_false_negatives"], 4)
 
     def test_calculate_segmentation_metrics(self):
         data = self.simple_data_loader.get_images_masks()
@@ -162,8 +134,18 @@ class SegmentationMetricsTests(unittest.TestCase):
             mask=mask,
             predicted_mask=predicted_mask
         )
-        self.assertEqual(metrics.n_images, 1)
-        self.assertEqual(metrics.jaccard_similarity_index, 0.0)
+        self.assertEqual(metrics["n_images"], 1)
+        self.assertIsNotNone(metrics["n_true_positives"])
+        self.assertIsNotNone(metrics["n_true_negatives"])
+        self.assertIsNotNone(metrics["n_false_positives"])
+        self.assertIsNotNone(metrics["n_false_negatives"])
+        self.assertIsNotNone(metrics["iou"])
+        self.assertIsNotNone(metrics["jaccard_index"])
+        self.assertIsNotNone(metrics["dice"])
+        self.assertIsNotNone(metrics["f1_score"])
+        self.assertIsNotNone(metrics["sensitivity"])
+        self.assertIsNotNone(metrics["specificity"])
+        self.assertIsNotNone(metrics["accuracy"])
 
     def test_calculate_batch_segmentation_metrics(self):
         data = self.simple_data_loader.get_images_masks()
@@ -185,13 +167,18 @@ class SegmentationMetricsTests(unittest.TestCase):
             masks=masks,
             predicted_masks=predicted_masks
         )
-        self.assertEqual(metrics.n_images, 3)
-        self.assertEqual(metrics.jaccard_similarity_index, 0.0)
-        # self.assertEqual(metrics.n_false_negatives, 3)
-        # self.assertEqual(metrics.n_false_positives, 165)
-        # self.assertEqual(metrics.n_pred_labels, 12)
-        # self.assertEqual(metrics.n_true_labels, 12)
-        # self.assertEqual(metrics.n_true_positives, 0)
+        self.assertEqual(metrics["n_images"], 3)
+        self.assertIsNotNone(metrics["n_true_positives"])
+        self.assertIsNotNone(metrics["n_true_negatives"])
+        self.assertIsNotNone(metrics["n_false_positives"])
+        self.assertIsNotNone(metrics["n_false_negatives"])
+        self.assertIsNotNone(metrics["iou"])
+        self.assertIsNotNone(metrics["jaccard_index"])
+        self.assertIsNotNone(metrics["dice"])
+        self.assertIsNotNone(metrics["f1_score"])
+        self.assertIsNotNone(metrics["sensitivity"])
+        self.assertIsNotNone(metrics["specificity"])
+        self.assertIsNotNone(metrics["accuracy"])
 
 
 if __name__ == '__main__':
