@@ -21,11 +21,17 @@ class ImagePreprocessor:
         no_colors = len(np.unique(mask))
         if resize_to:
             mask = cv2.resize(src=mask, dsize=resize_to, interpolation=cv2.INTER_NEAREST)
+
         # normalization step to get numbers between (0, 1)
         if normalize:
             mask = mask / 255.0
+
+        # binarize mask if more that 2 unique colors
+        if no_colors > 2:
+            mask = np.around(mask)
         mask = np.expand_dims(mask, axis=2)
 
-        assert no_colors == len(np.unique(mask))
+        # assert mask has only two distinct colors
+        assert len(np.unique(mask)) == 2
 
         return mask

@@ -100,6 +100,40 @@ class DataLoaderTests(unittest.TestCase):
         self.assertNotEqual(indexes[0], indexes[2])
         self.assertNotEqual(indexes[1], indexes[2])
 
+    def test_full_train_dataset(self):
+        simple_data_loader = SimpleDataLoader(
+            images_folder_path=os.path.join(TRAIN_DIR, "images"),
+            masks_folder_path=os.path.join(TRAIN_DIR, "masks"),
+            resize_to=(256, 256)
+        )
+
+        data = simple_data_loader.get_images_masks()
+
+        self.assertEqual(len(data["images"]), 2700)
+        self.assertEqual(len(data["masks"]), 2700)
+
+    def test_full_masks_train_dataset(self):
+        simple_data_loader = SimpleDataLoader(
+            images_folder_path=os.path.join(TRAIN_DIR, "images"),
+            masks_folder_path=os.path.join(TRAIN_DIR, "masks"),
+            resize_to=(256, 256)
+        )
+
+        masks = simple_data_loader.get_masks()
+
+        self.assertEqual(len(masks), 2700)
+
+    def test_full_masks_validation_dataset(self):
+        simple_data_loader = SimpleDataLoader(
+            images_folder_path=os.path.join(TRAIN_DIR, "images"),
+            masks_folder_path=os.path.join(TRAIN_DIR, "masks"),
+            resize_to=(256, 256)
+        )
+
+        masks = simple_data_loader.get_masks()
+
+        self.assertEqual(len(masks), 2700)
+
 
 if __name__ == '__main__':
     unittest.main()
