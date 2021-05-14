@@ -14,7 +14,7 @@ def simple_baseline_test():
 
 
 def baseline_experiment():
-    model = sm.Unet(encoder_wieghts=None, activation='sigmoid')
+    model = sm.Unet(encoder_weights=None, activation='sigmoid')
     BaselineExperiment(identifier="baseline_01").run(
         batch_size=16,
         image_resolution=(256, 256),
