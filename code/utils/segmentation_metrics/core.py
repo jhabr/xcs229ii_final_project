@@ -18,7 +18,7 @@ class BinarySegmentationMetric:
             "n_true_negatives": self.tn,
             "n_false_positives": self.fp,
             "n_false_negatives": self.fn,
-            "iou": self.per_object_iou(mask, predicted_mask),
+            # "iou": self.per_object_iou(mask, predicted_mask),
             "jaccard_index": self.jaccard_index,
             "dice": self.dice,
             "f1_score": self.f1_score,
@@ -33,12 +33,12 @@ class BinarySegmentationMetric:
         assert masks.shape == predicted_masks.shape
         assert len(masks.shape) == 4
 
-        iou = []
+        # iou = []
         for i in range(len(masks)):
             mask = masks[i]
             predicted_mask = predicted_masks[i]
             results = self.calculate(mask, predicted_mask)
-            iou.append(results["iou"])
+            # iou.append(results["iou"])
 
         results = {
             "n_images": len(masks),
@@ -46,7 +46,7 @@ class BinarySegmentationMetric:
             "n_true_negatives": self.tn,
             "n_false_positives": self.fp,
             "n_false_negatives": self.fn,
-            "iou": np.mean(iou),
+            # "iou": np.mean(iou),
             "jaccard_index": self.jaccard_index,
             "dice": self.dice,
             "f1_score": self.f1_score,
