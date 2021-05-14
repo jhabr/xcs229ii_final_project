@@ -3,11 +3,12 @@ import numpy as np
 
 class BinarySegmentationMetric:
 
-    def __init__(self):
+    def __init__(self, jaccard_similarity_index_threshold=0.0):
         self.true_positives = []
         self.true_negatives = []
         self.false_positives = []
         self.false_negatives = []
+        self.jaccard_similarity_index_threshold = jaccard_similarity_index_threshold
 
     def calculate(self, mask, predicted_mask) -> dict:
         self.__calc_simple_metrics(mask, predicted_mask)
@@ -18,7 +19,7 @@ class BinarySegmentationMetric:
             "n_false_positives": self.fp,
             "n_false_negatives": self.fn,
             "iou": self.per_object_iou(mask, predicted_mask),
-            "jaccard": self.jaccard,
+            "jaccard_index": self.jaccard_index,
             "dice": self.dice,
             "f1_score": self.f1_score,
             "sensitivity": self.sensitivity,
@@ -46,7 +47,7 @@ class BinarySegmentationMetric:
             "n_false_positives": self.fp,
             "n_false_negatives": self.fn,
             "iou": np.mean(iou),
-            "jaccard": self.jaccard,
+            "jaccard_index": self.jaccard_index,
             "dice": self.dice,
             "f1_score": self.f1_score,
             "sensitivity": self.sensitivity,
@@ -96,18 +97,22 @@ class BinarySegmentationMetric:
 
     @property
     def tp(self):
+        """TP: pixels correctly segmented as foreground"""
         return sum(self.true_positives)
 
     @property
     def tn(self):
+        """TN: pixels correctly detected as background"""
         return sum(self.true_negatives)
 
     @property
     def fp(self):
+        """FP: pixels falsely segmented as foreground"""
         return sum(self.false_positives)
 
     @property
     def fn(self):
+        """FN: pixels falsely detected as background"""
         return sum(self.false_negatives)
 
     def per_object_iou(self, mask, predicted_mask):
@@ -117,8 +122,18 @@ class BinarySegmentationMetric:
         return iou_score
 
     @property
-    def jaccard(self):
+    def jaccard_similarity_index(self):
         return self.tp / (self.tp + self.fn + self.fp)
+
+    @property
+    def jaccard_index(self):
+        """
+        Based on https://clusteval.sdu.dk/1/clustering_quality_measures/7
+        """
+        if self.jaccard_similarity_index >= self.jaccard_similarity_index_threshold:
+            return self.jaccard_similarity_index
+        else:
+            return 0.0
 
     @property
     def dice(self):

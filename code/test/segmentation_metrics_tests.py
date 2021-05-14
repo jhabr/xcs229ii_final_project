@@ -163,7 +163,7 @@ class SegmentationMetricsTests(unittest.TestCase):
             predicted_mask=predicted_mask
         )
         self.assertEqual(metrics.n_images, 1)
-        self.assertEqual(metrics.jaccard, 0.0)
+        self.assertEqual(metrics.jaccard_similarity_index, 0.0)
 
     def test_calculate_batch_segmentation_metrics(self):
         data = self.simple_data_loader.get_images_masks()
@@ -186,7 +186,7 @@ class SegmentationMetricsTests(unittest.TestCase):
             predicted_masks=predicted_masks
         )
         self.assertEqual(metrics.n_images, 3)
-        self.assertEqual(metrics.jaccard, 0.0)
+        self.assertEqual(metrics.jaccard_similarity_index, 0.0)
         # self.assertEqual(metrics.n_false_negatives, 3)
         # self.assertEqual(metrics.n_false_positives, 165)
         # self.assertEqual(metrics.n_pred_labels, 12)
