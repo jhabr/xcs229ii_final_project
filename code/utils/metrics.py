@@ -1,17 +1,81 @@
-import umetrics as um
+from utils.segmentation_metrics.core import BinarySegmentationMetrics
 import numpy as np
 
 
 class Metrics:
 
-    def calculate(self, model, images, masks, strict=True, iou_threshold=0.65):
-        metrics = []
+    def calculate(self, mask, predicted_mask, jaccard_similarity_index_threshold=0.65):
+        assert mask is not None and predicted_mask is not None
 
-        for index, image in enumerate(images):
-            image = np.expand_dims(image, axis=0)
-            predicted_mask = model.predict(image).round().squeeze(axis=0)
-            mask = masks[index]
-            results = um.calculate(mask, predicted_mask, strict=strict, iou_threshold=iou_threshold).results
-            metrics.append(results)
+        metrics = BinarySegmentationMetrics(
+            jaccard_similarity_index_threshold=jaccard_similarity_index_threshold
+        )
+        metrics.calculate(mask=mask, predicted_mask=predicted_mask)
+        return {
+            "n_images": 1,
+            "n_true_positives": metrics.tp,
+            "n_true_negatives": metrics.tn,
+            "n_false_positives": metrics.fp,
+            "n_false_negatives": metrics.fn,
+            "iou_score": metrics.iou_score,
+            "threshold_jaccard_index": metrics.threshold_jaccard_index,
+            "jaccard_similarity_index": metrics.jaccard_similarity_index,
+            "dice": metrics.dice,
+            "f1_score": metrics.f1_score,
+            "sensitivity": metrics.sensitivity,
+            "specificity": metrics.specificity,
+            "accuracy": metrics.accuracy
+        }
 
-        return um.MetricResults.merge(metrics)
+    def calculate_batch(self, masks, predicted_masks, jaccard_similarity_index_threshold=0.65):
+        assert masks is not None and predicted_masks is not None
+
+        metrics = BinarySegmentationMetrics(
+            jaccard_similarity_index_threshold=jaccard_similarity_index_threshold
+        )
+
+        tp = []
+        tn = []
+        fp = []
+        fn = []
+        iou_scores = []
+        threshold_jaccard_indexes = []
+        jaccard_similarity_indexes = []
+        dice_scores = []
+        f1_scores = []
+        sensitivities = []
+        specificities = []
+        accuracies = []
+
+        for i in range(len(masks)):
+            mask = masks[i]
+            predicted_mask = predicted_masks[i]
+            metrics.calculate(mask=mask, predicted_mask=predicted_mask)
+            tp.append(metrics.tp)
+            tn.append(metrics.tn)
+            fp.append(metrics.fp)
+            fn.append(metrics.fn)
+            iou_scores.append(metrics.iou_score)
+            threshold_jaccard_indexes.append(metrics.threshold_jaccard_index)
+            jaccard_similarity_indexes.append(metrics.jaccard_similarity_index)
+            dice_scores.append(metrics.dice)
+            f1_scores.append(metrics.f1_score)
+            sensitivities.append(metrics.sensitivity)
+            specificities.append(metrics.specificity)
+            accuracies.append(metrics.accuracy)
+
+        return {
+            "n_images": len(masks),
+            "n_true_positives": sum(tp),
+            "n_true_negatives": sum(tn),
+            "n_false_positives": sum(fp),
+            "n_false_negatives": sum(fn),
+            "iou_score": np.mean(iou_scores),
+            "threshold_jaccard_index": np.mean(threshold_jaccard_indexes),
+            "jaccard_similarity_index": np.mean(jaccard_similarity_indexes),
+            "dice": np.mean(dice_scores),
+            "f1_score": np.mean(f1_scores),
+            "sensitivity": np.mean(sensitivities),
+            "specificity": np.mean(specificities),
+            "accuracy": np.mean(accuracies)
+        }
