@@ -13,10 +13,10 @@ class BinarySegmentationMetric:
         self.__calc_simple_metrics(mask, predicted_mask)
         results = {
             "n_images": 1,
-            "n_true_positives": self.true_positives,
-            "n_true_negatives": self.true_negatives,
-            "n_false_positives": self.false_positives,
-            "n_false_negatives": self.false_negatives,
+            "n_true_positives": self.tp,
+            "n_true_negatives": self.tn,
+            "n_false_positives": self.fp,
+            "n_false_negatives": self.fn,
             "iou": self.per_object_iou(mask, predicted_mask),
             "jaccard": self.jaccard,
             "dice": self.dice,
