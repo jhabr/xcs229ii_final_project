@@ -12,10 +12,10 @@ class BinarySegmentationMetrics:
         self.jaccard_similarity_index_threshold = jaccard_similarity_index_threshold
 
     def calculate(self, mask, predicted_mask):
-        self.__calc_simple_metrics(mask, predicted_mask)
+        self.__calculate_simple_metrics(mask, predicted_mask)
         self.__calculate_iou(mask, predicted_mask)
 
-    def __calc_simple_metrics(self, mask, predicted_mask):
+    def __calculate_simple_metrics(self, mask, predicted_mask):
         assert mask.shape == predicted_mask.shape
         assert len(mask.shape) == len(predicted_mask.shape) == 3
         # assert binary mask
