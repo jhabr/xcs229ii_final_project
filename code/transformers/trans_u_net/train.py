@@ -26,9 +26,9 @@ parser.add_argument('--max_epochs', type=int,
 parser.add_argument('--batch_size', type=int,
                     default=24, help='batch_size per gpu')
 parser.add_argument('--n_gpu', type=int, default=1, help='total gpu')
-parser.add_argument('--deterministic', type=int,  default=1,
+parser.add_argument('--deterministic', type=int, default=1,
                     help='whether use deterministic training')
-parser.add_argument('--base_lr', type=float,  default=0.01,
+parser.add_argument('--base_lr', type=float, default=0.01,
                     help='segmentation network learning rate')
 parser.add_argument('--img_size', type=int,
                     default=224, help='input patch size of network input')
@@ -41,7 +41,6 @@ parser.add_argument('--vit_name', type=str,
 parser.add_argument('--vit_patches_size', type=int,
                     default=16, help='vit_patches_size, default is 16')
 args = parser.parse_args()
-
 
 if __name__ == "__main__":
     if not args.deterministic:
@@ -72,13 +71,15 @@ if __name__ == "__main__":
     snapshot_path = snapshot_path + '_pretrain' if args.is_pretrain else snapshot_path
     snapshot_path += '_' + args.vit_name
     snapshot_path = snapshot_path + '_skip' + str(args.n_skip)
-    snapshot_path = snapshot_path + '_vitpatch' + str(args.vit_patches_size) if args.vit_patches_size!=16 else snapshot_path
-    snapshot_path = snapshot_path+'_'+str(args.max_iterations)[0:2]+'k' if args.max_iterations != 30000 else snapshot_path
-    snapshot_path = snapshot_path + '_epo' +str(args.max_epochs) if args.max_epochs != 30 else snapshot_path
-    snapshot_path = snapshot_path+'_bs'+str(args.batch_size)
+    snapshot_path = snapshot_path + '_vitpatch' + str(
+        args.vit_patches_size) if args.vit_patches_size != 16 else snapshot_path
+    snapshot_path = snapshot_path + '_' + str(args.max_iterations)[
+                                          0:2] + 'k' if args.max_iterations != 30000 else snapshot_path
+    snapshot_path = snapshot_path + '_epo' + str(args.max_epochs) if args.max_epochs != 30 else snapshot_path
+    snapshot_path = snapshot_path + '_bs' + str(args.batch_size)
     snapshot_path = snapshot_path + '_lr' + str(args.base_lr) if args.base_lr != 0.01 else snapshot_path
-    snapshot_path = snapshot_path + '_'+str(args.img_size)
-    snapshot_path = snapshot_path + '_s'+str(args.seed) if args.seed!=1234 else snapshot_path
+    snapshot_path = snapshot_path + '_' + str(args.img_size)
+    snapshot_path = snapshot_path + '_s' + str(args.seed) if args.seed != 1234 else snapshot_path
 
     if not os.path.exists(snapshot_path):
         os.makedirs(snapshot_path)
@@ -86,7 +87,9 @@ if __name__ == "__main__":
     config_vit.n_classes = args.num_classes
     config_vit.n_skip = args.n_skip
     if args.vit_name.find('R50') != -1:
-        config_vit.patches.grid = (int(args.img_size / args.vit_patches_size), int(args.img_size / args.vit_patches_size))
+        config_vit.patches.grid = (
+            int(args.img_size / args.vit_patches_size), int(args.img_size / args.vit_patches_size)
+        )
     net = ViT_seg(config_vit, img_size=args.img_size, num_classes=config_vit.n_classes).cuda()
     net.load_from(weights=np.load(config_vit.pretrained_path))
 

@@ -125,7 +125,12 @@ if __name__ == "__main__":
 
     log_folder = './test_log/test_log_' + args.exp
     os.makedirs(log_folder, exist_ok=True)
-    logging.basicConfig(filename=log_folder + '/'+snapshot_name+".txt", level=logging.INFO, format='[%(asctime)s.%(msecs)03d] %(message)s', datefmt='%H:%M:%S')
+    logging.basicConfig(
+        filename=log_folder + '/'+snapshot_name+".txt",
+        level=logging.INFO,
+        format='[%(asctime)s.%(msecs)03d] %(message)s',
+        datefmt='%H:%M:%S'
+    )
     logging.getLogger().addHandler(logging.StreamHandler(sys.stdout))
     logging.info(str(args))
     logging.info(snapshot_name)
