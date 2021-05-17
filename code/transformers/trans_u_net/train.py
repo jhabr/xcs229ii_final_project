@@ -15,7 +15,7 @@ parser = argparse.ArgumentParser()
 #                     default='../data/Synapse/train_npz', help='root dir for data')
 parser.add_argument('--dataset', type=str,
                     default='ISIC', help='experiment_name')
-parser.add_argument('--dataset_size', type=str,
+parser.add_argument('--dataset_size', type=int,
                     default=2700, help='dataset size. full dataset is 2700 train images.')
 parser.add_argument('--num_classes', type=int,
                     default=2, help='output channel of network')
@@ -95,4 +95,9 @@ if __name__ == "__main__":
     net.load_from(weights=np.load(config_vit.pretrained_path))
 
     trainer = {'ISIC': trainer_isic}
-    trainer[dataset_name](args, net, snapshot_path)
+    trainer[dataset_name](
+        args=args,
+        model=net,
+        snapshot_path=snapshot_path,
+        dataset_size=args.dataset_size
+    )
