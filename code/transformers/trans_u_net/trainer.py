@@ -97,21 +97,28 @@ def trainer_synapse(args, model, snapshot_path):
     return "Training Finished!"
 
 
-def trainer_isic(args, model, snapshot_path):
+def trainer_isic(args, model, snapshot_path, dataset_size=None):
     logging.getLogger().addHandler(logging.StreamHandler(sys.stdout))
     logging.info(str(args))
     base_lr = args.base_lr
     num_classes = args.num_classes
     batch_size = args.batch_size * args.n_gpu
     # max_iterations = args.max_iterations
-    db_train = ISICDataset(resize_to=(224, 224))
+    db_train = ISICDataset(resize_to=(args.image_size, args.image_size), size=dataset_size)
     print("The length of train set is: {}".format(len(db_train)))
 
     def worker_init_fn(worker_id):
         random.seed(args.seed + worker_id)
 
-    trainloader = DataLoader(db_train, batch_size=batch_size, shuffle=False, num_workers=8, pin_memory=True,
-                             worker_init_fn=worker_init_fn)
+    train_loader = DataLoader(
+        dataset=db_train,
+        batch_size=batch_size,
+        shuffle=False,
+        num_workers=8,
+        pin_memory=True,
+        worker_init_fn=worker_init_fn
+    )
+
     if args.n_gpu > 1:
         model = nn.DataParallel(model)
     model.train()
@@ -121,12 +128,12 @@ def trainer_isic(args, model, snapshot_path):
     writer = SummaryWriter(snapshot_path + '/log')
     iter_num = 0
     max_epoch = args.max_epochs
-    max_iterations = args.max_epochs * len(trainloader)  # max_epoch = max_iterations // len(trainloader) + 1
-    logging.info("{} iterations per epoch. {} max iterations ".format(len(trainloader), max_iterations))
+    max_iterations = args.max_epochs * len(train_loader)  # max_epoch = max_iterations // len(trainloader) + 1
+    logging.info("{} iterations per epoch. {} max iterations ".format(len(train_loader), max_iterations))
     best_performance = 0.0
     iterator = tqdm(range(max_epoch), ncols=70)
     for epoch_num in iterator:
-        for i_batch, sampled_batch in enumerate(trainloader):
+        for i_batch, sampled_batch in enumerate(train_loader):
             image_batch, label_batch = sampled_batch['image'], sampled_batch['label']
             image_batch, label_batch = image_batch.cuda(), label_batch.cuda()
             outputs = model(image_batch)

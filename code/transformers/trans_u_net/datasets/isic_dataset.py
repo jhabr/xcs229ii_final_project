@@ -7,11 +7,12 @@ from utils.dataloader import SimpleDataLoader
 
 
 class ISICDataset(Dataset):
-    def __init__(self, resize_to):
+    def __init__(self, resize_to, size=None):
         self.train_images_masks = SimpleDataLoader(
             images_folder_path=os.path.join(TRAIN_DIR, "images"),
             masks_folder_path=os.path.join(TRAIN_DIR, "masks"),
-            resize_to=resize_to
+            resize_to=resize_to,
+            size=size
         ).get_images_masks()
 
     def __len__(self):
