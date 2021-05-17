@@ -43,6 +43,8 @@ parser.add_argument('--vit_patches_size', type=int,
 args = parser.parse_args()
 
 if __name__ == "__main__":
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
     if not args.deterministic:
         cudnn.benchmark = True
         cudnn.deterministic = False
@@ -89,7 +91,7 @@ if __name__ == "__main__":
         config_vit.patches.grid = (
             int(args.img_size / args.vit_patches_size), int(args.img_size / args.vit_patches_size)
         )
-    net = ViT_seg(config_vit, img_size=args.img_size, num_classes=config_vit.n_classes).cuda()
+    net = ViT_seg(config_vit, img_size=args.img_size, num_classes=config_vit.n_classes).to(device)
     net.load_from(weights=np.load(config_vit.pretrained_path))
 
     trainer = {'ISIC': trainer_isic}

@@ -13,7 +13,7 @@ from tqdm import tqdm
 from datasets.dataset_synapse import Synapse_dataset
 from networks.vit_seg_modeling import CONFIGS as CONFIGS_ViT_seg
 from networks.vit_seg_modeling import VisionTransformer as ViT_seg
-from transformers.trans_u_net.utils import test_single_volume
+from transformers.trans_u_net.transformer_utils import test_single_volume
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--volume_path', type=str,
