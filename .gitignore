@@ -20,3 +20,4 @@ code/experiments/export/**/*.*
 !code/experiments/export/**/*.keep
 code/figures
 code/transformers/trans_u_net/model/imagenet21k
+code/transformers/model
