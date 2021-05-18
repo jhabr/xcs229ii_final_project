@@ -21,3 +21,4 @@ code/experiments/export/**/*.*
 code/figures
 code/transformers/trans_u_net/model/imagenet21k
 code/transformers/model
+model/TU_ISIC224
