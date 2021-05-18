@@ -4,6 +4,8 @@ import numpy as np
 class BinarySegmentationMetrics:
 
     def __init__(self, jaccard_similarity_index_threshold=0.0):
+        self.n_mask_pixels = 0
+        self.n_background_pixels = 0
         self.true_positives = 0
         self.true_negatives = 0
         self.false_positives = 0
@@ -23,6 +25,9 @@ class BinarySegmentationMetrics:
         # reshape to only 2 dimensions
         mask = mask.squeeze()
         predicted_mask = predicted_mask.squeeze()
+
+        self.n_mask_pixels = np.count_nonzero(mask == 1.0)
+        self.n_background_pixels = np.count_nonzero(mask == 0.0)
 
         height, width = mask.shape
 
