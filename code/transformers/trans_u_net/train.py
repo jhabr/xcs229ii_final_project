@@ -60,7 +60,7 @@ if __name__ == "__main__":
     dataset_size = args.dataset_size
     dataset_config = {
         'ISIC': {
-            'num_classes': 2,
+            'num_classes': 1,
         },
     }
     args.num_classes = dataset_config[dataset_name]['num_classes']
@@ -99,5 +99,6 @@ if __name__ == "__main__":
         args=args,
         model=net,
         snapshot_path=snapshot_path,
-        dataset_size=args.dataset_size
+        dataset_size=args.dataset_size,
+        device=device
     )

@@ -5,7 +5,8 @@ from scipy.ndimage import zoom
 import torch.nn as nn
 import SimpleITK as sitk
 
-
+# TODO: write own loss function:
+# https://github.com/kevinzakka/pytorch-goodies/blob/master/losses.py
 class DiceLoss(nn.Module):
     def __init__(self, n_classes):
         super(DiceLoss, self).__init__()

@@ -7,7 +7,7 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 from tensorboardX import SummaryWriter
-from torch.nn.modules.loss import CrossEntropyLoss
+from torch.nn.modules.loss import CrossEntropyLoss, BCEWithLogitsLoss
 from torch.utils.data import DataLoader
 from torchvision import transforms
 from tqdm import tqdm
@@ -97,7 +97,7 @@ def trainer_synapse(args, model, snapshot_path):
     return "Training Finished!"
 
 
-def trainer_isic(args, model, snapshot_path, dataset_size=None):
+def trainer_isic(args, model, snapshot_path, dataset_size=None, device="cpu"):
     logging.getLogger().addHandler(logging.StreamHandler(sys.stdout))
     logging.info(str(args))
     base_lr = args.base_lr
@@ -114,15 +114,18 @@ def trainer_isic(args, model, snapshot_path, dataset_size=None):
         dataset=db_train,
         batch_size=batch_size,
         shuffle=False,
-        num_workers=8,
+        #num_workers=8,
         pin_memory=True,
-        worker_init_fn=worker_init_fn
+        #worker_init_fn=worker_init_fn
     )
 
     if args.n_gpu > 1:
         model = nn.DataParallel(model)
     model.train()
-    ce_loss = CrossEntropyLoss()
+    # TODO: maybe use BCEWITHLOGITSLOSS here: https://pytorch.org/docs/stable/generated/torch.nn.BCEWithLogitsLoss.html
+    # https://discuss.pytorch.org/t/understanding-channels-in-binary-segmentation/79966
+    # ce_loss = CrossEntropyLoss()
+    ce_loss = BCEWithLogitsLoss()
     dice_loss = DiceLoss(num_classes)
     optimizer = optim.SGD(model.parameters(), lr=base_lr, momentum=0.9, weight_decay=0.0001)
     writer = SummaryWriter(snapshot_path + '/log')
@@ -135,10 +138,16 @@ def trainer_isic(args, model, snapshot_path, dataset_size=None):
     for epoch_num in iterator:
         for i_batch, sampled_batch in enumerate(train_loader):
             image_batch, label_batch = sampled_batch['image'], sampled_batch['label']
-            image_batch, label_batch = image_batch.cuda(), label_batch.cuda()
+            # is: (batch_size, height, width, channels)
+            # input: (batch_size, channels, height, width)
+            image_batch, label_batch = image_batch.permute(0, 3, 1, 2), label_batch.permute(0, 3, 1, 2)
+            image_batch, label_batch = image_batch.to(device), label_batch.to(device)
+
             outputs = model(image_batch)
-            loss_ce = ce_loss(outputs, label_batch[:].long())
-            loss_dice = dice_loss(outputs, label_batch, softmax=True)
+            # loss_ce = ce_loss(outputs, label_batch[:].long())
+            loss_ce = ce_loss(outputs, label_batch)
+            # loss_dice = dice_loss(outputs, label_batch, softmax=True)
+            loss_dice = dice_loss(outputs, label_batch)
             loss = 0.5 * loss_ce + 0.5 * loss_dice
             optimizer.zero_grad()
             loss.backward()
