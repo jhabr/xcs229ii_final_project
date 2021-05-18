@@ -14,7 +14,9 @@ class Metrics:
         return {
             "n_images": 1,
             "n_true_positives": metrics.tp,
+            "n_true_positives_%": metrics.tp / metrics.n_mask_pixels,
             "n_true_negatives": metrics.tn,
+            "n_true_negatives_%": metrics.tn / metrics.n_background_pixels,
             "n_false_positives": metrics.fp,
             "n_false_negatives": metrics.fn,
             "iou_score": metrics.iou_score,
@@ -34,6 +36,8 @@ class Metrics:
             jaccard_similarity_index_threshold=jaccard_similarity_index_threshold
         )
 
+        mask_pixels = []
+        background_pixels = []
         tp = []
         tn = []
         fp = []
@@ -51,6 +55,8 @@ class Metrics:
             mask = masks[i]
             predicted_mask = predicted_masks[i]
             metrics.calculate(mask=mask, predicted_mask=predicted_mask)
+            mask_pixels.append(metrics.n_mask_pixels)
+            background_pixels.append(metrics.n_background_pixels)
             tp.append(metrics.tp)
             tn.append(metrics.tn)
             fp.append(metrics.fp)
@@ -67,7 +73,9 @@ class Metrics:
         return {
             "n_images": len(masks),
             "n_true_positives": sum(tp),
+            "n_true_positives_%": sum(tp) / sum(mask_pixels),
             "n_true_negatives": sum(tn),
+            "n_true_negatives_%": sum(tn) / sum(background_pixels),
             "n_false_positives": sum(fp),
             "n_false_negatives": sum(fn),
             "iou_score": np.mean(iou_scores),
