@@ -34,7 +34,7 @@ def experiment_id_11():
     model = sm.Unet(encoder_weights='imagenet', activation='sigmoid')
     BaselineExperiment(identifier="unet_11").run(
         batch_size=16,
-        image_resolution=(192, 256),
+        image_resolution=(256, 192),
         model=model
     )
 
