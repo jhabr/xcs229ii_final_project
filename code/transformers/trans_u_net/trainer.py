@@ -173,7 +173,8 @@ def trainer_isic(args, model, snapshot_path, dataset_size=None, device="cpu"):
                 writer.add_image('train/Image', image, iter_num)
                 outputs = torch.argmax(torch.softmax(outputs, dim=1), dim=1, keepdim=True)
                 writer.add_image('train/Prediction', outputs[1, ...] * 50, iter_num)
-                labs = label_batch[1, ...].unsqueeze(0) * 50
+                # labs = label_batch[1, ...].unsqueeze(0) * 50
+                labs = label_batch[1, ...] * 50
                 writer.add_image('train/GroundTruth', labs, iter_num)
 
         save_interval = 50  # int(max_epoch/6)
