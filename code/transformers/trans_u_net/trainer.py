@@ -13,7 +13,8 @@ from torchvision import transforms
 from tqdm import tqdm
 
 from transformers.trans_u_net.datasets.isic_dataset import ISICDataset
-from transformers.trans_u_net.transformer_utils import DiceLoss
+# from transformers.trans_u_net.transformer_utils import DiceLoss
+from transformers.trans_u_net.losses import DiceLoss, JaccardLoss
 
 
 def trainer_synapse(args, model, snapshot_path):
@@ -126,7 +127,8 @@ def trainer_isic(args, model, snapshot_path, dataset_size=None, device="cpu"):
     # https://discuss.pytorch.org/t/understanding-channels-in-binary-segmentation/79966
     # ce_loss = CrossEntropyLoss()
     ce_loss = BCEWithLogitsLoss()
-    dice_loss = DiceLoss(num_classes)
+    # dice_loss = DiceLoss()
+    jaccard_loss = JaccardLoss(mode='binary')
     optimizer = optim.SGD(model.parameters(), lr=base_lr, momentum=0.9, weight_decay=0.0001)
     writer = SummaryWriter(snapshot_path + '/log')
     iter_num = 0
@@ -147,8 +149,10 @@ def trainer_isic(args, model, snapshot_path, dataset_size=None, device="cpu"):
             # loss_ce = ce_loss(outputs, label_batch[:].long())
             loss_ce = ce_loss(outputs, label_batch)
             # loss_dice = dice_loss(outputs, label_batch, softmax=True)
-            loss_dice = dice_loss(outputs, label_batch)
-            loss = 0.5 * loss_ce + 0.5 * loss_dice
+            # loss_dice = dice_loss(outputs, label_batch)
+            loss_jaccard = jaccard_loss(outputs, label_batch)
+            # loss = 0.5 * loss_ce + 0.5 * loss_dice
+            loss = 0.5 * loss_ce + 0.5 * loss_jaccard
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
