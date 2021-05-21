@@ -6,8 +6,8 @@ import numpy as np
 import torch
 import torch.backends.cudnn as cudnn
 
-from networks.vit_seg_modeling import CONFIGS as CONFIGS_ViT_seg
-from networks.vit_seg_modeling import VisionTransformer as ViT_seg
+from backbones.vit_seg_modeling import CONFIGS as CONFIGS_ViT_seg
+from backbones.vit_seg_modeling import VisionTransformer as ViT_seg
 from trainer import trainer_synapse, trainer_isic
 
 parser = argparse.ArgumentParser()
@@ -18,7 +18,7 @@ parser.add_argument('--dataset', type=str,
 parser.add_argument('--dataset_size', type=int,
                     default=2700, help='dataset size. full dataset is 2700 train images.')
 parser.add_argument('--num_classes', type=int,
-                    default=2, help='output channel of network')
+                    default=1, help='output channel of network')
 parser.add_argument('--max_iterations', type=int,
                     default=30000, help='maximum epoch number to train')
 parser.add_argument('--max_epochs', type=int,
@@ -56,6 +56,7 @@ if __name__ == "__main__":
     np.random.seed(args.seed)
     torch.manual_seed(args.seed)
     torch.cuda.manual_seed(args.seed)
+
     dataset_name = args.dataset
     dataset_size = args.dataset_size
     dataset_config = {
@@ -67,8 +68,9 @@ if __name__ == "__main__":
     # args.root_path = dataset_config[dataset_name]['root_path']
     # args.list_dir = dataset_config[dataset_name]['list_dir']
     args.is_pretrain = True
-    args.exp = 'TU_' + dataset_name + str(args.img_size)
-    snapshot_path = "../model/{}/{}".format(args.exp, 'TU')
+    # args.exp = 'TU_' + dataset_name + str(args.img_size)
+    args.experiment = f"TU_{dataset_name}_{str(args.img_size)}"
+    snapshot_path = f"export/{args.experiment}/TU"
     snapshot_path = snapshot_path + '_pretrain' if args.is_pretrain else snapshot_path
     snapshot_path += '_' + args.vit_name
     snapshot_path = snapshot_path + '_skip' + str(args.n_skip)
@@ -91,13 +93,14 @@ if __name__ == "__main__":
         config_vit.patches.grid = (
             int(args.img_size / args.vit_patches_size), int(args.img_size / args.vit_patches_size)
         )
-    net = ViT_seg(config_vit, img_size=args.img_size, num_classes=config_vit.n_classes).to(device)
-    net.load_from(weights=np.load(config_vit.pretrained_path))
+    model = ViT_seg(config_vit, img_size=args.img_size, num_classes=config_vit.n_classes).to(device)
+    # load backbone (pretrained on ImageNet)
+    model.load_from(weights=np.load(config_vit.pretrained_path))
 
     trainer = {'ISIC': trainer_isic}
     trainer[dataset_name](
         args=args,
-        model=net,
+        model=model,
         snapshot_path=snapshot_path,
         dataset_size=args.dataset_size,
         device=device
