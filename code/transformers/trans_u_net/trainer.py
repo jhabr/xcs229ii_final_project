@@ -12,9 +12,10 @@ from torch.utils.data import DataLoader
 from torchvision import transforms
 from tqdm import tqdm
 
+from constants import VALIDATION_DIR, TRAIN_DIR
 from transformers.trans_u_net.datasets.isic_dataset import ISICDataset
 # from transformers.trans_u_net.transformer_utils import DiceLoss
-from transformers.trans_u_net.losses import DiceLoss, JaccardLoss
+from transformers.trans_u_net.losses import DiceLoss, JaccardLoss, SoftBCEWithLogitsLoss
 
 
 def trainer_synapse(args, model, snapshot_path):
@@ -105,7 +106,8 @@ def trainer_isic(args, model, snapshot_path, dataset_size=None, device="cpu"):
     num_classes = args.num_classes
     batch_size = args.batch_size * args.n_gpu
     # max_iterations = args.max_iterations
-    db_train = ISICDataset(resize_to=(args.img_size, args.img_size), size=dataset_size)
+    db_train = ISICDataset(resize_to=(args.img_size, args.img_size), size=dataset_size, image_dir=TRAIN_DIR)
+    db_validation = ISICDataset(resize_to=(args.img_size, args.img_size), size=dataset_size, image_dir=VALIDATION_DIR)
     print("The length of train set is: {}".format(len(db_train)))
 
     def worker_init_fn(worker_id):
@@ -120,13 +122,24 @@ def trainer_isic(args, model, snapshot_path, dataset_size=None, device="cpu"):
         #worker_init_fn=worker_init_fn
     )
 
+    validation_loader = DataLoader(
+        dataset=db_validation,
+        batch_size=batch_size,
+        shuffle=False,
+        # num_workers=8,
+        pin_memory=True,
+        # worker_init_fn=worker_init_fn
+    )
+
     if args.n_gpu > 1:
         model = nn.DataParallel(model)
+
     model.train()
     # TODO: maybe use BCEWITHLOGITSLOSS here: https://pytorch.org/docs/stable/generated/torch.nn.BCEWithLogitsLoss.html
     # https://discuss.pytorch.org/t/understanding-channels-in-binary-segmentation/79966
     # ce_loss = CrossEntropyLoss()
     ce_loss = BCEWithLogitsLoss()
+    # ce_loss = SoftBCEWithLogitsLoss()
     # dice_loss = DiceLoss()
     jaccard_loss = JaccardLoss(mode='binary')
     optimizer = optim.SGD(model.parameters(), lr=base_lr, momentum=0.9, weight_decay=0.0001)
@@ -139,10 +152,9 @@ def trainer_isic(args, model, snapshot_path, dataset_size=None, device="cpu"):
     iterator = tqdm(range(max_epoch), ncols=70)
     for epoch_num in iterator:
         for i_batch, sampled_batch in enumerate(train_loader):
-            image_batch, label_batch = sampled_batch['image'], sampled_batch['label']
+            image_batch, label_batch = sampled_batch
             # is: (batch_size, height, width, channels)
             # input: (batch_size, channels, height, width)
-            image_batch, label_batch = image_batch.permute(0, 3, 1, 2), label_batch.permute(0, 3, 1, 2)
             image_batch, label_batch = image_batch.to(device), label_batch.to(device)
 
             outputs = model(image_batch)
@@ -171,7 +183,7 @@ def trainer_isic(args, model, snapshot_path, dataset_size=None, device="cpu"):
                 image = image_batch[1, 0:1, :, :]
                 image = (image - image.min()) / (image.max() - image.min())
                 writer.add_image('train/Image', image, iter_num)
-                outputs = torch.argmax(torch.softmax(outputs, dim=1), dim=1, keepdim=True)
+                outputs = torch.sigmoid(outputs).round()
                 writer.add_image('train/Prediction', outputs[1, ...] * 50, iter_num)
                 # labs = label_batch[1, ...].unsqueeze(0) * 50
                 labs = label_batch[1, ...] * 50
