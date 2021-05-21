@@ -19,6 +19,10 @@ code/data/*
 code/experiments/export/**/*.*
 !code/experiments/export/**/*.keep
 code/figures
+code/transformers/trans_u_net/export/*
+!code/transformers/trans_u_net/export/.keep
 code/transformers/trans_u_net/model/imagenet21k
 code/transformers/model
 model/TU_ISIC224
+code/transformers/trans_u_net/models/imagenet21k
+code/transformers/trans_u_net/lightning_logs
