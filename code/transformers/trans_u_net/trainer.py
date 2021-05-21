@@ -14,8 +14,7 @@ from tqdm import tqdm
 
 from constants import VALIDATION_DIR, TRAIN_DIR
 from transformers.trans_u_net.datasets.isic_dataset import ISICDataset
-# from transformers.trans_u_net.transformer_utils import DiceLoss
-from transformers.trans_u_net.losses import DiceLoss, JaccardLoss, SoftBCEWithLogitsLoss
+from transformers.trans_u_net.losses import DiceLoss, JaccardLoss
 
 
 def trainer_synapse(args, model, snapshot_path):
