@@ -8,8 +8,9 @@ import torch.backends.cudnn as cudnn
 
 from backbones.vit_seg_modeling import CONFIGS as CONFIGS_ViT_seg
 from backbones.vit_seg_modeling import VisionTransformer as ViT_seg
-from trainer import trainer_synapse, trainer_isic
-from my_trainer import my_trainer_isic
+from constants import EXPERIMENT_DIR, EXPORT_DIR
+from trainer import trainer_isic
+from transformers.trans_u_net.my_trainer import my_trainer_isic
 
 parser = argparse.ArgumentParser()
 # parser.add_argument('--root_path', type=str,
@@ -66,12 +67,9 @@ if __name__ == "__main__":
         },
     }
     args.num_classes = dataset_config[dataset_name]['num_classes']
-    # args.root_path = dataset_config[dataset_name]['root_path']
-    # args.list_dir = dataset_config[dataset_name]['list_dir']
     args.is_pretrain = True
-    # args.exp = 'TU_' + dataset_name + str(args.img_size)
     args.experiment = f"TU_{dataset_name}_{str(args.img_size)}"
-    snapshot_path = f"export/{args.experiment}/TU"
+    snapshot_path = os.path.join(EXPORT_DIR, "trans_u_net", "original", f"{args.experiment}")
     snapshot_path = snapshot_path + '_pretrain' if args.is_pretrain else snapshot_path
     snapshot_path += '_' + args.vit_name
     snapshot_path = snapshot_path + '_skip' + str(args.n_skip)
@@ -99,7 +97,6 @@ if __name__ == "__main__":
     model.load_from(weights=np.load(config_vit.pretrained_path))
 
     trainer = {'ISIC': trainer_isic}
-    # trainer = {'ISIC': my_trainer_isic}
     trainer[dataset_name](
         args=args,
         model=model,
@@ -107,3 +104,10 @@ if __name__ == "__main__":
         dataset_size=args.dataset_size,
         device=device
     )
+
+    # my_trainer = {'ISIC': my_trainer_isic}
+    # my_trainer[dataset_name](
+    #     args=args,
+    #     transformer=model,
+    #     dataset_size=args.dataset_size
+    # )
