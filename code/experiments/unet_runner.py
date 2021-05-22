@@ -39,7 +39,47 @@ def experiment_id_11():
     )
 
 
+def experiment_id_12():
+    model = sm.Unet(encoder_weights='imagenet', activation='sigmoid')
+    BaselineExperiment(identifier="unet_12").run(
+        batch_size=16,
+        image_resolution=(256, 192),
+        model=model
+    )
+
+
+def experiment_id_13():
+    model = sm.Unet(encoder_weights='imagenet', activation='sigmoid')
+    BaselineExperiment(identifier="unet_13").run(
+        batch_size=16,
+        image_resolution=(256, 192),
+        model=model
+    )
+
+
+def experiment_id_14():
+    model = sm.Unet(encoder_weights='imagenet', activation='sigmoid')
+    BaselineExperiment(identifier="unet_14").run(
+        batch_size=16,
+        image_resolution=(256, 192),
+        model=model
+    )
+
+
+def experiment_id_15():
+    model = sm.Unet(encoder_weights='imagenet', activation='sigmoid')
+    BaselineExperiment(identifier="unet_15").run(
+        batch_size=16,
+        image_resolution=(256, 192),
+        model=model
+    )
+
+
 if __name__ == '__main__':
     experiment_test()
     # experiment_id_10()
     # experiment_id_11()
+    # experiment_id_12()
+    # experiment_id_13()
+    # experiment_id_14()
+    # experiment_id_15()
