@@ -31,7 +31,7 @@ def experiment_test():
     TransUNetExperiment(
         identifier="transunet_00",
         model=model,
-        epochs=1,
+        epochs=2,
         dataset_size=1
     ).run()
 
