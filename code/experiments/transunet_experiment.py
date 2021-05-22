@@ -18,14 +18,14 @@ class TransUNetExperiment:
             dataset=ISICDataset(resize_to=resize_to, size=dataset_size, image_dir=TRAIN_DIR),
             batch_size=batch_size,
             shuffle=False,
-            num_workers=8,
+            num_workers=4,
             pin_memory=True
         )
         self.validation_loader = DataLoader(
             dataset=ISICDataset(resize_to=resize_to, size=dataset_size, image_dir=VALIDATION_DIR),
             batch_size=batch_size,
             shuffle=False,
-            num_workers=8,
+            num_workers=4,
             pin_memory=True
         )
         self.trainer = Trainer(
