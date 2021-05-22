@@ -51,7 +51,7 @@ $ conda activate py37_pytorch
 
 Install pip packages:
 ```bash
-$ pip3 pip install pytorch-lightning
+$ pip3 install pytorch-lightning
 ```
 
 #### Training
