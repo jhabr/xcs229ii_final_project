@@ -43,6 +43,7 @@ class TransUNetLightning(LightningModule):
         image_batch, label_batch = batch
         outputs = self.model(image_batch)
         loss = self.bce_loss(outputs, label_batch) + self.jaccard_loss(outputs, label_batch)
+        self.logger.experiment.add_scalars("losses", {"train_loss": loss})
         self.log("train_loss", loss)
         return loss
 
@@ -50,6 +51,7 @@ class TransUNetLightning(LightningModule):
         image_batch, label_batch = batch
         outputs = self.model(image_batch)
         loss = self.bce_loss(outputs, label_batch) + self.jaccard_loss(outputs, label_batch)
+        self.logger.experiment.add_scalars("losses", {"val_loss": loss})
         self.log("val_loss", loss)
         return loss
 
