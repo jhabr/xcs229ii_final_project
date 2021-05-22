@@ -17,4 +17,4 @@ mkdir "${azure_dir}"
 
 scp -P 61999 -r \
   ${azure_instance}:${project_dir}/code/experiments/export \
-  "${azure_dir}"/baseline
+  "${azure_dir}"/trans_u_net
