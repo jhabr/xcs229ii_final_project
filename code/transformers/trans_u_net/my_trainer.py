@@ -43,15 +43,15 @@ class TransUNetLightning(LightningModule):
         image_batch, label_batch = batch
         outputs = self.model(image_batch)
         loss = 0.5 * self.bce_loss(outputs, label_batch) + 0.5 * self.jaccard_loss(outputs, label_batch)
-        logs = {"train_loss": loss}
-        return {"loss": loss, "log": logs}
+        self.log("train_loss", loss)
+        return loss
 
     def validation_step(self, batch, batch_idx):
         image_batch, label_batch = batch
         outputs = self.model(image_batch)
         loss = 0.5 * self.bce_loss(outputs, label_batch) + 0.5 * self.jaccard_loss(outputs, label_batch)
-        logs = {"val_loss": loss}
-        return {"loss": loss, "log": logs}
+        self.log("val_loss", loss)
+        return loss
 
 
 def my_trainer_isic(args, transformer, dataset_size=None):
