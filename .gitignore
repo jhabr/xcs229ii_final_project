@@ -26,3 +26,4 @@ code/transformers/model
 model/TU_ISIC224
 code/transformers/trans_u_net/models/imagenet21k
 code/transformers/trans_u_net/lightning_logs
+code/export
