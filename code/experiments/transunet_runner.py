@@ -1,6 +1,6 @@
 import numpy as np
 
-from experiments.experiment import TransUNetExperiment
+from experiments.transunet_experiment import TransUNetExperiment
 from transformers.trans_u_net.backbones.vit_seg_modeling import CONFIGS, VisionTransformer
 
 """

@@ -1,4 +1,4 @@
-from experiments.experiment import BaselineExperiment
+from experiments.baseline_experiment import BaselineExperiment
 import segmentation_models as sm
 
 """
