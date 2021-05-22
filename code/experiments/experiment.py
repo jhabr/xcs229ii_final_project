@@ -2,9 +2,9 @@ from datetime import datetime
 import os
 import pickle
 
-from baseline.trainer import Trainer
 from constants import EXPORT_DIR
 import segmentation_models as sm
+from baseline.baselinetrainer import BaselineTrainer
 
 
 class Experiment:
@@ -43,7 +43,7 @@ class BaselineExperiment(Experiment):
             self, model: sm.Unet, backbone: str = None, dataset_size=None, batch_size=None, epochs=None,
             image_resolution=None
     ):
-        return Trainer(model=model, backbone=backbone).train_from_simple_dataloader(
+        return BaselineTrainer(model=model, backbone=backbone).train_from_simple_dataloader(
             identifier=self.identifier,
             dataset_size=dataset_size,
             batch_size=batch_size,

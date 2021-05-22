@@ -22,7 +22,6 @@ class ImageGenerator:
             images_folder_path=os.path.join(ImageGenerator.ORIGINAL_IMAGE_DIR, "images"),
             masks_folder_path=os.path.join(ImageGenerator.ORIGINAL_IMAGE_DIR, "masks"),
             normalize=False,
-            resize=False,
             random_selection=True,
             size=size
         )
@@ -54,7 +53,7 @@ class ImageGenerator:
                 f"augmented_mask_{index}.png"
             )
             cv2.imwrite(augmented_image_file_path, cv2.cvtColor(augmented_image, cv2.COLOR_RGB2BGR))
-            cv2.imwrite(augmented_mask_file_name, cv2.cvtColor(augmented_mask, cv2.COLOR_RGB2BGR))
+            cv2.imwrite(augmented_mask_file_name, cv2.cvtColor(augmented_mask, cv2.COLOR_RGB2GRAY))
 
         print("Done.")
 
