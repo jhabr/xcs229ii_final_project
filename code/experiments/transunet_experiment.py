@@ -31,7 +31,8 @@ class TransUNetExperiment:
         self.trainer = Trainer(
             default_root_dir=os.path.join(EXPORT_DIR, "trans_u_net", "lightning"),
             max_epochs=epochs,
-            callbacks=callbacks
+            callbacks=callbacks,
+            gpus=1
         )
         self.lightning_model = TransUNetLightning(model=self.model)
 
