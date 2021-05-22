@@ -12,21 +12,21 @@ from transformers.trans_u_net.datasets.isic_dataset import ISICDataset
 from transformers.trans_u_net.losses import JaccardLoss
 
 
-class TransUNetLightnig(LightningModule):
-    def __init__(self, transformer, learning_rate=0.01):
+class TransUNetLightning(LightningModule):
+    def __init__(self, model, learning_rate=0.00003):
         super().__init__()
-        self.transformer = transformer
+        self.model = model
         self.learning_rate = learning_rate
         # self.bce_loss = SoftBCEWithLogitsLoss()
         self.bce_loss = BCEWithLogitsLoss()
         self.jaccard_loss = JaccardLoss(mode='binary')
 
     def forward(self, x):
-        prediction = self.transformer(x)
+        prediction = self.model(x)
         return prediction
 
     def configure_optimizers(self):
-        optimizer = optim.SGD(self.transformer.parameters(), lr=self.learning_rate, momentum=0.9, weight_decay=0.0001)
+        optimizer = optim.SGD(self.model.parameters(), lr=self.learning_rate, momentum=0.9, weight_decay=0.0001)
         lr_scheduler = {
             'scheduler': ReduceLROnPlateau(
                 optimizer=optimizer,
@@ -41,16 +41,17 @@ class TransUNetLightnig(LightningModule):
 
     def training_step(self, batch, batch_idx):
         image_batch, label_batch = batch
-        outputs = self.transformer(image_batch)
+        outputs = self.model(image_batch)
         loss = 0.5 * self.bce_loss(outputs, label_batch) + 0.5 * self.jaccard_loss(outputs, label_batch)
-        self.log('train_loss', loss)
-        return loss
+        logs = {"train_loss": loss}
+        return {"loss": loss, "log": logs}
 
     def validation_step(self, batch, batch_idx):
         image_batch, label_batch = batch
-        outputs = self.transformer(image_batch)
+        outputs = self.model(image_batch)
         loss = 0.5 * self.bce_loss(outputs, label_batch) + 0.5 * self.jaccard_loss(outputs, label_batch)
-        self.log('val_loss', loss)
+        logs = {"val_loss": loss}
+        return {"loss": loss, "log": logs}
 
 
 def my_trainer_isic(args, transformer, dataset_size=None):
@@ -79,8 +80,6 @@ def my_trainer_isic(args, transformer, dataset_size=None):
         pin_memory=True
     )
 
-    export_path = os.path.join(TRANSFORMER_DIR, "trans_u_net", "export", "lightning")
-
     callbacks = [
         EarlyStopping(
             monitor='val_loss',
@@ -89,15 +88,13 @@ def my_trainer_isic(args, transformer, dataset_size=None):
             patience=8
         ),
         ModelCheckpoint(
-            dirpath=export_path,
-            filename="{epoch}-{val_loss:.2f}.pth",
             monitor='val_loss',
             verbose=True,
             save_weights_only=False,
             mode='min'
         )
     ]
-    lightning_model = TransUNetLightnig(transformer=transformer)
+    lightning_model = TransUNetLightning(model=transformer)
     trainer = Trainer(
         default_root_dir=os.path.join(TRANSFORMER_DIR, "trans_u_net", "export", "lightning"),
         max_epochs=10,
