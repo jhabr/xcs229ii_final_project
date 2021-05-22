@@ -29,10 +29,10 @@ def get_model(vit_name, patch_size=16, image_size=(224, 224)):
 def experiment_test():
     model = get_model(vit_name="R50-ViT-B_16")
     TransUNetExperiment(
-        identifier="transunet_50",
+        identifier="transunet_00",
         model=model,
         epochs=1,
-        dataset_size=10
+        dataset_size=1
     ).run()
 
 
