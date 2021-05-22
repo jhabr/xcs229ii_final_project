@@ -16,3 +16,19 @@ train_args=(--dataset ISIC --dataset_size 10 --batch_size=2 --max_epochs=10 --vi
 #experiment 50
 #train_args=(--dataset ISIC --vit_name R50-ViT-B_16)
 #(python3 "$train_script" "${train_args[@]}" 2>&1) >> "$PYTHONPATH"/logs/transunet_original.log &
+
+#experiment 51
+#train_args=(--dataset ISIC --vit_name R50-ViT-B_16 --img_size 128)
+#(python3 "$train_script" "${train_args[@]}" 2>&1) >> "$PYTHONPATH"/logs/transunet_original.log &
+
+#experiment 53
+#train_args=(--dataset ISIC --vit_name R50-ViT-B_32 --img_size 128)
+#(python3 "$train_script" "${train_args[@]}" 2>&1) >> "$PYTHONPATH"/logs/transunet_original.log &
+
+#experiment 54
+#train_args=(--dataset ISIC --vit_name ViT-B_16 --img_size 128)
+#(python3 "$train_script" "${train_args[@]}" 2>&1) >> "$PYTHONPATH"/logs/transunet_original.log &
+
+#experiment 55
+#train_args=(--dataset ISIC --vit_name ViT-B_16 --img_size 128)
+#(python3 "$train_script" "${train_args[@]}" 2>&1) >> "$PYTHONPATH"/logs/transunet_original.log &
