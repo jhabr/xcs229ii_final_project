@@ -7,7 +7,7 @@ from constants import TRAIN_DIR, VALIDATION_DIR, EXPORT_DIR
 from utils.dataloader import SimpleDataLoader
 
 
-class Trainer:
+class BaselineTrainer:
     BATCH_SIZE = 16
     EPOCHS = 100
     LEARNING_RATE = 3e-5
@@ -87,14 +87,14 @@ class Trainer:
     ):
         training_data = self.get_training_data(dataset_size=dataset_size, image_resolution=image_resolution)
         validation_data = self.get_validation_data(dataset_size=dataset_size, image_resolution=image_resolution)
-        batch_size = batch_size if batch_size else Trainer.BATCH_SIZE
+        batch_size = batch_size if batch_size else BaselineTrainer.BATCH_SIZE
 
         return self.compile_model(learning_rate=learning_rate).fit(
             x=training_data['images'],
             y=training_data['masks'],
             batch_size=batch_size,
             steps_per_epoch=len(training_data['images']) // batch_size,
-            epochs=epochs if epochs else Trainer.EPOCHS,
+            epochs=epochs if epochs else BaselineTrainer.EPOCHS,
             validation_data=(validation_data["images"], validation_data["masks"]),
             validation_steps=len(validation_data['images']) // batch_size,
             callbacks=self.__get_callbacks(identifier=identifier),
