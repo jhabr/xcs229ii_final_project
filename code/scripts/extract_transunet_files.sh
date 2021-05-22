@@ -9,12 +9,12 @@ azure_dir=~/ai/courses/stanford/3-ML_RL/final_project/xcs229ii_final_project/cod
 mkdir "${azure_dir}"
 
 scp -P 61999 -r \
-  ${azure_instance}:${project_dir}/code/logs \
+  ${azure_instance}:${project_dir}/code/logs/transunet* \
   "${azure_dir}"
 
 # Extract baseline binaries (history, model weights) from Azure Instance
 mkdir "${azure_dir}"
 
 scp -P 61999 -r \
-  ${azure_instance}:${project_dir}/code/experiments/export \
+  ${azure_instance}:${project_dir}/code/experiments/export/trans_u_net \
   "${azure_dir}"/trans_u_net
