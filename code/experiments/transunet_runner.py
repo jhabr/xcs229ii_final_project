@@ -1,4 +1,5 @@
 import numpy as np
+from pytorch_lightning.callbacks import EarlyStopping, ModelCheckpoint
 
 from experiments.transunet_experiment import TransUNetExperiment
 from transformers.trans_u_net.backbones.vit_seg_modeling import CONFIGS, VisionTransformer
@@ -26,6 +27,23 @@ def get_model(vit_name, patch_size=16, image_size=(224, 224)):
     return model
 
 
+def get_callbacks():
+    return [
+        EarlyStopping(
+            monitor='val_loss',
+            min_delta=1e-5,
+            verbose=True,
+            patience=8
+        ),
+        ModelCheckpoint(
+            monitor='val_loss',
+            verbose=True,
+            save_weights_only=False,
+            mode='min'
+        )
+    ]
+
+
 def experiment_test():
     model = get_model(vit_name="R50-ViT-B_16")
     TransUNetExperiment(
@@ -33,6 +51,7 @@ def experiment_test():
         model=model,
         epochs=2,
         dataset_size=1
+        callbacks=get_callbacks()
     ).run()
 
 
@@ -40,7 +59,8 @@ def experiment_id_50():
     model = get_model(vit_name="R50-ViT-B_16")
     TransUNetExperiment(
         identifier="transunet_50",
-        model=model
+        model=model,
+        callbacks=get_callbacks()
     ).run()
 
 
