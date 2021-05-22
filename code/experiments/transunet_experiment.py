@@ -4,7 +4,7 @@ from pytorch_lightning import Trainer
 from torch.utils.data import DataLoader
 from datetime import datetime
 
-from constants import EXPORT_DIR
+from constants import EXPORT_DIR, TRAIN_DIR, VALIDATION_DIR
 from transformers.trans_u_net.datasets.isic_dataset import ISICDataset
 from transformers.trans_u_net.my_trainer import TransUNetLightning
 
