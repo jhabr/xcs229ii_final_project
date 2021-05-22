@@ -55,8 +55,9 @@ $ pip3 pip install pytorch-lightning
 ```
 
 #### Training
+1. Download ViT models from [google cloud](https://console.cloud.google.com/storage/browser/vit_models?pli=1&prefix=&forceOnObjectsSortingFiltering=false).
 
-Run baseline training:
+2. Run baseline training:
 ```bash
 $ bash scripts/run_transunet_experiments.sh
 ```
