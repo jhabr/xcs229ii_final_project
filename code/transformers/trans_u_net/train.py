@@ -9,6 +9,7 @@ import torch.backends.cudnn as cudnn
 from backbones.vit_seg_modeling import CONFIGS as CONFIGS_ViT_seg
 from backbones.vit_seg_modeling import VisionTransformer as ViT_seg
 from trainer import trainer_synapse, trainer_isic
+from my_trainer import my_trainer_isic
 
 parser = argparse.ArgumentParser()
 # parser.add_argument('--root_path', type=str,
@@ -98,6 +99,7 @@ if __name__ == "__main__":
     model.load_from(weights=np.load(config_vit.pretrained_path))
 
     trainer = {'ISIC': trainer_isic}
+    # trainer = {'ISIC': my_trainer_isic}
     trainer[dataset_name](
         args=args,
         model=model,
