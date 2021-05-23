@@ -63,6 +63,34 @@ class DataLoaderTests(unittest.TestCase):
         # make sure that mask has only two colors
         self.assertEqual(len(np.unique(data["masks"][0])), 2)
 
+    def test_seam_carving(self):
+        simple_data_loader = SimpleDataLoader(
+            images_folder_path=os.path.join(TRAIN_DIR, "images"),
+            masks_folder_path=os.path.join(TRAIN_DIR, "masks"),
+            resize_to=(256, 192),
+            size=10,
+            seam_carving=True
+        )
+        data = simple_data_loader.get_images_masks()
+        self.assertEqual(len(data.keys()), 2)
+        self.assertEqual(len(data["images"]), 10)
+        self.assertEqual(len(data["masks"]), 10)
+        self.assertEqual(data["images"][0].shape, (256, 192, 3))
+        self.assertEqual(data["masks"][0].shape, (256, 192, 1))
+
+        Visualisation().plot_images(
+            image=data["images"][0].squeeze(),
+            mask=data["masks"][0].squeeze()
+        )
+        Visualisation().plot_images(
+            image=data["images"][3].squeeze(),
+            mask=data["masks"][3].squeeze()
+        )
+        Visualisation().plot_images(
+            image=data["images"][9].squeeze(),
+            mask=data["masks"][9].squeeze()
+        )
+
     def test_load_original_size_data(self):
         simple_data_loader = SimpleDataLoader(
             backbone='resnet34',
