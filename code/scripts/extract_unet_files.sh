@@ -16,5 +16,5 @@ scp -P 61999 -r \
 mkdir "${azure_dir}"
 
 scp -P 61999 -r \
-  ${azure_instance}:${project_dir}/code/experiments/export/unet_13* \
+  ${azure_instance}:${project_dir}/code/experiments/export/unet_14* \
   "${azure_dir}"/
