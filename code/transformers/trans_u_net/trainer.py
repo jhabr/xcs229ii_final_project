@@ -15,7 +15,7 @@ from transformers.trans_u_net.datasets.isic_dataset import ISICDataset
 from transformers.trans_u_net.losses import JaccardLoss
 
 
-def trainer_isic(args, model, snapshot_path, dataset_size=None, device="cpu"):
+def trainer_isic(args, model, snapshot_path, device="cpu"):
     logger = logging.getLogger()
     logger.addHandler(logging.StreamHandler(sys.stdout))
     logger.setLevel(logging.DEBUG)
@@ -23,8 +23,8 @@ def trainer_isic(args, model, snapshot_path, dataset_size=None, device="cpu"):
     base_lr = args.base_lr
     batch_size = args.batch_size * args.n_gpu
     # max_iterations = args.max_iterations
-    db_train = ISICDataset(resize_to=(args.img_size, args.img_size), size=dataset_size, image_dir=TRAIN_DIR)
-    db_validation = ISICDataset(resize_to=(args.img_size, args.img_size), size=dataset_size, image_dir=VALIDATION_DIR)
+    db_train = ISICDataset(resize_to=(args.img_size, args.img_size), size=args.train_dataset_size, image_dir=TRAIN_DIR)
+    db_validation = ISICDataset(resize_to=(args.img_size, args.img_size), size=args.valid_dataset_size, image_dir=VALIDATION_DIR)
     print("The length of train set is: {}".format(len(db_train)))
     print("The length of validation set is: {}".format(len(db_validation)))
 
@@ -79,7 +79,7 @@ def trainer_isic(args, model, snapshot_path, dataset_size=None, device="cpu"):
             outputs = model(image_batch)
             loss_ce = ce_loss(outputs, label_batch)
             loss_jaccard = jaccard_loss(outputs, label_batch)
-            loss = 0.5 * loss_ce + 0.5 * loss_jaccard
+            loss = loss_ce + loss_jaccard
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
@@ -116,7 +116,7 @@ def trainer_isic(args, model, snapshot_path, dataset_size=None, device="cpu"):
             outputs = model(image_batch)
             loss_ce = ce_loss(outputs, label_batch)
             loss_jaccard = jaccard_loss(outputs, label_batch)
-            loss = 0.5 * loss_ce + 0.5 * loss_jaccard
+            loss = loss_ce + loss_jaccard
 
             valid_iter_num = valid_iter_num + 1
             writer.add_scalar('info/val_total_loss', loss, valid_iter_num)

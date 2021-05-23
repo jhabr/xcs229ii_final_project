@@ -17,12 +17,14 @@ parser = argparse.ArgumentParser()
 #                     default='../data/Synapse/train_npz', help='root dir for data')
 parser.add_argument('--dataset', type=str,
                     default='ISIC', help='experiment_name')
-parser.add_argument('--dataset_size', type=int,
-                    default=2700, help='dataset size. full dataset is 2700 train images.')
+parser.add_argument('--train_dataset_size', type=int,
+                    default=2700, help='Train dataset size. full dataset is 2700 images.')
+parser.add_argument('--valid_dataset_size', type=int,
+                    default=300, help='Validation dataset size. full dataset is 300 images.')
 parser.add_argument('--num_classes', type=int,
                     default=1, help='output channel of network')
 parser.add_argument('--max_iterations', type=int,
-                    default=10000, help='maximum epoch number to train')
+                    default=11000, help='maximum epoch number to train')
 parser.add_argument('--max_epochs', type=int,
                     default=40, help='maximum epoch number to train')
 parser.add_argument('--batch_size', type=int,
@@ -60,7 +62,6 @@ if __name__ == "__main__":
     torch.cuda.manual_seed(args.seed)
 
     dataset_name = args.dataset
-    dataset_size = args.dataset_size
     dataset_config = {
         'ISIC': {
             'num_classes': 1,
@@ -101,7 +102,6 @@ if __name__ == "__main__":
         args=args,
         model=model,
         snapshot_path=snapshot_path,
-        dataset_size=args.dataset_size,
         device=device
     )
 
