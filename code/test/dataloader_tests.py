@@ -75,8 +75,8 @@ class DataLoaderTests(unittest.TestCase):
         self.assertEqual(len(data.keys()), 2)
         self.assertEqual(len(data["images"]), 10)
         self.assertEqual(len(data["masks"]), 10)
-        self.assertEqual(data["images"][0].shape, (256, 192, 3))
-        self.assertEqual(data["masks"][0].shape, (256, 192, 1))
+        self.assertEqual(data["images"][0].shape, (192, 256, 3))
+        self.assertEqual(data["masks"][0].shape, (192, 256, 1))
 
         Visualisation().plot_images(
             image=data["images"][0].squeeze(),
