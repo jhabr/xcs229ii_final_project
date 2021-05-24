@@ -13,7 +13,7 @@ class ImagePreprocessor:
                 image = sm.resize(
                     src=image,
                     size=resize_to,
-                    energy_mode='backward',
+                    energy_mode='forward',
                     order='width-first',
                     keep_mask=None
                 )
