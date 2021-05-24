@@ -39,6 +39,20 @@ The images in each dataset show a spectrum of variations in terms of quality (e.
 \end{figure}
 
 
+\subsection{Models}
+\subsubsection{Baseline}
+
+We use U-Net \citep{unet-2015-ronneberger} with a VGG16 backbone (feature extractor) as our baseline model. The U-Net architecture was specifically designed for medical segmentation tasks and has been widely adopted as a baseline model in research. Figure \ref{u_net} shows the U-Net architecture.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\columnwidth]{assets/u_net.pdf}
+\caption[Lesion Images]
+{The U-Net architecture.}
+\label{u_net}
+\end{figure}
+
+
 % \begin{itemize}
 %   \item Define your task in a clear, concise manner
 %   \item Formally describe each model under investigation. Include your baseline and experimental models at minimum.
