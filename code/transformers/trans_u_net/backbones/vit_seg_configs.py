@@ -19,7 +19,6 @@ def get_b16_config():
 
     config.classifier = 'seg'
     config.representation_size = None
-    config.resnet_pretrained_path = None
     config.pretrained_path = os.path.join(TRANSFORMER_DIR, "trans_u_net", "models", "imagenet21k", "ViT-B_16.npz")
     config.patch_size = 16
 
@@ -88,7 +87,6 @@ def get_l16_config():
 
     # custom
     config.classifier = 'seg'
-    config.resnet_pretrained_path = None
     config.pretrained_path = os.path.join(TRANSFORMER_DIR, "trans_u_net", "models", "imagenet21k", "ViT-L_16.npz")
     config.decoder_channels = (256, 128, 64, 16)
     config.n_classes = 1
@@ -105,9 +103,7 @@ def get_r50_l16_config():
     config.resnet.width_factor = 1
 
     config.classifier = 'seg'
-    config.resnet_pretrained_path = os.path.join(
-        TRANSFORMER_DIR, "trans_u_net", "models", "imagenet21k", "R50+ViT-B_16.npz"
-    )
+    config.pretrained_path = os.path.join(TRANSFORMER_DIR, "trans_u_net", "models", "imagenet21k", "R50+ViT-B_16.npz")
     config.decoder_channels = (256, 128, 64, 16)
     config.skip_channels = [512, 256, 64, 16]
     config.n_classes = 1
@@ -124,9 +120,7 @@ def get_r50_l32_config():
     config.resnet.width_factor = 1
 
     config.classifier = 'seg'
-    config.resnet_pretrained_path = os.path.join(
-        TRANSFORMER_DIR, "trans_u_net", "models", "imagenet21k", "R50+ViT-L_32.npz"
-    )
+    config.pretrained_path = os.path.join(TRANSFORMER_DIR, "trans_u_net", "models", "imagenet21k", "R50+ViT-L_32.npz")
 
     config.decoder_channels = (256, 128, 64, 32)
     config.skip_channels = [512, 256, 64, 32]
