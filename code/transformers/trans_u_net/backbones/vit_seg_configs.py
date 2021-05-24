@@ -114,6 +114,27 @@ def get_r50_l16_config():
     return config
 
 
+def get_r50_l32_config():
+    """Returns the Resnet50 + ViT-L/32 configuration. customized """
+    config = get_l32_config()
+    config.patches.size = (32, 32)
+    config.resnet = ml_collections.ConfigDict()
+    config.resnet.num_layers = (3, 4, 9)
+    config.resnet.width_factor = 1
+
+    config.classifier = 'seg'
+    config.resnet_pretrained_path = os.path.join(
+        TRANSFORMER_DIR, "trans_u_net", "models", "imagenet21k", "R50+ViT-L_32.npz"
+    )
+
+    config.decoder_channels = (256, 128, 64, 32)
+    config.skip_channels = [512, 256, 64, 32]
+    config.n_classes = 1
+    config.activation = 'sigmoid'
+
+    return config
+
+
 def get_l32_config():
     """Returns the ViT-L/32 configuration."""
     config = get_l16_config()
