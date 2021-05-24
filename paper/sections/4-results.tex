@@ -1,5 +1,59 @@
 \section{Results}
 
+\subsection{Metrics}
+
+Jaccard similarity index (A and B are sets):
+
+\begin{equation}
+  J(A, B) = \frac{|A \cup B|}{|A \cap B|}
+\end{equation}
+
+can be calculated as:
+
+\begin{equation}
+  J(A, B) = \frac{TP}{TP + FN + FP}
+\end{equation}
+
+Threshold Jaccard Index:
+
+\begin{equation}
+  TJ(A, B) = \begin{cases}
+      J(A, B), & \text{if}\ J(A, B) \geq{0.65} \\
+      0, & \text{otherwise}
+    \end{cases}
+\end{equation}
+
+Dice:
+
+\begin{equation}
+  Dice = \frac{2 * TP}{2 * TP + FN + FP}
+\end{equation}
+
+F1-Score:
+
+\begin{equation}
+  Dice = \frac{TP}{2 * TP + FN + FP}
+\end{equation}
+
+Sensitivity:
+
+\begin{equation}
+  Sensitivity = \frac{TP}{TP + FN}
+\end{equation}
+
+Specificity:
+
+\begin{equation}
+  Sensitivity = \frac{TN}{TN + FP}
+\end{equation}
+
+Accuracy:
+
+\begin{equation}
+  Accuracy = \frac{TP + TN}{TP + FP + TN + FN}
+\end{equation}
+
+
 \begin{itemize}
   \item Describe all Machine Learning Theory techniques used to evaluate the success of the model.
   \item Describe how results compare to previous research.
