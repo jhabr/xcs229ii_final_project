@@ -24,6 +24,7 @@ def get_b16_config():
     config.patch_size = 16
 
     config.decoder_channels = (256, 128, 64, 16)
+    config.skip_channels = [512, 256, 64, 16]
     config.n_classes = 1
     config.activation = 'sigmoid'
     return config
