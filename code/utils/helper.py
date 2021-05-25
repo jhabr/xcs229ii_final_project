@@ -58,13 +58,14 @@ class Visualisation:
 
 
 class NotebookHelper:
-    def load_images(self, image_dir, backbone=None, load_masks=False, resize_to=None, size=None):
+    def load_images(self, image_dir, backbone=None, load_masks=False, resize_to=None, size=None, normalize=True):
         simple_data_loader = SimpleDataLoader(
             backbone=backbone,
             images_folder_path=os.path.join(image_dir, "images"),
             masks_folder_path=os.path.join(image_dir, "masks"),
             resize_to=resize_to,
-            size=size
+            size=size,
+            normalize=normalize
         )
 
         images = simple_data_loader.get_images()
