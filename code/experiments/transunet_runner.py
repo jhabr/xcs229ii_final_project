@@ -50,7 +50,7 @@ def experiment_test():
         identifier="transunet_00",
         model=model,
         epochs=2,
-        dataset_size=1
+        dataset_size=1,
         callbacks=get_callbacks()
     ).run()
 
