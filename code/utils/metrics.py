@@ -29,7 +29,7 @@ class Metrics:
             "accuracy": metrics.accuracy
         }
 
-    def calculate_batch(self, masks, predicted_masks, jaccard_similarity_index_threshold=0.65):
+    def calculate_batch(self, masks, predicted_masks, jaccard_similarity_index_threshold=0.65, normalize=False):
         assert masks is not None and predicted_masks is not None
 
         metrics = BinarySegmentationMetrics(
@@ -54,6 +54,11 @@ class Metrics:
         for i in range(len(masks)):
             mask = masks[i]
             predicted_mask = predicted_masks[i]
+
+            if normalize:
+                mask = mask / 255.0
+                predicted_mask = predicted_mask / 255.0
+
             metrics.calculate(mask=mask, predicted_mask=predicted_mask)
             mask_pixels.append(metrics.n_mask_pixels)
             background_pixels.append(metrics.n_background_pixels)

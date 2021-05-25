@@ -85,7 +85,10 @@ class BinarySegmentationMetrics:
 
     @property
     def jaccard_similarity_index(self):
-        return self.tp / (self.tp + self.fn + self.fp)
+        denominator = (self.tp + self.fn + self.fp)
+        if denominator == 0:
+            return 0
+        return self.tp / denominator
 
     @property
     def threshold_jaccard_index(self):
@@ -99,20 +102,35 @@ class BinarySegmentationMetrics:
 
     @property
     def dice(self):
-        return (2 * self.tp) / (2 * self.tp + self.fn + self.fp)
+        denominator = (2 * self.tp + self.fn + self.fp)
+        if denominator == 0:
+            return 0
+        return (2 * self.tp) / denominator
 
     @property
     def f1_score(self):
-        return self.tp / (2 * self.tp + self.fn + self.fp)
+        denominator = (2 * self.tp + self.fn + self.fp)
+        if denominator == 0:
+            return 0
+        return self.tp / denominator
 
     @property
     def sensitivity(self):
-        return self.tp / (self.tp + self.fn)
+        denominator = (self.tp + self.fn)
+        if denominator == 0:
+            return 0
+        return self.tp / denominator
 
     @property
     def specificity(self):
-        return self.tn / (self.tn + self.fp)
+        denominator = (self.tn + self.fp)
+        if denominator == 0:
+            return 0
+        return self.tn / denominator
 
     @property
     def accuracy(self):
-        return (self.tp + self.tn) / (self.tp + self.fp + self.tn + self.fn)
+        denominator = (self.tp + self.fp + self.tn + self.fn)
+        if denominator == 0:
+            return 0
+        return (self.tp + self.tn) / denominator
