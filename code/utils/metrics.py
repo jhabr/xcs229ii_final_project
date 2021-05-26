@@ -4,8 +4,12 @@ import numpy as np
 
 class Metrics:
 
-    def calculate(self, mask, predicted_mask, jaccard_similarity_index_threshold=0.65):
+    def calculate(self, mask, predicted_mask, jaccard_similarity_index_threshold=0.65, normalize=False):
         assert mask is not None and predicted_mask is not None
+
+        if normalize:
+            mask = mask / 255.0
+            predicted_mask = predicted_mask / 255.0
 
         metrics = BinarySegmentationMetrics(
             jaccard_similarity_index_threshold=jaccard_similarity_index_threshold

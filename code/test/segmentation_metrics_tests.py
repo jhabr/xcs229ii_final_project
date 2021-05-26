@@ -190,6 +190,57 @@ class SegmentationMetricsTests(unittest.TestCase):
         self.assertIsNotNone(metrics["specificity"])
         self.assertIsNotNone(metrics["accuracy"])
 
+    def test_calculate_metrics_full_size_image(self):
+        simple_data_loader = SimpleDataLoader(
+            images_folder_path=os.path.join(TRAIN_DIR, "images"),
+            masks_folder_path=os.path.join(TRAIN_DIR, "masks"),
+            resize_to=(1024, 768),
+            size=1,
+            normalize=False
+        )
+        data = simple_data_loader.get_images_masks()
+        images = data["images"]
+        masks = data["masks"]
+        self.assertEqual(len(images), 1)
+        self.assertEqual(len(masks), 1)
+
+        test_image = np.expand_dims(images[0], axis=0)
+        test_mask = masks[0]
+        predicted_mask = self.model.predict(test_image).round().squeeze(axis=0)
+        # denormalize as prediction is already normalized
+        predicted_mask = predicted_mask * 255.0
+
+        metrics = self.metrics.calculate(
+            mask=test_mask,
+            predicted_mask=predicted_mask,
+            normalize=True
+        )
+        self.assertEqual(metrics["n_images"], 1)
+        self.assertIsNotNone(metrics["n_true_positives"])
+        self.assertNotEqual(metrics["n_true_positives"], 0)
+        self.assertIsNotNone(metrics["n_true_negatives"])
+        self.assertNotEqual(metrics["n_true_negatives"], 0)
+        self.assertIsNotNone(metrics["n_false_positives"])
+        self.assertNotEqual(metrics["n_false_positives"], 0)
+        self.assertIsNotNone(metrics["n_false_negatives"])
+        self.assertNotEqual(metrics["n_false_negatives"], 0)
+        self.assertIsNotNone(metrics["iou_score"])
+        self.assertNotEqual(metrics["iou_score"], 0)
+        self.assertIsNotNone(metrics["threshold_jaccard_index"])
+        self.assertEqual(metrics["threshold_jaccard_index"], 0)
+        self.assertIsNotNone(metrics["jaccard_similarity_index"])
+        self.assertNotEqual(metrics["jaccard_similarity_index"], 0)
+        self.assertIsNotNone(metrics["dice"])
+        self.assertNotEqual(metrics["dice"], 0)
+        self.assertIsNotNone(metrics["f1_score"])
+        self.assertNotEqual(metrics["f1_score"], 0)
+        self.assertIsNotNone(metrics["sensitivity"])
+        self.assertNotEqual(metrics["sensitivity"], 0)
+        self.assertIsNotNone(metrics["specificity"])
+        self.assertNotEqual(metrics["specificity"], 0)
+        self.assertIsNotNone(metrics["accuracy"])
+        self.assertNotEqual(metrics["accuracy"], 0)
+
 
 if __name__ == '__main__':
     unittest.main()
