@@ -10,6 +10,7 @@ class Metrics:
         metrics = BinarySegmentationMetrics(
             jaccard_similarity_index_threshold=jaccard_similarity_index_threshold
         )
+        #print("test: ", np.shape(mask), "predicted: ", np.shape(predicted_mask))
         metrics.calculate(mask=mask, predicted_mask=predicted_mask)
         return {
             "n_images": 1,
@@ -50,7 +51,7 @@ class Metrics:
         sensitivities = []
         specificities = []
         accuracies = []
-
+ 
         for i in range(len(masks)):
             mask = masks[i]
             predicted_mask = predicted_masks[i]
@@ -92,3 +93,68 @@ class Metrics:
             "specificity": np.mean(specificities),
             "accuracy": np.mean(accuracies)
         }
+        
+        
+    def calculate_batch_different_sizes(self, masks, predicted_masks, normalize=True, jaccard_similarity_index_threshold=0.65):
+        assert masks is not None and predicted_masks is not None
+
+        metrics = BinarySegmentationMetrics(
+            jaccard_similarity_index_threshold=jaccard_similarity_index_threshold
+        )
+
+        mask_pixels = []
+        background_pixels = []
+        tp = []
+        tn = []
+        fp = []
+        fn = []
+        iou_scores = []
+        threshold_jaccard_indexes = []
+        jaccard_similarity_indexes = []
+        dice_scores = []
+        f1_scores = []
+        sensitivities = []
+        specificities = []
+        accuracies = []
+
+        for i in range(len(masks)):
+            print("Processing image: ", i, " out of ", len(masks))
+            mask = masks[i]
+            predicted_mask = predicted_masks[i]
+            predicted_mask = np.expand_dims(predicted_mask, axis=2)    
+            if normalize:
+                mask = mask/255
+                predicted_mask = predicted_mask/255
+            metrics.calculate(mask=mask, predicted_mask=predicted_mask)
+            mask_pixels.append(metrics.n_mask_pixels)
+            background_pixels.append(metrics.n_background_pixels)
+            tp.append(metrics.tp)
+            tn.append(metrics.tn)
+            fp.append(metrics.fp)
+            fn.append(metrics.fn)
+            iou_scores.append(metrics.iou_score)
+            threshold_jaccard_indexes.append(metrics.threshold_jaccard_index)
+            jaccard_similarity_indexes.append(metrics.jaccard_similarity_index)
+            dice_scores.append(metrics.dice)
+            f1_scores.append(metrics.f1_score)
+            sensitivities.append(metrics.sensitivity)
+            specificities.append(metrics.specificity)
+            accuracies.append(metrics.accuracy)
+
+        return {
+            "n_images": len(masks),
+            "n_true_positives": sum(tp),
+            "n_true_positives_%": sum(tp) / sum(mask_pixels),
+            "n_true_negatives": sum(tn),
+            "n_true_negatives_%": sum(tn) / sum(background_pixels),
+            "n_false_positives": sum(fp),
+            "n_false_negatives": sum(fn),
+            "iou_score": np.mean(iou_scores),
+            "threshold_jaccard_index": np.mean(threshold_jaccard_indexes),
+            "jaccard_similarity_index": np.mean(jaccard_similarity_indexes),
+            "dice": np.mean(dice_scores),
+            "f1_score": np.mean(f1_scores),
+            "sensitivity": np.mean(sensitivities),
+            "specificity": np.mean(specificities),
+            "accuracy": np.mean(accuracies)
+        }        
