@@ -54,7 +54,8 @@ def trainer_isic(args, model, snapshot_path, device="cpu"):
     ce_loss = BCEWithLogitsLoss()
     # ce_loss = SoftBCEWithLogitsLoss()
     jaccard_loss = JaccardLoss(mode='binary')
-    optimizer = optim.SGD(model.parameters(), lr=base_lr, momentum=0.9, weight_decay=0.0001)
+    # optimizer = optim.SGD(model.parameters(), lr=base_lr, momentum=0.9, weight_decay=0.0001)
+    optimizer = optim.Adam(model.parameters(), lr=base_lr)
     writer = SummaryWriter(snapshot_path + '/log')
     train_iter_num = 0
     valid_iter_num = 0
