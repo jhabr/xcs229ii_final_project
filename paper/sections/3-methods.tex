@@ -54,6 +54,21 @@ We use U-Net \citep{unet-2015-ronneberger} with a VGG16 backbone (feature extrac
 \end{figure}
 
 
+
+\subsubsection{CNN \& Transformer based Models}
+
+To address our hypothesis we use different model architectures and model compositions from both CNN and Transformer deep neural network classes.
+
+\par
+We use five different flavors of the U-Net as CNN based models. The flavors differ mainly in the feature extractor used for the encoder part of the U-Net. Specifically, we use VGG16, Densenet121, EfficientNet0, Efficientnet4 and inceptionv3 as backbones. We also initialize the U-Net encoder with weights pre-trained on ImageNet which leads to an overall better performance. All model setups use the sigmoid activation function for the last layer with the number of segmentation classes set to 1  for binary image segmentation.
+
+\par
+For transformers based models we used the Medical Transformer and TransUNet architecture. Medical Transformer is an encoder-decoder architecture which adds an additional control mechanism called Gated Axial-Attention in the self-attention module (encoder) as well as a Local-Global training strategy. This strategy helps the model to operate on the whole image resolution where it learns high-level features by modelling long-range dependencies (global), and on image patches which helps to focus on finer local features at the same time (local).
+
+\par
+TransUNet combines the merits from U-Net and Transformers to develop an architecture which gives local as well as global attention. It uses a CNN-Transformer Hybrid as an encoder along with skip-connections at different layers to leverage the localized attention from the CNN feature map in the decoding path.
+
+
 % \begin{itemize}
 %   \item Define your task in a clear, concise manner
 %   \item Formally describe each model under investigation. Include your baseline and experimental models at minimum.
