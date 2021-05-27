@@ -63,7 +63,24 @@ We designed and ran 27 experiments in total. We used the following three machine
 \textbf{Bias-variance diagnostic}: We use various regularization techniques like early stopping to understand the bias-variance trade-off and to prevent the models from overfitting in order to generalize well on unseen data. For final performance comparison, we report all previously defined metrics on an unseen test dataset.
 
 \par
-Table 1 summarizes all experiments.
+Table \ref{table:experiments} shows an overview over all experiment setups.
+
+\begin{table*}[ht]
+\centering
+\includegraphics[width=\textwidth]{assets/experiments.pdf}
+\caption[Experiments]{Experimental model configurations with hyperparameter settings, optimizer, loss function and early stopping setup. First row corresponds to the baseline model.}
+\label{table:experiments}
+\end{table*}
+
+\par
+Table \ref{table:results} summarizes all experiment results.
+
+\begin{table*}[ht]
+\centering
+\includegraphics[width=\textwidth]{assets/results.pdf}
+\caption[Results]{Model flavors with corresponding type, architecture, input image sizes and final results as reported on unseen test dataset. First row corresponds to the baseline model.}
+\label{table:results}
+\end{table*}
 
 % \begin{itemize}
 %   \item Describe all Machine Learning Theory techniques used to evaluate the success of the model.
