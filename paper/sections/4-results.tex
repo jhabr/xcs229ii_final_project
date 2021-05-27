@@ -1,54 +1,18 @@
 \section{Results}
 
+In this section we first describe the metrics used to evaluate the performance of the models on the skin lesion segmentation task. We then present the experimental environment setup and show the final results.
+
 \subsection{Metrics}
 
-Image segmentation models are mostly evaluated on the basis of how accurately they can predict each pixel. The prediction of the pixels can be true positive (TP), true negative (TN) or false positive (FP) and false negative (FN) respectively. The model’s performance is determined by the nature of its prediction and the aforementioned category it belongs to. We plan to use the pixel accuracy to decide the specificity, sensitivity or accuracy of our prediction.
+Image segmentation models are mostly evaluated on the basis of how accurately they can predict each pixel. The prediction of the pixels can fall into one of four categories: true positive (TP), true negative (TN) or false positive (FP) and false negative (FN) respectively. The model’s performance is determined by the nature of its prediction and the aforementioned category it belongs to and the computed metrics derived therefrom.
 
-\par
-\emph{Sensitivity} measures the proportion of the correctly identified positives and is calculated as
-
-\begin{equation}
-  Sensitivity = \frac{TP}{TP + FN}
-\end{equation}
-
-\emph{Specificity} tells us the proportion of the correctly identified negatives and can be calculated as
-
-\begin{equation}
-  Specificity = \frac{TN}{TN + FP}
-\end{equation}
-
-For a given prediction, \emph{accuracy} is defined as
-
-\begin{equation}
-  Accuracy = \frac{TP + TN}{TP + FP + TN + FN}
-\end{equation}
-
-Sensitivity and specificity helps us in calculation of the \emph{F1-score} which is very similar to the Dice coefficient. Using the calculation above, the F1-score is given as
-
-\begin{equation}
-  F_1 = \frac{TP}{2 * TP + FN + FP}
-\end{equation}
-
-where as the \emph{Dice coefficient} is calculated as
-
-\begin{equation}
-  Dice = \frac{2 * TP}{2 * TP + FN + FP}
-\end{equation}
-
-We have used the popular \emph{Intersection over Union (IoU)} metric, also referred to as the \emph{Jaccard index}, as a method to quantify the percentage of overlap between the target mask and our prediction output.
+The 2018 lesion segmentation challenge defines the \emph{Threshold Jaccard Index}, averaged over all images in the dataset, as the primary evaluation criteria where the threshold is set to 0.65 \citep{challenge-2018-codella}. The \emph{Jaccard Index}, also called Intersection over Union (IoU), is a method to quantify the percentage of overlap between the target mask (A) and our prediction output (B). It is formally defined as
 
 \begin{equation}
   J(A, B) = \frac{|A \cup B|}{|A \cap B|}
 \end{equation}
 
-This metric is closely related to the Dice coefficient which is often used as a loss function during training. Quite simply, the IoU metric measures the number of pixels common between the target and prediction masks divided by the total number of pixels present across both masks.
-
-\begin{equation}
-  J(A, B) = \frac{TP}{TP + FN + FP}
-\end{equation}
-
-
-The 2018 lesion segmentation challenge defines the \emph{threshold Jaccard Index}, averaged over all images in the dataset, as the primary evaluation criteria where the threshold is set to 0.65 \citep{challenge-2018-codella}. The threshold Jaccard Index (TJ) can be calculated as
+The Threshold Jaccard Index can then be calculated as
 
 \begin{equation}
   TJ(A, B) = \begin{cases}
@@ -57,14 +21,36 @@ The 2018 lesion segmentation challenge defines the \emph{threshold Jaccard Index
     \end{cases}
 \end{equation}
 
-We use the same specific evaluation metrics for our work.
+The Jaccard Index metric is closely related to the \emph{Dice Coefficient} which is often used as a loss function during training. We use the Dice Coefficient to calculate the area of overlap between the target mask and the predicted mask, defined as
+
+\begin{equation}
+  Dice = \frac{2 * TP}{2 * TP + FN + FP}
+\end{equation}
+
+Furthermore, \emph{accuracy} helps us to track the ratio between correctly predicted pixels over all pixels. For a given prediction, accuracy is defined as
+
+\begin{equation}
+  Accuracy = \frac{TP + TN}{TP + FP + TN + FN}
+\end{equation}
+
+Finally, \emph{sensitivity} measures the proportion of the correctly identified positives and is   calculated as
+
+\begin{equation}
+  Sensitivity = \frac{TP}{TP + FN}
+\end{equation}
+
+\emph{Specificity} tells us the proportion of the correctly identified negatives  and can be calculated as
+
+\begin{equation}
+  Specificity = \frac{TN}{TN + FP}
+\end{equation}
 
 
-\subsection{Metrics}
+\subsection{Experiments}
 
 \subsubsection{Training Environment Setup}
 
-All experiments were conducted using the same VM running Linux 18.04.1-Ubuntu (x86\_64). The underlying hardware contained 54 GiB physical memory, 64-bits Intel(R) Xeon(R) CPU E5-2690 v3 (2.60GHz) and NVIDIA Tesla K80 (8GK210GL, rev a1) GPU with 12 GiB physical memory.
+All experiments were conducted using the same VM setup running Linux 18.04.1-Ubuntu (x86\_64). The underlying hardware contained 54 GiB physical memory, 64-bits Intel(R) Xeon(R) CPU E5-2690 v3 (2.60GHz) and NVIDIA Tesla K80 (8GK210GL, rev a1) GPU with 12 GiB physical memory.
 
 % \begin{itemize}
 %   \item Describe all Machine Learning Theory techniques used to evaluate the success of the model.
