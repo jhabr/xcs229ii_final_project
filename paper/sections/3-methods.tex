@@ -2,6 +2,7 @@
 In this section we first describe the dataset used in our work in detail. We then describe the baseline model as well as models used in our experiments. We close with an overview of the data preprocessing needed to match the models’ architectures.
 
 \subsection{Dataset}
+\label{dataset}
 We use the melanoma segmentation dataset as published in the 2018 Lesion Boundary Segmentation Challenge by the International Skin Imaging Collaboration (ISIC) \citep{isic-2018-segmentation}. The dataset comprises dermatoscopic images with their corresponding ground truth segmentation masks \citep{ensambles-2016-codella}.
 
 \par
@@ -41,6 +42,8 @@ The images in each dataset show a spectrum of variations in terms of quality (e.
 
 
 \subsection{Models}
+This section describes the baseline model and the model selections used in experiments in detail.
+
 \subsubsection{Baseline}
 
 We use U-Net \citep{unet-2015-ronneberger} with a VGG16 backbone (feature extractor) as our baseline model. The U-Net architecture was specifically designed for medical segmentation tasks and has been widely adopted as a baseline model in research. Figure \ref{u_net} shows the U-Net architecture.
@@ -67,6 +70,10 @@ For transformers based models we used the Medical Transformer and TransUNet arch
 
 \par
 TransUNet combines the merits from U-Net and Transformers to develop an architecture which gives local as well as global attention. It uses a CNN-Transformer Hybrid as an encoder along with skip-connections at different layers to leverage the localized attention from the CNN feature map in the decoding path.
+
+
+\subsection{Data Preprocessing}
+As discussed in section \ref{dataset} in detail the provided images show a variety of different resolutions, quality, general lighting condition and added noise like hair. In order to input the image to the models a preprocessing had to be done. Even though models like U-Net are image size agnostic meaning they can handle any resolution provided enough computational resources, we resize the input images to a fixed size appropriate to the selected model for training. To harmonize the image resolution we use OpenCV’s resize method with INTER\_NEAREST interpolation. This allows for batching and hence faster training. Given the time and computational limits we perform an ablation study to determine the best image resolution for our experimental setup. Further, we normalize the input images to values between 0 and 1 (float64) to fit the models’ requirements. Image resizing and normalization are performed on the fly using our custom data loader implementation.
 
 
 % \begin{itemize}
