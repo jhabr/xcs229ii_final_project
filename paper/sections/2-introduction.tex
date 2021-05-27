@@ -1,31 +1,42 @@
 \section{Introduction}
 
-\begin{itemize}
-  \item Describe the topic under investigation.
-  \item Summarize prior research in this area.
-  \item Identification of unresolved issues that your current paper will address.
-  \item Provides a overview of the paper and sections to follow.
-\end{itemize}
+Image segmentation is a process of dividing an image into different segments in order to understand the image in a better way thus making it useful in a variety of applications such as medical image recognition, self-driving cars, traffic control systems etc. Image segmentation has made a lot of advancements in recent years. With the introduction of deep learning architectures such as CNNs, Transformers there has been significant improvement in the accuracy with which deep learning models segment the image. The main purpose of image segmentation is to do a lower-level pixel wise grouping of the image, so that it helps in detecting different parts of the image. Among different approaches, CNN based and Transformer based models are two types of architectures which have shown very encouraging results. One of the seminal work in the CNN based models is the UNet architecture, which comprises two parts in its architecture – in the first part the features are learned by the model and in the second part it does segmentation based on different features it had learned. UNet is one of the most successful architectures in image segmentation research, however there are few limitations such as  scalability – it is difficult to make the architecture of the networks wider to learn more features as we start seeing the problem of vanishing gradients during training. Another limitation is that UNet and other CNN based models capture the local attention to a pixel. There are several other CNN models which were inspired from the UNet’s architecture such as Deeplab, DRINet, FCNN and others which have shown better results in image segmentation.
+
+\par
+Another network, which has been introduced in recent years and has been quite popular is the Transformer architecture. In transformer architecture, we have Medical Transformer and TransUNet.
+
+\par
+Our intent in this paper is to do experiments on the CNN based architectures and Transformer based architecture, to validate our hypothesis that for a given dataset, which of the two architectures performs better for melanoma detection.
+
+\par
+Malignant melanoma is one of the most dangerous and one of the rapidly growing diseases in the world. An early detection of melanoma can be very useful in curing the disease as the treatment becomes more complex at later stages. Unfortunately, despite the amenability of melanoma to early diagnosis through simple visual inspection, many patients continue to be diagnosed with more advanced disease. Adoption of technological aids for melanoma detection has been slow due to cost. With the advent of smart phone based digital cameras, it is now feasible to use high resolution images from digital cameras for diagnosis. Automated melanoma segmentation would help immensely for early diagnosis.
+
+% \begin{itemize}
+%   \item Describe the topic under investigation.
+%   \item Summarize prior research in this area.
+%   \item Identification of unresolved issues that your current paper will address.
+%   \item Provides a overview of the paper and sections to follow.
+% \end{itemize}
 
 
-Lit references (to be removed):
-\begin{itemize}
-  \item U-Net: \citep{unet-2015-ronneberger}
-  \item Double U-Net: \citep{double_unet-2020-jha}
-  \item medical transformer: \citep{medical_transformer-2021-valanarasu}
-  \item transformers for image recognition: \citep{transformers-2020-dosovitskiy}
-  \item convolution free: \citep{convolution_free-2021-karimi}
-  \item nabla: \citep{nabla-2019-alom}
-  \item deeplab: \citep{deeplab-2016-chen}
-  \item transU-Net: \citep{transunet-2021-chen}
-  \item drinet: \citep{drinet-2018-chen}
-  \item dataset: \citep{isic-2018-segmentation}
-  \item segmentation winners: \citep{skin_segmentation-2019-jahanifar}
-  \item challange paper: \citep{challenge-2018-codella}
-  \item data purification: \citep{data_purification-2019-bisla}
-  \item ensambles: \citep{ensambles-2016-codella}
-  \item melanoma diagnosis: \citep{melonama_diagnosis-2021-codella}
-\end{itemize}
+% Lit references (to be removed):
+% \begin{itemize}
+%   \item U-Net: \citep{unet-2015-ronneberger}
+%   \item Double U-Net: \citep{double_unet-2020-jha}
+%   \item medical transformer: \citep{medical_transformer-2021-valanarasu}
+%   \item transformers for image recognition: \citep{transformers-2020-dosovitskiy}
+%   \item convolution free: \citep{convolution_free-2021-karimi}
+%   \item nabla: \citep{nabla-2019-alom}
+%   \item deeplab: \citep{deeplab-2016-chen}
+%   \item transU-Net: \citep{transunet-2021-chen}
+%   \item drinet: \citep{drinet-2018-chen}
+%   \item dataset: \citep{isic-2018-segmentation}
+%   \item segmentation winners: \citep{skin_segmentation-2019-jahanifar}
+%   \item challange paper: \citep{challenge-2018-codella}
+%   \item data purification: \citep{data_purification-2019-bisla}
+%   \item ensambles: \citep{ensambles-2016-codella}
+%   \item melanoma diagnosis: \citep{melonama_diagnosis-2021-codella}
+% \end{itemize}
 
 % From project proposal:
 % \begin{itemize}
