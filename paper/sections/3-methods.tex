@@ -6,38 +6,30 @@ In this section we first describe the dataset used in our work in detail. We the
 We use the melanoma segmentation dataset as published in the 2018 Lesion Boundary Segmentation Challenge by the International Skin Imaging Collaboration (ISIC) \citep{isic-2018-segmentation}. The dataset comprises dermatoscopic images with their corresponding ground truth segmentation masks \citep{ensambles-2016-codella}.
 
 \par
-The \emph{lesion} images were acquired by different dermatoscope types from several institutions, taken from all anatomic sites and from a historical sample of patients presented for skin cancer screening. Every image contains exactly one primary lesion. The distribution of disease states represent a modified "real world" setting (over-representation of malignancies) containing more benign lesions than malignant. All lesion images are named using the scheme ISIC\_\textless{image}\_id\textgreater{.jpg} with the \textless{image}\_id\textgreater{} being a 7-digit identifier \citep{isic-2018-segmentation}.
+The \emph{lesion} images were acquired by different dermatoscope types from several institutions, taken from all anatomic sites and from a historical sample of patients presented for skin cancer screening. Every image contains exactly one primary lesion. The distribution of disease states represent a modified "real world" setting (over-representation of malignancies) containing more benign lesions than malignant \citep{isic-2018-segmentation}.
 
 \par
-The ground truth is represented by binary segmentation masks which indicate the location of the primary skin lesion within each input image. Mask images follow a similar naming scheme, namely  ISIC\_\textless{image\_id}\textgreater{\_segmentation.png}, and have the exact same dimensions as the lesion images. The masks are represented by a single-channel 8-bit continuous region, where each pixel is either 0 (background - area outside of the primary lesion) or 255 (foreground - area inside the primary lesion). The ground truth images were obtained using several techniques (e.g. fully automated algorithm; manual polygon tracing by human expert annotators), but all data were reviewed by practicing dermatologists with expertise in dermoscopy \citep{isic-2018-segmentation,ensambles-2016-codella}.
+The ground truth is represented by binary segmentation masks which indicate the location of the primary skin lesion within each input image. The masks are represented by a single-channel 8-bit continuous region, where each pixel is either 0 (background - area outside of the primary lesion) or 255 (foreground - area inside the primary lesion) and have the exact same dimensions as the lesion images. The ground truth images were obtained using several techniques (e.g. fully automated algorithm; manual polygon tracing by human expert annotators), but all data were reviewed by practicing dermatologists with expertise in dermoscopy \citep{isic-2018-segmentation,ensambles-2016-codella}.
 
 \par
-The dataset is divided into train, validation and test sets with 2’594, 100 and 1’000 images respectively. The train and validation datasets contain the exact same number of ground truth segmentation mask images whereas the test dataset does not. The test dataset is used for the final evaluation of the challenge submission and hence does not contain any segmentation masks. In order to compensate for the reduced dataset we used extensive data augmentation techniques like vertical and horizontal flips, random rotation (0-40 degrees), translation, shearing, color jittering, adding noise (gaussian distribution) and adding artificial hairs to in order to make the models more robust against hair occlusion while preserving the same static dataset distributions. The final dataset comprises 2’700 train images, 300 validation images and 300 original test images. Figure 1 shows this image distribution per dataset. Figure \ref{data_augmentation} shows the result of various data preprocessing and augmentation techniques.
+The dataset is divided into train, validation and test sets with 2’594, 100 and 1’000 images respectively. The train and validation datasets contain the exact same number of ground truth segmentation mask images whereas the test dataset does not. The test dataset is used for the final evaluation of the challenge submission and hence does not contain any segmentation masks. In order to compensate for the reduced dataset we used extensive data augmentation techniques like vertical and horizontal flips, random rotation (0-40 degrees), translation, shearing, color jittering, adding noise (gaussian distribution) and adding artificial hairs to in order to make the models more robust against hair occlusion while preserving the same static dataset distributions. The final dataset comprises 2’700 train images, 300 validation images and 300 original test images. Figure \ref{data_augmentation} shows the result of various data preprocessing and augmentation techniques.
 
 \begin{figure}[ht]
-\centering
-\includegraphics[width=\columnwidth]{assets/datasets.pdf}
-\caption[Datasets]
-{Image distribution in the train, validation and test datasets (ISIC 2018 segmentation challenge).}
-\label{datasets}
-\end{figure}
-
-\begin{figure}[ht]
-\centering
-\includegraphics[width=\columnwidth]{assets/data_augmentation.pdf}
-\caption[Datasets]
-{Data augmentation: (left) original image, (middle) rotated image with additional augmentation like vertical flip, random scale, random brightness etc., (right) augmented image with artificial hair added.}
-\label{data_augmentation}
+  \centering
+  \includegraphics[width=\columnwidth]{assets/data_augmentation.pdf}
+  \caption[Datasets]
+  {Data augmentation: (left) original image, (middle) rotated image with additional augmentation like vertical flip, random scale, random brightness etc., (right) augmented image with artificial hair added.}
+  \label{data_augmentation}
 \end{figure}
 
 The images in each dataset show a spectrum of variations in terms of quality (e.g. sharpness, lighting conditions, coloring etc.) and added noise (e.g. hair, rulers, bubbles etc.). Furthermore, the resolution of the images varies significantly. The \emph{train} dataset has 206 different dimensions, ranging from a resolution of 540 x 722 pixels to 4'499 x 6'748 pixels. The \emph{validation} dataset has 21 different resolutions, ranging from 480 x 640 pixels to 4'461 x 6'641 pixels. Lastly, the \emph{test} dataset has 114 different resolutions, ranging from 480 x 640 pixels to 4'519 x 6'808 pixels. Figure \ref{lesion_images} shows three examples of lesion images and their corresponding binary segmentation masks.
 
 \begin{figure}[ht]
-\centering
-\includegraphics[width=\columnwidth]{assets/lesion_images.pdf}
-\caption[Lesion Images]
-{Three lesion images with different noise on the top with their corresponding binary masks at the bottom.}
-\label{lesion_images}
+  \centering
+  \includegraphics[width=\columnwidth]{assets/lesion_images.pdf}
+  \caption[Lesion Images]
+  {Three lesion images with different noise on the top with their corresponding binary masks at the bottom.}
+  \label{lesion_images}
 \end{figure}
 
 
@@ -49,11 +41,11 @@ This section describes the baseline model and the model selections used in exper
 We use U-Net \citep{unet-2015-ronneberger} with a VGG16 backbone (feature extractor) as our baseline model. The U-Net architecture was specifically designed for medical segmentation tasks and has been widely adopted as a baseline model in research. Figure \ref{u_net} shows the U-Net architecture.
 
 \begin{figure}[ht]
-\centering
-\includegraphics[width=\columnwidth]{assets/u_net.pdf}
-\caption[Lesion Images]
-{The U-Net architecture.}
-\label{u_net}
+  \centering
+  \includegraphics[width=\columnwidth]{assets/u_net.pdf}
+  \caption[Lesion Images]
+  {The U-Net architecture.}
+  \label{u_net}
 \end{figure}
 
 
