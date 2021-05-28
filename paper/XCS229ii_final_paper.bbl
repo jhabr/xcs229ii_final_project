@@ -1,5 +1,20 @@
-\begin{thebibliography}{10}
+\begin{thebibliography}{15}
 \expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
+
+\bibitem[{Acosta et~al.(2021)Acosta, Tovar, Garcia-Zapirain, and
+  Percybrooks}]{melonama_diagnosis-2021-codella}
+Mario Fernando~Jojoa Acosta, Liesle Yail~Caballero Tovar, Maria~Begonya
+  Garcia-Zapirain, and Winston~Spencer Percybrooks. 2021.
+\newblock \href {https://doi.org/10.1186/s12880-020-00534-8} {Melanoma
+  diagnosis using deep learning techniques on dermatoscopic images}.
+\newblock \emph{BMC Medical Imaging}, 21, 6(2021).
+
+\bibitem[{Alom et~al.(2019)Alom, Aspiras, Taha, and Asari}]{nabla-2019-alom}
+Md.~Zahangir Alom, Theus~H. Aspiras, Tarek~M. Taha, and Vijayan~K. Asari. 2019.
+\newblock \href {http://arxiv.org/abs/1904.11126} {Skin cancer segmentation and
+  classification with {NABLA-N} and inception recurrent residual convolutional
+  networks}.
+\newblock \emph{CoRR}, abs/1904.11126.
 
 \bibitem[{Avidan and Shamir(2007)}]{seam_carving-2007-shai}
 Shai Avidan and Ariel Shamir. 2007.
@@ -22,6 +37,15 @@ Jieneng Chen, Yongyi Lu, Qihang Yu, Xiangde Luo, Ehsan Adeli, Yan Wang, Le~Lu,
   Alan~L. Yuille, and Yuyin Zhou. 2021.
 \newblock \href {http://arxiv.org/abs/2102.04306} {Transunet: Transformers make
   strong encoders for medical image segmentation}.
+
+\bibitem[{Chen et~al.(2016)Chen, Papandreou, Kokkinos, Murphy, and
+  Yuille}]{deeplab-2016-chen}
+Liang{-}Chieh Chen, George Papandreou, Iasonas Kokkinos, Kevin Murphy, and
+  Alan~L. Yuille. 2016.
+\newblock \href {http://arxiv.org/abs/1606.00915} {Deeplab: Semantic image
+  segmentation with deep convolutional nets, atrous convolution, and fully
+  connected crfs}.
+\newblock \emph{CoRR}, abs/1606.00915.
 
 \bibitem[{Codella et~al.(2016)Codella, Nguyen, Pankanti, Gutman, Helba,
   Halpern, and Smith}]{ensambles-2016-codella}
@@ -55,6 +79,19 @@ Alexey Dosovitskiy, Lucas Beyer, Alexander Kolesnikov, Dirk Weissenborn,
 ISIC. 2018.
 \newblock \href {https://challenge2018.isic-archive.com/task1/} {Task 1: Lesion
   boundary segmentation}.
+
+\bibitem[{Jha et~al.(2020)Jha, Riegler, Johansen, Halvorsen, and
+  Johansen}]{double_unet-2020-jha}
+Debesh Jha, Michael~A. Riegler, Dag Johansen, Pål Halvorsen, and Håvard~D.
+  Johansen. 2020.
+\newblock \href {http://arxiv.org/abs/2006.04868} {Doubleu-net: A deep
+  convolutional neural network for medical image segmentation}.
+
+\bibitem[{Karimi et~al.(2021)Karimi, Vasylechko, and
+  Gholipour}]{convolution_free-2021-karimi}
+Davood Karimi, Serge Vasylechko, and Ali Gholipour. 2021.
+\newblock \href {http://arxiv.org/abs/2102.13645} {Convolution-free medical
+  image segmentation using transformers}.
 
 \bibitem[{Koohbanani et~al.(2018)Koohbanani, Jahanifar, Tajeddin, Gooya, and
   Rajpoot}]{skin_segmentation-2019-jahanifar}
