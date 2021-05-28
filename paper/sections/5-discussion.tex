@@ -1,18 +1,18 @@
 \section{Discussion}
 
-Skin cancer is the most common form of cancer in the United States, with the annual cost exceeding \$8 billion. Melanoma, a type of skin cancer, is the most deadly form. When detected early, the 5 year survival rate can go up to 99\% compared to a delayed diagnosis which causes the survival rate to dramatically drop to 23\% \citep{challenge-2018-codella}.
+Skin cancer is the most common form of cancer in the United States, with the annual cost exceeding \$8 billion. Melanoma, a type of skin cancer, is the deadliest form. When detected early, the 5-year survival rate can go up to 99\% compared to a delayed diagnosis which causes the survival rate to dramatically drop to 23\% \citep{challenge-2018-codella}.
 
 \par
-The contributions of this work is two-fold: First, given the latest developments in computer vision and especially in semantic image segmentation, this study is the first to study the impact and performance of Transformer based models \citep{transformers-2020-dosovitskiy} on the specific task of skin lesion segmentation based on the ISIC 2018 challenge \citep{isic-2018-segmentation}. Second, we extend the work of \citep{medical_transformer-2021-valanarasu} and \citep{transunet-2021-chen} by applying their ideas with slight adaptations to a different medical domain and hence extending the knowledge base of the MedT and TransUNet architectures.
+The contribution of this work is two-fold: First, given the latest developments in computer vision and especially in semantic image segmentation, this study is the first to study the impact and performance of Transformer based models \citep{transformers-2020-dosovitskiy} on the specific task of skin lesion segmentation based on the ISIC 2018 challenge \citep{isic-2018-segmentation}. Second, we extend the work of \citep{medical_transformer-2021-valanarasu} and \citep{transunet-2021-chen} by applying their ideas with slight adaptations to a different medical domain and hence extending the knowledge base of the MedT and TransUNet architectures.
 
 \par
 Although we weren’t able to show a better performance of the Transformer based architecture compared to CNN based architectures for the specific task of skin lesion segmentation as presented by the authors of the original papers, we showed that Transformer based models are superior to CNN based models as measured by some specific metrics like Sensitivity as well as comparable in other metrics like accuracy or Dice coefficient.
 
 \par
-Due to time and computational resources constraints we were able to perform only a subset of the possible and identified experiments. An obvious direction for future work would be to cover more different architectural compositions for both model classes, accompanied by a variation along a defined  hyperparameter space.
+Due to time and computational resources constraints, we were able to perform only a subset of the possible and identified experiments. An obvious direction for future work would be to cover more different architectural compositions for both model classes, accompanied by a variation along a defined  hyperparameter space.
 
 \par
-As image preprocessing and resizing was one of the main challenges in the project, we might explore different ways of image resizing and augmentation. Ultimately we would like to use a machine with a bigger GPU so that we can increase the minimum image resolution size required for training. This might help increase the detail level of the predicted mask as less compression would be applied to the input images. We can also expand the segmentation task to melanoma classification in order to build an end-to-end system that could be used for helping diagnosing melanoma using a smartphone.
+As image pre-processing and resizing was one of the main challenges in the project, we might explore different ways of image resizing and augmentation. Ultimately, we would like to use a machine with a bigger GPU so that we can increase the minimum image resolution size required for training. This might help increase the detail level of the predicted mask as less compression would be applied to the input images. We can also expand the segmentation task to melanoma classification in order to build an end-to-end system that could be used for helping diagnosing melanoma using a smartphone.
 
 
 % \begin{itemize}
