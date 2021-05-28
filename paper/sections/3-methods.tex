@@ -56,7 +56,7 @@ For Transformer based models we used the Medical Transformer and TransUNet archi
 TransUNet combines the merits from U-Net and Transformers to develop an architecture which gives local as well as global attention. It uses a CNN-Transformer Hybrid as an encoder along with skip-connections at different layers to leverage the localized attention from the CNN feature map in the decoding path.
 
 
-\subsection{Data pre-processing}
+\subsection{Data Pre-processing}
 As discussed in section \ref{dataset} in detail the provided images show a variety of different resolutions, quality, general lighting condition and added noise like hair. In order to input the image to the models a pre-processing had to be done. Even though models like U-Net are image size agnostic meaning they can handle any resolution provided enough computational resources, we resize the input images to a fixed size appropriate to the selected model for training. To harmonize the image resolution, we use OpenCV’s resize method with INTER\_NEAREST interpolation. This allows for batching and hence faster training. Given the time and computational limits we perform an ablation study to determine the best image resolution for our experimental setup. Further, we normalize the input images to values between 0 and 1 (float64) to fit the models’ requirements. Image resizing and normalization are performed on the fly using our custom data loader implementation.
 
 
