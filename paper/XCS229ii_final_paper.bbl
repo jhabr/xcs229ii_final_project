@@ -1,5 +1,12 @@
-\begin{thebibliography}{4}
+\begin{thebibliography}{7}
 \expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
+
+\bibitem[{Chen et~al.(2021)Chen, Lu, Yu, Luo, Adeli, Wang, Lu, Yuille, and
+  Zhou}]{transunet-2021-chen}
+Jieneng Chen, Yongyi Lu, Qihang Yu, Xiangde Luo, Ehsan Adeli, Yan Wang, Le~Lu,
+  Alan~L. Yuille, and Yuyin Zhou. 2021.
+\newblock \href {http://arxiv.org/abs/2102.04306} {Transunet: Transformers make
+  strong encoders for medical image segmentation}.
 
 \bibitem[{Codella et~al.(2016)Codella, Nguyen, Pankanti, Gutman, Helba,
   Halpern, and Smith}]{ensambles-2016-codella}
@@ -25,11 +32,26 @@ ISIC. 2018.
 \newblock \href {https://challenge2018.isic-archive.com/task1/} {Task 1: Lesion
   boundary segmentation}.
 
+\bibitem[{Koohbanani et~al.(2018)Koohbanani, Jahanifar, Tajeddin, Gooya, and
+  Rajpoot}]{skin_segmentation-2019-jahanifar}
+Navid~Alemi Koohbanani, Mostafa Jahanifar, Neda~Zamani Tajeddin, Ali Gooya, and
+  Nasir~M. Rajpoot. 2018.
+\newblock \href {http://arxiv.org/abs/1809.10243} {Leveraging transfer learning
+  for segmenting lesions and their attributes in dermoscopy images}.
+\newblock \emph{CoRR}, abs/1809.10243.
+
 \bibitem[{Ronneberger et~al.(2015)Ronneberger, Fischer, and
   Brox}]{unet-2015-ronneberger}
 Olaf Ronneberger, Philipp Fischer, and Thomas Brox. 2015.
 \newblock \href {http://arxiv.org/abs/1505.04597} {U-net: Convolutional
   networks for biomedical image segmentation}.
 \newblock \emph{CoRR}, abs/1505.04597.
+
+\bibitem[{Valanarasu et~al.(2021)Valanarasu, Oza, Hacihaliloglu, and
+  Patel}]{medical_transformer-2021-valanarasu}
+Jeya Maria~Jose Valanarasu, Poojan Oza, Ilker Hacihaliloglu, and Vishal~M.
+  Patel. 2021.
+\newblock \href {http://arxiv.org/abs/2102.10662} {Medical transformer: Gated
+  axial-attention for medical image segmentation}.
 
 \end{thebibliography}
