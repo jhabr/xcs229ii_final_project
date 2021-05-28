@@ -1,4 +1,4 @@
-\begin{thebibliography}{9}
+\begin{thebibliography}{10}
 \expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
 
 \bibitem[{Avidan and Shamir(2007)}]{seam_carving-2007-shai}
@@ -7,6 +7,14 @@ Shai Avidan and Ariel Shamir. 2007.
   content-aware image resizing}.
 \newblock In \emph{ACM SIGGRAPH 2007 Papers}, SIGGRAPH '07, page 10–es, New
   York, NY, USA. Association for Computing Machinery.
+
+\bibitem[{Bisla et~al.(2019)Bisla, Choromanska, Stein, Polsky, and
+  Berman}]{data_purification-2019-bisla}
+Devansh Bisla, Anna Choromanska, Jennifer~A. Stein, David Polsky, and
+  Russell~S. Berman. 2019.
+\newblock \href {http://arxiv.org/abs/1902.06061} {Skin lesion segmentation and
+  classification with deep learning system}.
+\newblock \emph{CoRR}, abs/1902.06061.
 
 \bibitem[{Chen et~al.(2021)Chen, Lu, Yu, Luo, Adeli, Wang, Lu, Yuille, and
   Zhou}]{transunet-2021-chen}
