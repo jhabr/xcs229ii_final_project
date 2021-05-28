@@ -1,5 +1,12 @@
-\begin{thebibliography}{7}
+\begin{thebibliography}{9}
 \expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
+
+\bibitem[{Avidan and Shamir(2007)}]{seam_carving-2007-shai}
+Shai Avidan and Ariel Shamir. 2007.
+\newblock \href {https://doi.org/10.1145/1275808.1276390} {Seam carving for
+  content-aware image resizing}.
+\newblock In \emph{ACM SIGGRAPH 2007 Papers}, SIGGRAPH '07, page 10–es, New
+  York, NY, USA. Association for Computing Machinery.
 
 \bibitem[{Chen et~al.(2021)Chen, Lu, Yu, Luo, Adeli, Wang, Lu, Yuille, and
   Zhou}]{transunet-2021-chen}
@@ -26,6 +33,15 @@ Noel C.~F. Codella, Veronica Rotemberg, Philipp Tschandl, M.~Emre Celebi,
   melanoma detection 2018: {A} challenge hosted by the international skin
   imaging collaboration {(ISIC)}}.
 \newblock \emph{CoRR}, abs/1902.03368.
+
+\bibitem[{Dosovitskiy et~al.(2020)Dosovitskiy, Beyer, Kolesnikov, Weissenborn,
+  Zhai, Unterthiner, Dehghani, Minderer, Heigold, Gelly, Uszkoreit, and
+  Houlsby}]{transformers-2020-dosovitskiy}
+Alexey Dosovitskiy, Lucas Beyer, Alexander Kolesnikov, Dirk Weissenborn,
+  Xiaohua Zhai, Thomas Unterthiner, Mostafa Dehghani, Matthias Minderer, Georg
+  Heigold, Sylvain Gelly, Jakob Uszkoreit, and Neil Houlsby. 2020.
+\newblock \href {http://arxiv.org/abs/2010.11929} {An image is worth 16x16
+  words: Transformers for image recognition at scale}.
 
 \bibitem[{ISIC(2018)}]{isic-2018-segmentation}
 ISIC. 2018.
