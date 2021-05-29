@@ -33,7 +33,7 @@ class SimpleDataLoader:
             whether to select the images (size) randomly or read them in the order of the image path
     """
     def __init__(self, images_folder_path, backbone=None, masks_folder_path=None, normalize=True, resize_to=None,
-                 size=None, random_selection=False):
+                 size=None, random_selection=False, seam_carving=False):
         self.images_folder_path = images_folder_path
         self.backbone = backbone
         self.masks_folder_path = masks_folder_path
@@ -43,6 +43,7 @@ class SimpleDataLoader:
         self.resize_to = resize_to
         self.size = size
         self.random_selection = random_selection
+        self.seam_carving = seam_carving
         self.random_indexes = None
         self.image_preprocessor = ImagePreprocessor()
         self.data_augmentation = DataAugmentation()
@@ -71,8 +72,10 @@ class SimpleDataLoader:
             image = self.image_preprocessor.apply_image_default(
                 image_path=image_path,
                 normalize=self.normalize,
-                resize_to=self.resize_to
+                resize_to=self.resize_to,
+                seam_carving=self.seam_carving
             )
+
             if self.backbone:
                 image = self.data_augmentation.apply_default(
                     image=image,
@@ -115,7 +118,8 @@ class SimpleDataLoader:
             mask = self.image_preprocessor.apply_mask_default(
                 mask_path=mask_path,
                 normalize=self.normalize,
-                resize_to=self.resize_to
+                resize_to=self.resize_to,
+                seam_carving=self.seam_carving
             )
             masks.append(mask)
 

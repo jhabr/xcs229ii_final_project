@@ -1,14 +1,24 @@
 import cv2
 import numpy as np
+import seam_carving as sm
 
 
 class ImagePreprocessor:
     IMAGE_SIZE = (512, 512)
 
-    def apply_image_default(self, image_path, normalize=True, resize_to=IMAGE_SIZE):
+    def apply_image_default(self, image_path, normalize=True, resize_to=IMAGE_SIZE, seam_carving=False):
         image = cv2.imread(image_path, cv2.IMREAD_COLOR)
         if resize_to:
-            image = cv2.resize(src=image, dsize=resize_to, interpolation=cv2.INTER_NEAREST)
+            if seam_carving:
+                image = sm.resize(
+                    src=image,
+                    size=resize_to,
+                    energy_mode='forward',
+                    order='width-first',
+                    keep_mask=None
+                )
+            else:
+                image = cv2.resize(src=image, dsize=resize_to, interpolation=cv2.INTER_NEAREST)
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         # normalization step to get numbers between (0, 1)
         if normalize:
@@ -16,11 +26,20 @@ class ImagePreprocessor:
 
         return image
 
-    def apply_mask_default(self, mask_path, normalize=True, resize_to=IMAGE_SIZE):
+    def apply_mask_default(self, mask_path, normalize=True, resize_to=IMAGE_SIZE, seam_carving=False):
         mask = cv2.imread(mask_path, cv2.IMREAD_GRAYSCALE)
         no_colors = len(np.unique(mask))
         if resize_to:
-            mask = cv2.resize(src=mask, dsize=resize_to, interpolation=cv2.INTER_NEAREST)
+            if seam_carving:
+                mask = sm.resize(
+                    src=mask,
+                    size=resize_to,
+                    energy_mode='backward',
+                    order='width-first',
+                    keep_mask=None
+                )
+            else:
+                mask = cv2.resize(src=mask, dsize=resize_to, interpolation=cv2.INTER_NEAREST)
 
         # normalization step to get numbers between (0, 1)
         if normalize:
